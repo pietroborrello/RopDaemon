@@ -52,11 +52,23 @@ def checkLoadConstGadget(init_regs, init_stack, final_state, gadget):
     result = []
     for r in gadget.modified_regs:
         #possible more than one load_gadg in gadget!
-        #compute stack fix
         if final_state[r] in init_stack:
             offset = init_stack.index(final_state[r]) * 4
             register = r
             result.append(LoadConst_Gadget(register, offset, gadget))
+    return result
+
+
+def checkCopyRegGadget(init_regs, init_stack, final_state, gadget):
+    result = []
+    for r in gadget.modified_regs:
+        if final_state[r] in init_regs.values():
+            dest = r
+            #inverse lookup by value
+            src = [key for key, value in init_regs.items()
+                         if value == final_state[r]][0]
+            if final_state[src] == init_regs[src]:
+                result.append(CopyReg_Gadget(dest, src, gadget))
     return result
     
 
@@ -103,9 +115,11 @@ class GadgetsCollector(object):
             #init unicorn enigne to clean memory space
             try:
                 mu = Uc(UC_ARCH_X86, UC_MODE_32)
+                esp_init = ADDRESS + 0x100000
                 rv_pairs = {}
                 for r in regs_no_esp:
                     rv_pairs[r] = rand()
+                rv_pairs[Registers.ESP] = esp_init
                 rand_stack = []
                 for i in range(8):
                     rand_stack.append(rand())
@@ -115,7 +129,6 @@ class GadgetsCollector(object):
                 # write machine code to be emulated to memory
                 mu.mem_write(ADDRESS, g.hex)
                 # initialize stack
-                esp_init = ADDRESS + 0x100000
                 mu.reg_write(UC_X86_REG_ESP, esp_init)
                 #init registers with random values
                 for r in regs_no_esp:
@@ -130,19 +143,23 @@ class GadgetsCollector(object):
                 mu.emu_start(ADDRESS, ADDRESS + len(g.hex) - 1)
 
                 final_values = {}
-                for r in regs_no_esp:
+                for r in regs:
                     final_values[r] = mu.reg_read(regs[r])
 
                 #check modified regs
                 g.modified_regs = []
-                for r in rv_pairs:
+                for r in regs_no_esp:
                     if rv_pairs[r] != final_values[r]:
                         g.modified_regs.append(r)
                 #print g.modified_regs
                 #TODO: xchg    eax, esp
-                g.stack_fix = mu.reg_read(regs[Registers.ESP]) - esp_init + (ARCH_BITS/8) #ret not executed in unicorn
+                g.stack_fix = final_values[Registers.ESP] - esp_init + (ARCH_BITS/8) #ret not executed in unicorn
+                if g.stack_fix <= 0 or g.stack_fix > 64:
+                    continue
                 
                 typed_gadgets[Types.LoadConst] += checkLoadConstGadget(
+                    rv_pairs, rand_stack, final_values, g)
+                typed_gadgets[Types.CopyReg] += checkCopyRegGadget(
                     rv_pairs, rand_stack, final_values, g)
             except UcError as e:
                 print("ERROR: %s" % e)

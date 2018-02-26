@@ -65,6 +65,12 @@ class CopyReg_Gadget(Gadget):  # dest = src
         super(CopyReg_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix)
 
+    def __str__(self):
+        mod = []
+        for r in self.modified_regs:
+            mod.append(r.name)
+        return 'CopyReg_Gadget(%s, %s)(%s, %s, %s, %s, %s)' % (self.dest.name, self.src.name, str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
+
 
 class BinOp_Gadget(Gadget):  # dest = src1 OP src2
     def __init__(self, dest, src1, op, src2):
