@@ -8,6 +8,7 @@ __email__ = "pietro.borrello95@gmail.com"
 from binascii import unhexlify, hexlify
 import random
 from struct import pack, unpack
+from itertools import permutations, combinations
 from ropper import RopperService
 from Gadget import Gadget, Registers, Operations, Types
 from Gadget import *
@@ -34,7 +35,7 @@ regs_no_esp = {Registers.EAX:  UC_X86_REG_EAX, Registers.EBX:  UC_X86_REG_EBX,
                Registers.EBP:  UC_X86_REG_EBP}
 
 def rand():
-    return random.getrandbits(24)
+    return random.getrandbits(30)
 
 def filter_unsafe(gadgets):
     safe_gadgets = []
@@ -51,24 +52,77 @@ def filter_unsafe(gadgets):
 def checkLoadConstGadget(init_regs, init_stack, final_state, gadget):
     result = []
     for r in gadget.modified_regs:
-        #possible more than one load_gadg in gadget!
-        if final_state[r] in init_stack:
-            offset = init_stack.index(final_state[r]) * 4
-            register = r
-            result.append(LoadConst_Gadget(register, offset, gadget))
+        for off in [i for i, x in enumerate(
+            init_stack) if x == final_state[r]]:
+                result.append(LoadConst_Gadget(r, off, gadget))
     return result
 
 
 def checkCopyRegGadget(init_regs, init_stack, final_state, gadget):
     result = []
     for r in gadget.modified_regs:
-        if final_state[r] in init_regs.values():
-            dest = r
-            #inverse lookup by value
-            src = [key for key, value in init_regs.items()
-                         if value == final_state[r]][0]
+        #inverse lookup by value
+        for src in [key for key, value in init_regs.items()
+                        if value == final_state[r]]:
             if final_state[src] == init_regs[src]:
-                result.append(CopyReg_Gadget(dest, src, gadget))
+                result.append(CopyReg_Gadget(r, src, gadget))
+    return result
+
+def compute_operation(a, op, b):
+    if op == Operations.ADD:
+        return (a + b) & 0xFFFFFFFF
+    elif op == Operations.SUB:
+        return (a - b) & 0xFFFFFFFF
+    elif op == Operations.MUL:
+        return (a * b) & 0xFFFFFFFF
+    elif op == Operations.DIV:
+        return (a // b) & 0xFFFFFFFF
+    elif op == Operations.XOR:
+        return (a ^ b) & 0xFFFFFFFF
+    elif op == Operations.OR:
+        return (a | b) & 0xFFFFFFFF
+    elif op == Operations.AND:
+        return (a & b) & 0xFFFFFFFF
+
+
+def is_commutative(op, ):
+    if op == Operations.ADD:
+        return True
+    elif op == Operations.SUB:
+        return False
+    elif op == Operations.MUL:
+        return True
+    elif op == Operations.DIV:
+        return False
+    elif op == Operations.XOR:
+        return True
+    elif op == Operations.OR:
+        return True
+    elif op == Operations.AND:
+        return True
+
+
+
+def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
+    result = []
+    #TODO: overapproximating trivial operations (src1 must be != src2, and div must not give 0)
+    for op in Operations:
+        if is_commutative(op):
+            for src1, src2 in combinations(regs, 2):
+                op_res = compute_operation(
+                    init_regs[src1], op, init_regs[src2])
+                for dest in [r for r in final_state if final_state[r] == op_res and r in gadget.modified_regs]:
+                    result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
+        else:
+            for src1, src2 in permutations(regs, 2):
+                op_res = compute_operation(
+                    init_regs[src1], op, init_regs[src2])
+                # if DIV, only valid EAX=EAX/src2, TODO: not op_res == 0 may miss some DIV gadgets
+                if op == Operations.DIV and (op_res == 0 or src1 != Registers.EAX):
+                        continue
+                for dest in [r for r in final_state if final_state[r] == op_res and r in gadget.modified_regs]:
+                    result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
+
     return result
     
 
@@ -115,7 +169,7 @@ class GadgetsCollector(object):
             #init unicorn enigne to clean memory space
             try:
                 mu = Uc(UC_ARCH_X86, UC_MODE_32)
-                esp_init = ADDRESS + 0x100000
+                esp_init = ADDRESS + 0x112233
                 rv_pairs = {}
                 for r in regs_no_esp:
                     rv_pairs[r] = rand()
@@ -160,6 +214,8 @@ class GadgetsCollector(object):
                 typed_gadgets[Types.LoadConst] += checkLoadConstGadget(
                     rv_pairs, rand_stack, final_values, g)
                 typed_gadgets[Types.CopyReg] += checkCopyRegGadget(
+                    rv_pairs, rand_stack, final_values, g)
+                typed_gadgets[Types.BinOp] += checkBinOpGadget(
                     rv_pairs, rand_stack, final_values, g)
             except UcError as e:
                 print("ERROR: %s" % e)
