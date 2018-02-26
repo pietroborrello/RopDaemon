@@ -1,25 +1,900 @@
+Gadget(1441c3, 0x8048bbd, 0x8048bc0, None, None)
+0x8048bbd:	adc	al, 0x41
+0x8048bbf:	ret	
+Gadget(042460a00408ffd0c9c3, 0x8048620, 0x804862a, None, None)
+0x8048620:	add	al, 0x24
+0x8048622:	pushal	
+0x8048623:	mov	al, byte ptr [0xd0ff0804]
+0x8048628:	leave	
+0x8048629:	ret	
+MEM WRITE at 0x1112213, data size = 4, data value = 0x3b168fac
+MEM WRITE at 0x1112217, data size = 4, data value = 0x1f798406
+MEM WRITE at 0x111221b, data size = 4, data value = 0x13422ab1
+MEM WRITE at 0x111221f, data size = 4, data value = 0x1112233
+MEM WRITE at 0x1112223, data size = 4, data value = 0x3a7bbed4
+MEM WRITE at 0x1112227, data size = 4, data value = 0x2cc12f0b
+MEM WRITE at 0x111222b, data size = 4, data value = 0x27b6aac2
+MEM WRITE at 0x111222f, data size = 4, data value = 0x13645d30
+MEM READ at 0xd0ff0804, data size = 1
+MEM READ at 0x13422ab1, data size = 4
+Gadget(042460a00408ffd2c9c3, 0x804865d, 0x8048667, None, None)
+0x804865d:	add	al, 0x24
+0x804865f:	pushal	
+0x8048660:	mov	al, byte ptr [0xd2ff0804]
+0x8048665:	leave	
+0x8048666:	ret	
+MEM WRITE at 0x1112213, data size = 4, data value = 0x4ea4f6c
+MEM WRITE at 0x1112217, data size = 4, data value = 0x3eb962a9
+MEM WRITE at 0x111221b, data size = 4, data value = 0xabe34c
+MEM WRITE at 0x111221f, data size = 4, data value = 0x1112233
+MEM WRITE at 0x1112223, data size = 4, data value = 0x31ab3353
+MEM WRITE at 0x1112227, data size = 4, data value = 0x10cd15e
+MEM WRITE at 0x111222b, data size = 4, data value = 0xbdf6c37
+MEM WRITE at 0x111222f, data size = 4, data value = 0x12df8852
+MEM READ at 0xd2ff0804, data size = 1
+MEM READ at 0xabe34c, data size = 4
+Gadget(04c7042460a00408ffd2c9c3, 0x804865b, 0x8048667, None, None)
+0x804865b:	add	al, 0xc7
+0x804865d:	add	al, 0x24
+0x804865f:	pushal	
+0x8048660:	mov	al, byte ptr [0xd2ff0804]
+0x8048665:	leave	
+0x8048666:	ret	
+MEM WRITE at 0x1112213, data size = 4, data value = 0x7bbd05a
+MEM WRITE at 0x1112217, data size = 4, data value = 0x1c36b951
+MEM WRITE at 0x111221b, data size = 4, data value = 0x269869c
+MEM WRITE at 0x111221f, data size = 4, data value = 0x1112233
+MEM WRITE at 0x1112223, data size = 4, data value = 0xc5ccd91
+MEM WRITE at 0x1112227, data size = 4, data value = 0x328259c9
+MEM WRITE at 0x111222b, data size = 4, data value = 0x225ddf02
+MEM WRITE at 0x111222f, data size = 4, data value = 0x16a8b58
+MEM READ at 0xd2ff0804, data size = 1
+MEM READ at 0x269869c, data size = 4
+Gadget(00f3c3, 0x8048a4f, 0x8048a52, None, None)
+0x8048a4f:	add	bl, dh
+0x8048a51:	ret	
+Gadget(00000000c9c3, 0x80489dc, 0x80489e2, None, None)
+0x80489dc:	add	byte ptr [eax], al
+0x80489de:	add	byte ptr [eax], al
+0x80489e0:	leave	
+0x80489e1:	ret	
+MEM READ at 0x1def2efd, data size = 1
+MEM WRITE at 0x1def2efd, data size = 1, data value = 0xfd
+MEM READ at 0x1def2efd, data size = 1
+MEM WRITE at 0x1def2efd, data size = 1, data value = 0xfa
+MEM READ at 0xaf45526, data size = 4
+Gadget(00000000ba44332211898bdec0ad0bc3, 0x80486fd, 0x804870d, None, None)
+0x80486fd:	add	byte ptr [eax], al
+0x80486ff:	add	byte ptr [eax], al
+0x8048701:	mov	edx, 0x11223344
+0x8048706:	mov	dword ptr [ebx + 0xbadc0de], ecx
+0x804870c:	ret	
+MEM READ at 0x1a8625e5, data size = 1
+MEM WRITE at 0x1a8625e5, data size = 1, data value = 0xe5
+MEM READ at 0x1a8625e5, data size = 1
+MEM WRITE at 0x1a8625e5, data size = 1, data value = 0xca
+MEM WRITE at 0x33041b1c, data size = 4, data value = 0x12f8b9ab
+Gadget(000000ba44332211898bdec0ad0bc3, 0x80486fe, 0x804870d, None, None)
+0x80486fe:	add	byte ptr [eax], al
+0x8048700:	add	byte ptr [edx + 0x11223344], bh
+0x8048706:	mov	dword ptr [ebx + 0xbadc0de], ecx
+0x804870c:	ret	
+MEM READ at 0x1c29ae30, data size = 1
+MEM WRITE at 0x1c29ae30, data size = 1, data value = 0x30
+MEM READ at 0x397e7644, data size = 1
+MEM WRITE at 0x397e7644, data size = 1, data value = 0x43
+MEM WRITE at 0x101d040c, data size = 4, data value = 0x1dc19f0e
+Gadget(000000c9c3, 0x80489dd, 0x80489e2, None, None)
+0x80489dd:	add	byte ptr [eax], al
+0x80489df:	add	cl, cl
+0x80489e1:	ret	
+MEM READ at 0x7744ee, data size = 1
+MEM WRITE at 0x7744ee, data size = 1, data value = 0xee
+Gadget(000083c4085bc3, 0x80484b4, 0x80484bb, None, None)
+0x80484b4:	add	byte ptr [eax], al
+0x80484b6:	add	esp, 8
+0x80484b9:	pop	ebx
+0x80484ba:	ret	
+MEM READ at 0x2ea158fa, data size = 1
+MEM WRITE at 0x2ea158fa, data size = 1, data value = 0xfa
+MEM READ at 0x111223b, data size = 4
+Gadget(0000c9c3, 0x80489de, 0x80489e2, None, None)
+0x80489de:	add	byte ptr [eax], al
+0x80489e0:	leave	
+0x80489e1:	ret	
+MEM READ at 0x20559902, data size = 1
+MEM WRITE at 0x20559902, data size = 1, data value = 0x2
+MEM READ at 0x3ec0e7ed, data size = 4
+Gadget(0000ba44332211898bdec0ad0bc3, 0x80486ff, 0x804870d, None, None)
+0x80486ff:	add	byte ptr [eax], al
+0x8048701:	mov	edx, 0x11223344
+0x8048706:	mov	dword ptr [ebx + 0xbadc0de], ecx
+0x804870c:	ret	
+MEM READ at 0x263baef, data size = 1
+MEM WRITE at 0x263baef, data size = 1, data value = 0xef
+MEM WRITE at 0x20dd0c88, data size = 4, data value = 0x2b4751a
+Gadget(0000c3, 0x80486f9, 0x80486fc, None, None)
+0x80486f9:	add	byte ptr [eax], al
+0x80486fb:	ret	
+MEM READ at 0x26a43567, data size = 1
+MEM WRITE at 0x26a43567, data size = 1, data value = 0x67
+Gadget(000031c031dbc3, 0x8048711, 0x8048718, None, None)
+0x8048711:	add	byte ptr [eax], al
+0x8048713:	xor	eax, eax
+0x8048715:	xor	ebx, ebx
+0x8048717:	ret	
+MEM READ at 0x10171ade, data size = 1
+MEM WRITE at 0x10171ade, data size = 1, data value = 0xde
+Gadget(0031c031dbc3, 0x8048712, 0x8048718, None, None)
+0x8048712:	add	byte ptr [ecx], dh
+0x8048714:	sal	byte ptr [ecx], 0xdb
+0x8048717:	ret	
+MEM READ at 0x3d0fabf7, data size = 1
+MEM WRITE at 0x3d0fabf7, data size = 1, data value = 0xa5
+MEM READ at 0x3d0fabf7, data size = 1
+MEM WRITE at 0x3d0fabf7, data size = 1, data value = 0x0
+Gadget(000f94c3, 0x804872e, 0x8048732, None, None)
+0x804872e:	add	byte ptr [edi], cl
+0x8048730:	xchg	eax, esp
+0x8048731:	ret	
+MEM READ at 0x12daa172, data size = 1
+MEM WRITE at 0x12daa172, data size = 1, data value = 0x48
+Gadget(00ba44332211898bdec0ad0bc3, 0x8048700, 0x804870d, None, None)
+0x8048700:	add	byte ptr [edx + 0x11223344], bh
+0x8048706:	mov	dword ptr [ebx + 0xbadc0de], ecx
+0x804870c:	ret	
+MEM READ at 0x446b40d6, data size = 1
+MEM WRITE at 0x446b40d6, data size = 1, data value = 0x54
+MEM WRITE at 0x43d314f5, data size = 4, data value = 0xf121895
+Gadget(00c9c3, 0x80489df, 0x80489e2, None, None)
+0x80489df:	add	cl, cl
+0x80489e1:	ret	
+Gadget(0100000f94c3, 0x804872c, 0x8048732, None, None)
+0x804872c:	add	dword ptr [eax], eax
+0x804872e:	add	byte ptr [edi], cl
+0x8048730:	xchg	eax, esp
+0x8048731:	ret	
+MEM READ at 0x9a8f5cd, data size = 4
+MEM WRITE at 0x9a8f5cd, data size = 4, data value = 0x9a8f5cd
+MEM READ at 0x2500b956, data size = 1
+MEM WRITE at 0x2500b956, data size = 1, data value = 0x8d
+Gadget(05fbffffb800000000c9c3, 0x80489d7, 0x80489e2, None, None)
+0x80489d7:	add	eax, 0xb8fffffb
+0x80489dc:	add	byte ptr [eax], al
+0x80489de:	add	byte ptr [eax], al
+0x80489e0:	leave	
+0x80489e1:	ret	
+MEM READ at 0xca55b585, data size = 1
+MEM WRITE at 0xca55b585, data size = 1, data value = 0x85
+MEM READ at 0xca55b585, data size = 1
+MEM WRITE at 0xca55b585, data size = 1, data value = 0xa
+MEM READ at 0xe85d0b6, data size = 4
+Gadget(01d8c3, 0x8048732, 0x8048735, None, None)
+0x8048732:	add	eax, ebx
+0x8048734:	ret	
+Gadget(01c8c3, 0x80487a9, 0x80487ac, None, None)
+0x80487a9:	add	eax, ecx
+0x80487ab:	ret	
+Gadget(01cbc3, 0x80487a6, 0x80487a9, None, None)
+0x80487a6:	add	ebx, ecx
+0x80487a8:	ret	
+Gadget(01c1c3, 0x804875e, 0x8048761, None, None)
+0x804875e:	add	ecx, eax
+0x8048760:	ret	
+Gadget(01d1c3, 0x8048764, 0x8048767, None, None)
+0x8048764:	add	ecx, edx
+0x8048766:	ret	
+Gadget(01dac3, 0x8048761, 0x8048764, None, None)
+0x8048761:	add	edx, ebx
+0x8048763:	ret	
+Gadget(01cac3, 0x8048722, 0x8048725, None, None)
+0x8048722:	add	edx, ecx
+0x8048724:	ret	
+Gadget(83c40c5b5e5f5dc3, 0x8048a45, 0x8048a4d, None, None)
+0x8048a45:	add	esp, 0xc
+0x8048a48:	pop	ebx
+0x8048a49:	pop	esi
+0x8048a4a:	pop	edi
+0x8048a4b:	pop	ebp
+0x8048a4c:	ret	
+MEM READ at 0x111223f, data size = 4
+MEM READ at 0x1112243, data size = 4
+MEM READ at 0x1112247, data size = 4
+MEM READ at 0x111224b, data size = 4
+Gadget(83c4085bc3, 0x80484b6, 0x80484bb, None, None)
+0x80484b6:	add	esp, 8
+0x80484b9:	pop	ebx
+0x80484ba:	ret	
+MEM READ at 0x111223b, data size = 4
+Gadget(01c4c3, 0x8048742, 0x8048745, None, None)
+0x8048742:	add	esp, eax
+0x8048744:	ret	
+Gadget(01dc595ac3, 0x8048748, 0x804874d, None, None)
+0x8048748:	add	esp, ebx
+0x804874a:	pop	ecx
+0x804874b:	pop	edx
+0x804874c:	ret	
+MEM READ at 0x32fbcd3d, data size = 4
+MEM READ at 0x32fbcd41, data size = 4
+Gadget(2460a00408ffd0c9c3, 0x8048621, 0x804862a, None, None)
+0x8048621:	and	al, 0x60
+0x8048623:	mov	al, byte ptr [0xd0ff0804]
+0x8048628:	leave	
+0x8048629:	ret	
+MEM READ at 0xd0ff0804, data size = 1
+MEM READ at 0x1697cef9, data size = 4
+Gadget(2460a00408ffd2c9c3, 0x804865e, 0x8048667, None, None)
+0x804865e:	and	al, 0x60
+0x8048660:	mov	al, byte ptr [0xd2ff0804]
+0x8048665:	leave	
+0x8048666:	ret	
+MEM READ at 0xd2ff0804, data size = 1
+MEM READ at 0x1bead497, data size = 4
+Gadget(24e805fbffffb800000000c9c3, 0x80489d5, 0x80489e2, None, None)
+0x80489d5:	and	al, 0xe8
+0x80489d7:	add	eax, 0xb8fffffb
+0x80489dc:	add	byte ptr [eax], al
+0x80489de:	add	byte ptr [eax], al
+0x80489e0:	leave	
+0x80489e1:	ret	
+MEM READ at 0xf470f443, data size = 1
+MEM WRITE at 0xf470f443, data size = 1, data value = 0x43
+MEM READ at 0xf470f443, data size = 1
+MEM WRITE at 0xf470f443, data size = 1, data value = 0x86
+MEM READ at 0x2df78052, data size = 4
+Gadget(2404c3, 0x80487be, 0x80487c1, None, None)
+0x80487be:	and	al, 4
+0x80487c0:	ret	
+Gadget(240889fd59c3, 0x804871c, 0x8048722, None, None)
+0x804871c:	and	al, 8
+0x804871e:	mov	ebp, edi
+0x8048720:	pop	ecx
+0x8048721:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(20470e1441c3, 0x8048bba, 0x8048bc0, None, None)
+0x8048bba:	and	byte ptr [edi + 0xe], al
+0x8048bbd:	adc	al, 0x41
+0x8048bbf:	ret	
+MEM READ at 0x2fb2842e, data size = 1
+MEM WRITE at 0x2fb2842e, data size = 1, data value = 0x0
+Gadget(2211898bdec0ad0bc3, 0x8048704, 0x804870d, None, None)
+0x8048704:	and	dl, byte ptr [ecx]
+0x8048706:	mov	dword ptr [ebx + 0xbadc0de], ecx
+0x804870c:	ret	
+MEM READ at 0xa0c9132, data size = 1
+MEM WRITE at 0x28401523, data size = 4, data value = 0xa0c9132
+Gadget(21d8c3, 0x804878e, 0x8048791, None, None)
+0x804878e:	and	eax, ebx
+0x8048790:	ret	
+Gadget(21d0c3, 0x8048797, 0x804879a, None, None)
+0x8048797:	and	eax, edx
+0x8048799:	ret	
+Gadget(21cbc3, 0x8048794, 0x8048797, None, None)
+0x8048794:	and	ebx, ecx
+0x8048796:	ret	
+Gadget(21d3c3, 0x804879a, 0x804879d, None, None)
+0x804879a:	and	ebx, edx
+0x804879c:	ret	
+Gadget(21d1c3, 0x8048791, 0x8048794, None, None)
+0x8048791:	and	ecx, edx
+0x8048793:	ret	
+Gadget(98efbe000031c031dbc3, 0x804870e, 0x8048718, None, None)
+0x804870e:	cwde	
+0x804870f:	out	dx, eax
+0x8048710:	mov	esi, 0xc0310000
+0x8048715:	xor	ebx, ebx
+0x8048717:	ret	
+Gadget(4d0e20470e1441c3, 0x8048bb8, 0x8048bc0, None, None)
+0x8048bb8:	dec	ebp
+0x8048bb9:	push	cs
+0x8048bba:	and	byte ptr [edi + 0xe], al
+0x8048bbd:	adc	al, 0x41
+0x8048bbf:	ret	
+MEM WRITE at 0x111222f, data size = 4, data value = 0x0
+MEM READ at 0x80e1b47, data size = 1
+MEM WRITE at 0x80e1b47, data size = 1, data value = 0x0
+Gadget(f7f3c3, 0x80487b0, 0x80487b3, None, None)
+0x80487b0:	div	ebx
+0x80487b2:	ret	
+Gadget(dc595ac3, 0x8048749, 0x804874d, None, None)
+0x8048749:	fcomp	qword ptr [ecx + 0x5a]
+0x804874c:	ret	
+MEM READ at 0x37fdfc5f, data size = 8
+Gadget(d831db81e9230100000f94c3, 0x8048726, 0x8048732, None, None)
+0x8048726:	fdiv	dword ptr [ecx]
+0x8048728:	fild	dword ptr [ecx + 0x123e9]
+0x804872e:	add	byte ptr [edi], cl
+0x8048730:	xchg	eax, esp
+0x8048731:	ret	
+MEM READ at 0x694c719, data size = 4
+MEM READ at 0x695eb02, data size = 4
+MEM READ at 0x24ab86d3, data size = 1
+MEM WRITE at 0x24ab86d3, data size = 1, data value = 0x19
+Gadget(db81e9230100000f94c3, 0x8048728, 0x8048732, None, None)
+0x8048728:	fild	dword ptr [ecx + 0x123e9]
+0x804872e:	add	byte ptr [edi], cl
+0x8048730:	xchg	eax, esp
+0x8048731:	ret	
+MEM READ at 0x97f5896, data size = 4
+MEM READ at 0x24c10d4a, data size = 1
+MEM WRITE at 0x24c10d4a, data size = 1, data value = 0xad
+Gadget(e444c1e40a58c3, 0x80486e1, 0x80486e8, None, None)
+0x80486e1:	in	al, 0x44
+0x80486e3:	shl	esp, 0xa
+0x80486e6:	pop	eax
+0x80486e7:	ret	
+MEM READ at 0x4488cc00, data size = 4
+Gadget(e40a58c3, 0x80486e4, 0x80486e8, None, None)
+0x80486e4:	in	al, 0xa
+0x80486e6:	pop	eax
+0x80486e7:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(ed31e444c1e40a58c3, 0x80486df, 0x80486e8, None, None)
+0x80486df:	in	eax, dx
+0x80486e0:	xor	esp, esp
+0x80486e2:	inc	esp
+0x80486e3:	shl	esp, 0xa
+0x80486e6:	pop	eax
+0x80486e7:	ret	
+MEM READ at 0x400, data size = 4
+Gadget(410e304d0e20470e1441c3, 0x8048bb5, 0x8048bc0, None, None)
+0x8048bb5:	inc	ecx
+0x8048bb6:	push	cs
+0x8048bb7:	xor	byte ptr [ebp + 0xe], cl
+0x8048bba:	and	byte ptr [edi + 0xe], al
+0x8048bbd:	adc	al, 0x41
+0x8048bbf:	ret	
+MEM WRITE at 0x111222f, data size = 4, data value = 0x0
+MEM READ at 0x337c9d9, data size = 1
+MEM WRITE at 0x337c9d9, data size = 1, data value = 0xb8
+MEM READ at 0x10a7884b, data size = 1
+MEM WRITE at 0x10a7884b, data size = 1, data value = 0x0
+Gadget(41c3, 0x8048bbe, 0x8048bc0, None, None)
+0x8048bbe:	inc	ecx
+0x8048bbf:	ret	
+Gadget(470e1441c3, 0x8048bbb, 0x8048bc0, None, None)
+0x8048bbb:	inc	edi
+0x8048bbc:	push	cs
+0x8048bbd:	adc	al, 0x41
+0x8048bbf:	ret	
+MEM WRITE at 0x111222f, data size = 4, data value = 0x0
+Gadget(44c1e40a58c3, 0x80486e2, 0x80486e8, None, None)
+0x80486e2:	inc	esp
+0x80486e3:	shl	esp, 0xa
+0x80486e6:	pop	eax
+0x80486e7:	ret	
+MEM READ at 0x4488d000, data size = 4
+Gadget(9fc3, 0x8048738, 0x804873a, None, None)
+0x8048738:	lahf	
+0x8048739:	ret	
+Gadget(c9c3, 0x8048628, 0x804862a, None, None)
+0x8048628:	leave	
+0x8048629:	ret	
+MEM READ at 0x37a7307c, data size = 4
+Gadget(f00000c3, 0x80486f8, 0x80486fc, None, None)
+0x80486f8:	lock add	byte ptr [eax], al
+0x80486fb:	ret	
+MEM READ at 0x2efbcdea, data size = 1
+MEM WRITE at 0x2efbcdea, data size = 1, data value = 0xea
+Gadget(a00408ffd0c9c3, 0x8048623, 0x804862a, None, None)
+0x8048623:	mov	al, byte ptr [0xd0ff0804]
+0x8048628:	leave	
+0x8048629:	ret	
+MEM READ at 0xd0ff0804, data size = 1
+MEM READ at 0x36d1f59e, data size = 4
+Gadget(a00408ffd2c9c3, 0x8048660, 0x8048667, None, None)
+0x8048660:	mov	al, byte ptr [0xd2ff0804]
+0x8048665:	leave	
+0x8048666:	ret	
+MEM READ at 0xd2ff0804, data size = 1
+MEM READ at 0x12623e83, data size = 4
+Gadget(8900c3, 0x8048779, 0x804877c, None, None)
+0x8048779:	mov	dword ptr [eax], eax
+0x804877b:	ret	
+MEM WRITE at 0x204bf326, data size = 4, data value = 0x204bf326
+Gadget(8918c3, 0x804873f, 0x8048742, None, None)
+0x804873f:	mov	dword ptr [eax], ebx
+0x8048741:	ret	
+MEM WRITE at 0x14929a75, data size = 4, data value = 0x3ce11546
+Gadget(8908c3, 0x804877f, 0x8048782, None, None)
+0x804877f:	mov	dword ptr [eax], ecx
+0x8048781:	ret	
+MEM WRITE at 0x3d849b86, data size = 4, data value = 0xfc1a722
+Gadget(898bdec0ad0bc3, 0x8048706, 0x804870d, None, None)
+0x8048706:	mov	dword ptr [ebx + 0xbadc0de], ecx
+0x804870c:	ret	
+MEM WRITE at 0x1c588139, data size = 4, data value = 0x34e18121
+Gadget(8903c3, 0x804877c, 0x804877f, None, None)
+0x804877c:	mov	dword ptr [ebx], eax
+0x804877e:	ret	
+MEM WRITE at 0x385e60b7, data size = 4, data value = 0x4654c87
+Gadget(8911c3, 0x8048758, 0x804875b, None, None)
+0x8048758:	mov	dword ptr [ecx], edx
+0x804875a:	ret	
+MEM WRITE at 0x2ad350cc, data size = 4, data value = 0x38c86a35
+Gadget(b800000000c9c3, 0x80489db, 0x80489e2, None, None)
+0x80489db:	mov	eax, 0
+0x80489e0:	leave	
+0x80489e1:	ret	
+MEM READ at 0x138b9189, data size = 4
+Gadget(b800000000ba44332211898bdec0ad0bc3, 0x80486fc, 0x804870d, None, None)
+0x80486fc:	mov	eax, 0
+0x8048701:	mov	edx, 0x11223344
+0x8048706:	mov	dword ptr [ebx + 0xbadc0de], ecx
+0x804870c:	ret	
+MEM WRITE at 0x2bc4e741, data size = 4, data value = 0x29c735f3
+Gadget(8b00c3, 0x8048773, 0x8048776, None, None)
+0x8048773:	mov	eax, dword ptr [eax]
+0x8048775:	ret	
+MEM READ at 0x7e793b3, data size = 4
+Gadget(8b83efbeadde8b910df0ad0bc3, 0x80486e8, 0x80486f5, None, None)
+0x80486e8:	mov	eax, dword ptr [ebx - 0x21524111]
+0x80486ee:	mov	edx, dword ptr [ecx + 0xbadf00d]
+0x80486f4:	ret	
+MEM READ at 0xf04d1f45, data size = 4
+MEM READ at 0x48f1c392, data size = 4
+Gadget(8b03c3, 0x804873c, 0x804873f, None, None)
+0x804873c:	mov	eax, dword ptr [ebx]
+0x804873e:	ret	
+MEM READ at 0x2e6081d7, data size = 4
+Gadget(89d8c3, 0x8048735, 0x8048738, None, None)
+0x8048735:	mov	eax, ebx
+0x8048737:	ret	
+Gadget(89e0c3, 0x8048745, 0x8048748, None, None)
+0x8048745:	mov	eax, esp
+0x8048747:	ret	
+Gadget(89fd59c3, 0x804871e, 0x8048722, None, None)
+0x804871e:	mov	ebp, edi
+0x8048720:	pop	ecx
+0x8048721:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(8b18c3, 0x8048776, 0x8048779, None, None)
+0x8048776:	mov	ebx, dword ptr [eax]
+0x8048778:	ret	
+MEM READ at 0x2ae14091, data size = 4
+Gadget(8b1c24c3, 0x80485f0, 0x80485f4, None, None)
+0x80485f0:	mov	ebx, dword ptr [esp]
+0x80485f3:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(8b09c3, 0x804876a, 0x804876d, None, None)
+0x804876a:	mov	ecx, dword ptr [ecx]
+0x804876c:	ret	
+MEM READ at 0x3ffb5a7b, data size = 4
+Gadget(8b0ac3, 0x804876d, 0x8048770, None, None)
+0x804876d:	mov	ecx, dword ptr [edx]
+0x804876f:	ret	
+MEM READ at 0x12156ad0, data size = 4
+Gadget(ba44332211898bdec0ad0bc3, 0x8048701, 0x804870d, None, None)
+0x8048701:	mov	edx, 0x11223344
+0x8048706:	mov	dword ptr [ebx + 0xbadc0de], ecx
+0x804870c:	ret	
+MEM WRITE at 0x424d02b9, data size = 4, data value = 0x301f2c16
+Gadget(8b13c3, 0x8048782, 0x8048785, None, None)
+0x8048782:	mov	edx, dword ptr [ebx]
+0x8048784:	ret	
+MEM READ at 0x8200ba5, data size = 4
+Gadget(8b910df0ad0bc3, 0x80486ee, 0x80486f5, None, None)
+0x80486ee:	mov	edx, dword ptr [ecx + 0xbadf00d]
+0x80486f4:	ret	
+MEM READ at 0x3dccc153, data size = 4
+Gadget(8b11c3, 0x804875b, 0x804875e, None, None)
+0x804875b:	mov	edx, dword ptr [ecx]
+0x804875d:	ret	
+MEM READ at 0x37a13459, data size = 4
+Gadget(8b12c3, 0x8048770, 0x8048773, None, None)
+0x8048770:	mov	edx, dword ptr [edx]
+0x8048772:	ret	
+MEM READ at 0x1ae2f151, data size = 4
+Gadget(be000031c031dbc3, 0x8048710, 0x8048718, None, None)
+0x8048710:	mov	esi, 0xc0310000
+0x8048715:	xor	ebx, ebx
+0x8048717:	ret	
+Gadget(8b74240889fd59c3, 0x804871a, 0x8048722, None, None)
+0x804871a:	mov	esi, dword ptr [esp + 8]
+0x804871e:	mov	ebp, edi
+0x8048720:	pop	ecx
+0x8048721:	ret	
+MEM READ at 0x111223b, data size = 4
+MEM READ at 0x1112233, data size = 4
+Gadget(8b642404c3, 0x80487bc, 0x80487c1, None, None)
+0x80487bc:	mov	esp, dword ptr [esp + 4]
+0x80487c0:	ret	
+MEM READ at 0x1112237, data size = 4
+Gadget(f7e3c3, 0x804879d, 0x80487a0, None, None)
+0x804879d:	mul	ebx
+0x804879f:	ret	
+Gadget(f7e1c3, 0x80487a0, 0x80487a3, None, None)
+0x80487a0:	mul	ecx
+0x80487a2:	ret	
+Gadget(f7e2c3, 0x80487a3, 0x80487a6, None, None)
+0x80487a3:	mul	edx
+0x80487a5:	ret	
+Gadget(908b1c24c3, 0x80485ef, 0x80485f4, None, None)
+0x80485ef:	nop	
+0x80485f0:	mov	ebx, dword ptr [esp]
+0x80485f3:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(9066908b1c24c3, 0x80485ed, 0x80485f4, None, None)
+0x80485ed:	nop	
+0x80485ee:	nop	
+0x80485f0:	mov	ebx, dword ptr [esp]
+0x80485f3:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(90669066908b1c24c3, 0x80485eb, 0x80485f4, None, None)
+0x80485eb:	nop	
+0x80485ec:	nop	
+0x80485ee:	nop	
+0x80485f0:	mov	ebx, dword ptr [esp]
+0x80485f3:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(906690669066908b1c24c3, 0x80485e9, 0x80485f4, None, None)
+0x80485e9:	nop	
+0x80485ea:	nop	
+0x80485ec:	nop	
+0x80485ee:	nop	
+0x80485f0:	mov	ebx, dword ptr [esp]
+0x80485f3:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(0c5b5e5f5dc3, 0x8048a47, 0x8048a4d, None, None)
+0x8048a47:	or	al, 0x5b
+0x8048a49:	pop	esi
+0x8048a4a:	pop	edi
+0x8048a4b:	pop	ebp
+0x8048a4c:	ret	
+MEM READ at 0x1112233, data size = 4
+MEM READ at 0x1112237, data size = 4
+MEM READ at 0x111223b, data size = 4
+Gadget(08ffd0c9c3, 0x8048625, 0x804862a, None, None)
+0x8048625:	or	bh, bh
+0x8048627:	ror	cl, 1
+0x8048629:	ret	
+Gadget(08ffd2c9c3, 0x8048662, 0x8048667, None, None)
+0x8048662:	or	bh, bh
+0x8048664:	ror	cl, cl
+0x8048666:	ret	
+Gadget(0883f8067701c3, 0x8048609, 0x8048610, None, None)
+0x8048609:	or	byte ptr [ebx + 0x17706f8], al
+0x804860f:	ret	
+MEM READ at 0x3a1ab75d, data size = 1
+MEM WRITE at 0x3a1ab75d, data size = 1, data value = 0x5f
+Gadget(09d8c3, 0x804878b, 0x804878e, None, None)
+0x804878b:	or	eax, ebx
+0x804878d:	ret	
+Gadget(efbe000031c031dbc3, 0x804870f, 0x8048718, None, None)
+0x804870f:	out	dx, eax
+0x8048710:	mov	esi, 0xc0310000
+0x8048715:	xor	ebx, ebx
+0x8048717:	ret	
+Gadget(58c3, 0x80486e6, 0x80486e8, None, None)
+0x80486e6:	pop	eax
+0x80486e7:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(5dc3, 0x8048a4b, 0x8048a4d, None, None)
+0x8048a4b:	pop	ebp
+0x8048a4c:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(5b5e5f5dc3, 0x8048a48, 0x8048a4d, None, None)
+0x8048a48:	pop	ebx
+0x8048a49:	pop	esi
+0x8048a4a:	pop	edi
+0x8048a4b:	pop	ebp
+0x8048a4c:	ret	
+MEM READ at 0x1112233, data size = 4
+MEM READ at 0x1112237, data size = 4
+MEM READ at 0x111223b, data size = 4
+MEM READ at 0x111223f, data size = 4
+Gadget(5bc3, 0x80484b9, 0x80484bb, None, None)
+0x80484b9:	pop	ebx
+0x80484ba:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(595ac3, 0x804874a, 0x804874d, None, None)
+0x804874a:	pop	ecx
+0x804874b:	pop	edx
+0x804874c:	ret	
+MEM READ at 0x1112233, data size = 4
+MEM READ at 0x1112237, data size = 4
+Gadget(59c3, 0x8048720, 0x8048722, None, None)
+0x8048720:	pop	ecx
+0x8048721:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(5f5dc3, 0x8048a4a, 0x8048a4d, None, None)
+0x8048a4a:	pop	edi
+0x8048a4b:	pop	ebp
+0x8048a4c:	ret	
+MEM READ at 0x1112233, data size = 4
+MEM READ at 0x1112237, data size = 4
+Gadget(5ac3, 0x804874b, 0x804874d, None, None)
+0x804874b:	pop	edx
+0x804874c:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(5e5f5dc3, 0x8048a49, 0x8048a4d, None, None)
+0x8048a49:	pop	esi
+0x8048a4a:	pop	edi
+0x8048a4b:	pop	ebp
+0x8048a4c:	ret	
+MEM READ at 0x1112233, data size = 4
+MEM READ at 0x1112237, data size = 4
+MEM READ at 0x111223b, data size = 4
+Gadget(0e1441c3, 0x8048bbc, 0x8048bc0, None, None)
+0x8048bbc:	push	cs
+0x8048bbd:	adc	al, 0x41
+0x8048bbf:	ret	
+MEM WRITE at 0x111222f, data size = 4, data value = 0x0
+Gadget(0e20470e1441c3, 0x8048bb9, 0x8048bc0, None, None)
+0x8048bb9:	push	cs
+0x8048bba:	and	byte ptr [edi + 0xe], al
+0x8048bbd:	adc	al, 0x41
+0x8048bbf:	ret	
+MEM WRITE at 0x111222f, data size = 4, data value = 0x0
+MEM READ at 0x38eb681a, data size = 1
+MEM WRITE at 0x38eb681a, data size = 1, data value = 0x0
+Gadget(0e304d0e20470e1441c3, 0x8048bb6, 0x8048bc0, None, None)
+0x8048bb6:	push	cs
+0x8048bb7:	xor	byte ptr [ebp + 0xe], cl
+0x8048bba:	and	byte ptr [edi + 0xe], al
+0x8048bbd:	adc	al, 0x41
+0x8048bbf:	ret	
+MEM WRITE at 0x111222f, data size = 4, data value = 0x0
+MEM READ at 0x1b77e083, data size = 1
+MEM WRITE at 0x1b77e083, data size = 1, data value = 0x18
+MEM READ at 0x3972f421, data size = 1
+MEM WRITE at 0x3972f421, data size = 1, data value = 0x0
+Gadget(60a00408ffd0c9c3, 0x8048622, 0x804862a, None, None)
+0x8048622:	pushal	
+0x8048623:	mov	al, byte ptr [0xd0ff0804]
+0x8048628:	leave	
+0x8048629:	ret	
+MEM WRITE at 0x1112213, data size = 4, data value = 0x3a260bba
+MEM WRITE at 0x1112217, data size = 4, data value = 0x1e431288
+MEM WRITE at 0x111221b, data size = 4, data value = 0xf45d766
+MEM WRITE at 0x111221f, data size = 4, data value = 0x1112233
+MEM WRITE at 0x1112223, data size = 4, data value = 0x384ba579
+MEM WRITE at 0x1112227, data size = 4, data value = 0x1b2b2e91
+MEM WRITE at 0x111222b, data size = 4, data value = 0x2933f8c0
+MEM WRITE at 0x111222f, data size = 4, data value = 0x30b8e3ad
+MEM READ at 0xd0ff0804, data size = 1
+MEM READ at 0xf45d766, data size = 4
+Gadget(60a00408ffd2c9c3, 0x804865f, 0x8048667, None, None)
+0x804865f:	pushal	
+0x8048660:	mov	al, byte ptr [0xd2ff0804]
+0x8048665:	leave	
+0x8048666:	ret	
+MEM WRITE at 0x1112213, data size = 4, data value = 0x36c43d62
+MEM WRITE at 0x1112217, data size = 4, data value = 0x11362fd8
+MEM WRITE at 0x111221b, data size = 4, data value = 0x344e3d03
+MEM WRITE at 0x111221f, data size = 4, data value = 0x1112233
+MEM WRITE at 0x1112223, data size = 4, data value = 0xdc2bb9d
+MEM WRITE at 0x1112227, data size = 4, data value = 0xa2c19a7
+MEM WRITE at 0x111222b, data size = 4, data value = 0x39d7f164
+MEM WRITE at 0x111222f, data size = 4, data value = 0x2db6e5de
+MEM READ at 0xd2ff0804, data size = 1
+MEM READ at 0x344e3d03, data size = 4
+Gadget(c2c1ea, 0x804863e, 0x804863f, None, None)
+0x804863e:	ret	0xeac1
+MEM READ at 0x1112233, data size = 4
+ERROR: Invalid memory fetch (UC_ERR_FETCH_UNMAPPED)
+Gadget(c3, 0x80484a2, 0x80484a3, None, None)
+0x80484a2:	ret	
+Gadget(d08b74240889fd59c3, 0x8048719, 0x8048722, None, None)
+0x8048719:	ror	byte ptr [ebx - 0x76f7db8c], 1
+0x804871f:	std	
+0x8048720:	pop	ecx
+0x8048721:	ret	
+MEM READ at 0xaf06acf4, data size = 1
+MEM WRITE at 0xaf06acf4, data size = 1, data value = 0x0
+MEM READ at 0x1112233, data size = 4
+Gadget(d0c9c3, 0x8048627, 0x804862a, None, None)
+0x8048627:	ror	cl, 1
+0x8048629:	ret	
+Gadget(d2c9c3, 0x8048664, 0x8048667, None, None)
+0x8048664:	ror	cl, cl
+0x8048666:	ret	
+Gadget(c031dbc3, 0x8048714, 0x8048718, None, None)
+0x8048714:	sal	byte ptr [ecx], 0xdb
+0x8048717:	ret	
+MEM READ at 0x15e4a132, data size = 1
+MEM WRITE at 0x15e4a132, data size = 1, data value = 0x0
+Gadget(1c24c3, 0x80485f1, 0x80485f4, None, None)
+0x80485f1:	sbb	al, 0x24
+0x80485f3:	ret	
+Gadget(18c7042460a00408ffd0c9c3, 0x804861e, 0x804862a, None, None)
+0x804861e:	sbb	bh, al
+0x8048620:	add	al, 0x24
+0x8048622:	pushal	
+0x8048623:	mov	al, byte ptr [0xd0ff0804]
+0x8048628:	leave	
+0x8048629:	ret	
+MEM WRITE at 0x1112213, data size = 4, data value = 0x12388a6b
+MEM WRITE at 0x1112217, data size = 4, data value = 0x3415a5df
+MEM WRITE at 0x111221b, data size = 4, data value = 0x2afb7cfc
+MEM WRITE at 0x111221f, data size = 4, data value = 0x1112233
+MEM WRITE at 0x1112223, data size = 4, data value = 0x3dd27576
+MEM WRITE at 0x1112227, data size = 4, data value = 0x1712f530
+MEM WRITE at 0x111222b, data size = 4, data value = 0x2fb8ad7f
+MEM WRITE at 0x111222f, data size = 4, data value = 0x31d04452
+MEM READ at 0xd0ff0804, data size = 1
+MEM READ at 0x2afb7cfc, data size = 4
+Gadget(1889442404c7042460a00408ffd2c9c3, 0x8048657, 0x8048667, None, None)
+0x8048657:	sbb	byte ptr [ecx - 0x38fbdbbc], cl
+0x804865d:	add	al, 0x24
+0x804865f:	pushal	
+0x8048660:	mov	al, byte ptr [0xd2ff0804]
+0x8048665:	leave	
+0x8048666:	ret	
+MEM READ at 0xe6c8f16e, data size = 1
+MEM WRITE at 0xe6c8f16e, data size = 1, data value = 0xd6
+MEM WRITE at 0x1112213, data size = 4, data value = 0x21c20aa1
+MEM WRITE at 0x1112217, data size = 4, data value = 0x2614d74e
+MEM WRITE at 0x111221b, data size = 4, data value = 0x3d4f2e5d
+MEM WRITE at 0x111221f, data size = 4, data value = 0x1112233
+MEM WRITE at 0x1112223, data size = 4, data value = 0x940bac4
+MEM WRITE at 0x1112227, data size = 4, data value = 0x85a6bec
+MEM WRITE at 0x111222b, data size = 4, data value = 0x1fc4cd2a
+MEM WRITE at 0x111222f, data size = 4, data value = 0x15d219fb
+MEM READ at 0xd2ff0804, data size = 1
+MEM READ at 0x3d4f2e5d, data size = 4
+Gadget(c1e40a58c3, 0x80486e3, 0x80486e8, None, None)
+0x80486e3:	shl	esp, 0xa
+0x80486e6:	pop	eax
+0x80486e7:	ret	
+MEM READ at 0x4488cc00, data size = 4
+Gadget(fd59c3, 0x804871f, 0x8048722, None, None)
+0x804871f:	std	
+0x8048720:	pop	ecx
+0x8048721:	ret	
+MEM READ at 0x1112233, data size = 4
+Gadget(2c410e304d0e20470e1441c3, 0x8048bb4, 0x8048bc0, None, None)
+0x8048bb4:	sub	al, 0x41
+0x8048bb6:	push	cs
+0x8048bb7:	xor	byte ptr [ebp + 0xe], cl
+0x8048bba:	and	byte ptr [edi + 0xe], al
+0x8048bbd:	adc	al, 0x41
+0x8048bbf:	ret	
+MEM WRITE at 0x111222f, data size = 4, data value = 0x0
+MEM READ at 0xb587ae6, data size = 1
+MEM WRITE at 0xb587ae6, data size = 1, data value = 0x90
+MEM READ at 0x25aa8057, data size = 1
+MEM WRITE at 0x25aa8057, data size = 1, data value = 0x0
+Gadget(29d8c3, 0x8048785, 0x8048788, None, None)
+0x8048785:	sub	eax, ebx
+0x8048787:	ret	
+Gadget(29d1c3, 0x8048767, 0x804876a, None, None)
+0x8048767:	sub	ecx, edx
+0x8048769:	ret	
+Gadget(94c3, 0x8048730, 0x8048732, None, None)
+0x8048730:	xchg	eax, esp
+0x8048731:	ret	
+Gadget(304d0e20470e1441c3, 0x8048bb7, 0x8048bc0, None, None)
+0x8048bb7:	xor	byte ptr [ebp + 0xe], cl
+0x8048bba:	and	byte ptr [edi + 0xe], al
+0x8048bbd:	adc	al, 0x41
+0x8048bbf:	ret	
+MEM READ at 0x15d5d6be, data size = 1
+MEM WRITE at 0x15d5d6be, data size = 1, data value = 0xc9
+MEM READ at 0x85d8614, data size = 1
+MEM WRITE at 0x85d8614, data size = 1, data value = 0x0
+Gadget(3198efbe000031c031dbc3, 0x804870d, 0x8048718, None, None)
+0x804870d:	xor	dword ptr [eax + 0xbeef], ebx
+0x8048713:	xor	eax, eax
+0x8048715:	xor	ebx, ebx
+0x8048717:	ret	
+MEM READ at 0xd9025e9, data size = 4
+MEM WRITE at 0xd9025e9, data size = 4, data value = 0x1ce5a77b
+Gadget(33830df00000c3, 0x80486f5, 0x80486fc, None, None)
+0x80486f5:	xor	eax, dword ptr [ebx + 0xf00d]
+0x80486fb:	ret	
+MEM READ at 0xa24500a, data size = 4
+Gadget(31c031dbc3, 0x8048713, 0x8048718, None, None)
+0x8048713:	xor	eax, eax
+0x8048715:	xor	ebx, ebx
+0x8048717:	ret	
+Gadget(31d8c3, 0x80487b3, 0x80487b6, None, None)
+0x80487b3:	xor	eax, ebx
+0x80487b5:	ret	
+Gadget(31c8c3, 0x80487b6, 0x80487b9, None, None)
+0x80487b6:	xor	eax, ecx
+0x80487b8:	ret	
+Gadget(31d08b74240889fd59c3, 0x8048718, 0x8048722, None, None)
+0x8048718:	xor	eax, edx
+0x804871a:	mov	esi, dword ptr [esp + 8]
+0x804871e:	mov	ebp, edi
+0x8048720:	pop	ecx
+0x8048721:	ret	
+MEM READ at 0x111223b, data size = 4
+MEM READ at 0x1112233, data size = 4
+Gadget(31d0c3, 0x80487b9, 0x80487bc, None, None)
+0x80487b9:	xor	eax, edx
+0x80487bb:	ret	
+Gadget(31ed31e444c1e40a58c3, 0x80486de, 0x80486e8, None, None)
+0x80486de:	xor	ebp, ebp
+0x80486e0:	xor	esp, esp
+0x80486e2:	inc	esp
+0x80486e3:	shl	esp, 0xa
+0x80486e6:	pop	eax
+0x80486e7:	ret	
+MEM READ at 0x400, data size = 4
+Gadget(31dbc3, 0x8048715, 0x8048718, None, None)
+0x8048715:	xor	ebx, ebx
+0x8048717:	ret	
+Gadget(31d2f7f3c3, 0x80487ae, 0x80487b3, None, None)
+0x80487ae:	xor	edx, edx
+0x80487b0:	div	ebx
+0x80487b2:	ret	
+Gadget(31e444c1e40a58c3, 0x80486e0, 0x80486e8, None, None)
+0x80486e0:	xor	esp, esp
+0x80486e2:	inc	esp
+0x80486e3:	shl	esp, 0xa
+0x80486e6:	pop	eax
+0x80486e7:	ret	
+MEM READ at 0x400, data size = 4
+BinOp_Gadget(EAX, EAX, +, EBX)(01d8c3, 0x8048732, 0x8048735, ['EAX'], 4)
+BinOp_Gadget(EAX, EAX, +, ECX)(01c8c3, 0x80487a9, 0x80487ac, ['EAX'], 4)
+BinOp_Gadget(EBX, EBX, +, ECX)(01cbc3, 0x80487a6, 0x80487a9, ['EBX'], 4)
+BinOp_Gadget(ECX, EAX, +, ECX)(01c1c3, 0x804875e, 0x8048761, ['ECX'], 4)
+BinOp_Gadget(ECX, EDX, +, ECX)(01d1c3, 0x8048764, 0x8048767, ['ECX'], 4)
+BinOp_Gadget(EDX, EDX, +, EBX)(01dac3, 0x8048761, 0x8048764, ['EDX'], 4)
+BinOp_Gadget(EDX, EDX, +, ECX)(01cac3, 0x8048722, 0x8048725, ['EDX'], 4)
 BinOp_Gadget(EAX, EAX, &, EBX)(21d8c3, 0x804878e, 0x8048791, ['EAX'], 4)
 BinOp_Gadget(EAX, EAX, &, EDX)(21d0c3, 0x8048797, 0x804879a, ['EAX'], 4)
+BinOp_Gadget(EBX, EBX, &, ECX)(21cbc3, 0x8048794, 0x8048797, ['EBX'], 4)
+BinOp_Gadget(EBX, EDX, &, EBX)(21d3c3, 0x804879a, 0x804879d, ['EBX'], 4)
+BinOp_Gadget(ECX, EDX, &, ECX)(21d1c3, 0x8048791, 0x8048794, ['ECX'], 4)
 BinOp_Gadget(EAX, EAX, *, EBX)(f7e3c3, 0x804879d, 0x80487a0, ['EAX', 'EDX'], 4)
 BinOp_Gadget(EAX, EAX, *, ECX)(f7e1c3, 0x80487a0, 0x80487a3, ['EAX', 'EDX'], 4)
 BinOp_Gadget(EAX, EAX, *, EDX)(f7e2c3, 0x80487a3, 0x80487a6, ['EAX', 'EDX'], 4)
-BinOp_Gadget(EAX, EAX, +, EBX)(01d8c3, 0x8048732, 0x8048735, ['EAX'], 4)
-BinOp_Gadget(EAX, EAX, +, ECX)(01c8c3, 0x80487a9, 0x80487ac, ['EAX'], 4)
+BinOp_Gadget(EAX, EAX, |, EBX)(09d8c3, 0x804878b, 0x804878e, ['EAX'], 4)
 BinOp_Gadget(EAX, EAX, -, EBX)(29d8c3, 0x8048785, 0x8048788, ['EAX'], 4)
-BinOp_Gadget(EAX, EAX, //, EBX)(31d2f7f3c3, 0x80487ae, 0x80487b3, ['EAX', 'EDX'], 4)
-BinOp_Gadget(EAX, EAX, //, ESI)(31d2f7f3c3, 0x80487ae, 0x80487b3, ['EAX', 'EDX'], 4)
+BinOp_Gadget(ECX, ECX, -, EDX)(29d1c3, 0x8048767, 0x804876a, ['ECX'], 4)
 BinOp_Gadget(EAX, EAX, ^, EBX)(31d8c3, 0x80487b3, 0x80487b6, ['EAX'], 4)
 BinOp_Gadget(EAX, EAX, ^, ECX)(31c8c3, 0x80487b6, 0x80487b9, ['EAX'], 4)
 BinOp_Gadget(EAX, EAX, ^, EDX)(31d08b74240889fd59c3, 0x8048718, 0x8048722, ['EAX', 'EBP', 'ESI', 'ECX'], 8)
 BinOp_Gadget(EAX, EAX, ^, EDX)(31d0c3, 0x80487b9, 0x80487bc, ['EAX'], 4)
-BinOp_Gadget(EAX, EAX, |, EBX)(09d8c3, 0x804878b, 0x804878e, ['EAX'], 4)
-BinOp_Gadget(EBX, EBX, &, ECX)(21cbc3, 0x8048794, 0x8048797, ['EBX'], 4)
-BinOp_Gadget(EBX, EBX, +, ECX)(01cbc3, 0x80487a6, 0x80487a9, ['EBX'], 4)
-BinOp_Gadget(EBX, EDX, &, EBX)(21d3c3, 0x804879a, 0x804879d, ['EBX'], 4)
-BinOp_Gadget(ECX, EAX, +, ECX)(01c1c3, 0x804875e, 0x8048761, ['ECX'], 4)
-BinOp_Gadget(ECX, ECX, -, EDX)(29d1c3, 0x8048767, 0x804876a, ['ECX'], 4)
-BinOp_Gadget(ECX, EDX, &, ECX)(21d1c3, 0x8048791, 0x8048794, ['ECX'], 4)
-BinOp_Gadget(ECX, EDX, +, ECX)(01d1c3, 0x8048764, 0x8048767, ['ECX'], 4)
 BinOp_Gadget(EDX, EAX, -, EBX)(31d2f7f3c3, 0x80487ae, 0x80487b3, ['EAX', 'EDX'], 4)
-BinOp_Gadget(EDX, EDX, +, EBX)(01dac3, 0x8048761, 0x8048764, ['EDX'], 4)
-BinOp_Gadget(EDX, EDX, +, ECX)(01cac3, 0x8048722, 0x8048725, ['EDX'], 4)
+BinOp_Gadget(EAX, EAX, //, EBP)(31d2f7f3c3, 0x80487ae, 0x80487b3, ['EAX', 'EDX'], 4)
+BinOp_Gadget(EAX, EAX, //, EDI)(31d2f7f3c3, 0x80487ae, 0x80487b3, ['EAX', 'EDX'], 4)
+BinOp_Gadget(EAX, EAX, //, EBX)(31d2f7f3c3, 0x80487ae, 0x80487b3, ['EAX', 'EDX'], 4)
+CopyReg_Gadget(EBP, EDI)(240889fd59c3, 0x804871c, 0x8048722, ['EAX', 'EBP', 'ECX'], 8)
+CopyReg_Gadget(EAX, EBX)(89d8c3, 0x8048735, 0x8048738, ['EAX'], 4)
+CopyReg_Gadget(EAX, ESP)(89e0c3, 0x8048745, 0x8048748, ['EAX'], 4)
+CopyReg_Gadget(EBP, EDI)(89fd59c3, 0x804871e, 0x8048722, ['EBP', 'ECX'], 8)
+CopyReg_Gadget(EBP, EDI)(8b74240889fd59c3, 0x804871a, 0x8048722, ['EBP', 'ESI', 'ECX'], 8)
+CopyReg_Gadget(EBP, EDI)(31d08b74240889fd59c3, 0x8048718, 0x8048722, ['EAX', 'EBP', 'ESI', 'ECX'], 8)
+LoadConst_Gadget(EBX, 0x8)(000083c4085bc3, 0x80484b4, 0x80484bb, ['EBX'], 16)
+LoadConst_Gadget(EDI, 0x14)(83c40c5b5e5f5dc3, 0x8048a45, 0x8048a4d, ['EDI', 'EBP', 'EBX', 'ESI'], 32)
+LoadConst_Gadget(EBP, 0x18)(83c40c5b5e5f5dc3, 0x8048a45, 0x8048a4d, ['EDI', 'EBP', 'EBX', 'ESI'], 32)
+LoadConst_Gadget(EBX, 0xc)(83c40c5b5e5f5dc3, 0x8048a45, 0x8048a4d, ['EDI', 'EBP', 'EBX', 'ESI'], 32)
+LoadConst_Gadget(ESI, 0x10)(83c40c5b5e5f5dc3, 0x8048a45, 0x8048a4d, ['EDI', 'EBP', 'EBX', 'ESI'], 32)
+LoadConst_Gadget(EBX, 0x8)(83c4085bc3, 0x80484b6, 0x80484bb, ['EBX'], 16)
+LoadConst_Gadget(ECX, 0x0)(240889fd59c3, 0x804871c, 0x8048722, ['EAX', 'EBP', 'ECX'], 8)
+LoadConst_Gadget(EAX, 0x0)(e40a58c3, 0x80486e4, 0x80486e8, ['EAX'], 8)
+LoadConst_Gadget(ECX, 0x0)(89fd59c3, 0x804871e, 0x8048722, ['EBP', 'ECX'], 8)
+LoadConst_Gadget(EBX, 0x0)(8b1c24c3, 0x80485f0, 0x80485f4, ['EBX'], 4)
+LoadConst_Gadget(ESI, 0x8)(8b74240889fd59c3, 0x804871a, 0x8048722, ['EBP', 'ESI', 'ECX'], 8)
+LoadConst_Gadget(ECX, 0x0)(8b74240889fd59c3, 0x804871a, 0x8048722, ['EBP', 'ESI', 'ECX'], 8)
+LoadConst_Gadget(EBX, 0x0)(908b1c24c3, 0x80485ef, 0x80485f4, ['EBX'], 4)
+LoadConst_Gadget(EBX, 0x0)(9066908b1c24c3, 0x80485ed, 0x80485f4, ['EBX'], 4)
+LoadConst_Gadget(EBX, 0x0)(90669066908b1c24c3, 0x80485eb, 0x80485f4, ['EBX'], 4)
+LoadConst_Gadget(EBX, 0x0)(906690669066908b1c24c3, 0x80485e9, 0x80485f4, ['EBX'], 4)
+LoadConst_Gadget(EDI, 0x4)(0c5b5e5f5dc3, 0x8048a47, 0x8048a4d, ['EDI', 'EAX', 'EBP', 'ESI'], 16)
+LoadConst_Gadget(EBP, 0x8)(0c5b5e5f5dc3, 0x8048a47, 0x8048a4d, ['EDI', 'EAX', 'EBP', 'ESI'], 16)
+LoadConst_Gadget(ESI, 0x0)(0c5b5e5f5dc3, 0x8048a47, 0x8048a4d, ['EDI', 'EAX', 'EBP', 'ESI'], 16)
+LoadConst_Gadget(EAX, 0x0)(58c3, 0x80486e6, 0x80486e8, ['EAX'], 8)
+LoadConst_Gadget(EBP, 0x0)(5dc3, 0x8048a4b, 0x8048a4d, ['EBP'], 8)
+LoadConst_Gadget(EDI, 0x8)(5b5e5f5dc3, 0x8048a48, 0x8048a4d, ['EDI', 'EBP', 'EBX', 'ESI'], 20)
+LoadConst_Gadget(EBP, 0xc)(5b5e5f5dc3, 0x8048a48, 0x8048a4d, ['EDI', 'EBP', 'EBX', 'ESI'], 20)
+LoadConst_Gadget(EBX, 0x0)(5b5e5f5dc3, 0x8048a48, 0x8048a4d, ['EDI', 'EBP', 'EBX', 'ESI'], 20)
+LoadConst_Gadget(ESI, 0x4)(5b5e5f5dc3, 0x8048a48, 0x8048a4d, ['EDI', 'EBP', 'EBX', 'ESI'], 20)
+LoadConst_Gadget(EBX, 0x0)(5bc3, 0x80484b9, 0x80484bb, ['EBX'], 8)
+LoadConst_Gadget(EDX, 0x4)(595ac3, 0x804874a, 0x804874d, ['EDX', 'ECX'], 12)
+LoadConst_Gadget(ECX, 0x0)(595ac3, 0x804874a, 0x804874d, ['EDX', 'ECX'], 12)
+LoadConst_Gadget(ECX, 0x0)(59c3, 0x8048720, 0x8048722, ['ECX'], 8)
+LoadConst_Gadget(EDI, 0x0)(5f5dc3, 0x8048a4a, 0x8048a4d, ['EDI', 'EBP'], 12)
+LoadConst_Gadget(EBP, 0x4)(5f5dc3, 0x8048a4a, 0x8048a4d, ['EDI', 'EBP'], 12)
+LoadConst_Gadget(EDX, 0x0)(5ac3, 0x804874b, 0x804874d, ['EDX'], 8)
+LoadConst_Gadget(EDI, 0x4)(5e5f5dc3, 0x8048a49, 0x8048a4d, ['EDI', 'EBP', 'ESI'], 16)
+LoadConst_Gadget(EBP, 0x8)(5e5f5dc3, 0x8048a49, 0x8048a4d, ['EDI', 'EBP', 'ESI'], 16)
+LoadConst_Gadget(ESI, 0x0)(5e5f5dc3, 0x8048a49, 0x8048a4d, ['EDI', 'EBP', 'ESI'], 16)
+LoadConst_Gadget(ECX, 0x0)(d08b74240889fd59c3, 0x8048719, 0x8048722, ['ECX'], 8)
+LoadConst_Gadget(ECX, 0x0)(fd59c3, 0x804871f, 0x8048722, ['ECX'], 8)
+LoadConst_Gadget(ESI, 0x8)(31d08b74240889fd59c3, 0x8048718, 0x8048722, ['EAX', 'EBP', 'ESI', 'ECX'], 8)
+LoadConst_Gadget(ECX, 0x0)(31d08b74240889fd59c3, 0x8048718, 0x8048722, ['EAX', 'EBP', 'ESI', 'ECX'], 8)

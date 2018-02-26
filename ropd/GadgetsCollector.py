@@ -23,6 +23,7 @@ md.detail = True
 # memory address where emulation starts
 ADDRESS = 0x1000000
 ARCH_BITS = 32
+PAGE_SIZE = 4 * 1024
 
 regs = {Registers.EAX:  UC_X86_REG_EAX, Registers.EBX:  UC_X86_REG_EBX, 
         Registers.ECX:  UC_X86_REG_ECX, Registers.EDX:  UC_X86_REG_EDX, 
@@ -54,7 +55,7 @@ def checkLoadConstGadget(init_regs, init_stack, final_state, gadget):
     for r in gadget.modified_regs:
         for off in [i for i, x in enumerate(
             init_stack) if x == final_state[r]]:
-                result.append(LoadConst_Gadget(r, off, gadget))
+                result.append(LoadConst_Gadget(r, off*(ARCH_BITS/8), gadget))
     return result
 
 
@@ -124,6 +125,76 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
                     result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
 
     return result
+
+
+# callback for tracing invalid memory access (READ or WRITE)
+def hook_mem_invalid(uc, access, address, size, value, user_data):
+    if access == UC_MEM_WRITE_UNMAPPED:
+        #print("MEM INV WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
+        # map this memory in with 1KB in size
+        uc.mem_map((address // PAGE_SIZE)*PAGE_SIZE , PAGE_SIZE)
+        #print('MEM MAPPED 0x%x' % ((address // PAGE_SIZE) * PAGE_SIZE))
+        # return True to indicate we want to continue emulation
+        return True
+    else: #access == UC_MEM_READ_UNMAPPED:
+        #print("MEM INV READ at 0x%x, data size = %u" % (address, size))
+        # map this memory in with 1KB in size
+        uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, PAGE_SIZE)
+        #print('MEM MAPPED 0x%x' % ((address // PAGE_SIZE) * PAGE_SIZE))
+        return True
+
+
+# callback for tracing memory access (READ or WRITE)
+def hook_mem_access(uc, access, address, size, value, user_data):
+    if access == UC_MEM_WRITE:
+        print("MEM WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
+    else:   # READ
+        print("MEM READ at 0x%x, data size = %u" % (address, size))
+
+def emulate(g): #gadget g
+    try:
+        mu = Uc(UC_ARCH_X86, UC_MODE_32)
+        esp_init = ADDRESS + 0x112233
+        rv_pairs = {}
+        for r in regs_no_esp:
+            rv_pairs[r] = rand()
+        rv_pairs[Registers.ESP] = esp_init
+        rand_stack = []
+        for i in range(8):
+            rand_stack.append(rand())
+
+        # map 2MB memory for this emulation
+        mu.mem_map(ADDRESS, 2 * 1024 * 1024)
+        # write machine code to be emulated to memory
+        mu.mem_write(ADDRESS, g.hex)
+        # initialize stack
+        mu.reg_write(UC_X86_REG_ESP, esp_init)
+        #init registers with random values
+        for r in regs_no_esp:
+            mu.reg_write(regs[r], rv_pairs[r])
+            #print r, hex(rv_pairs[r])
+        #write stack
+        for i in range(len(rand_stack)):
+            mu.mem_write(mu.reg_read(UC_X86_REG_ESP) +
+                            (ARCH_BITS / 8) * i, pack('I', rand_stack[i]))
+            #print hex(rand_stack[i])
+
+        # intercept invalid memory events
+        mu.hook_add(UC_HOOK_MEM_READ_UNMAPPED |
+                    UC_HOOK_MEM_WRITE_UNMAPPED, hook_mem_invalid)
+        # tracing all memory READ & WRITE access
+        mu.hook_add(UC_HOOK_MEM_READ | UC_HOOK_MEM_WRITE, hook_mem_access)
+        # emulate machine code in infinite time
+        mu.emu_start(ADDRESS, ADDRESS + len(g.hex) - 1)
+
+        final_values = {}
+        for r in regs:
+            final_values[r] = mu.reg_read(regs[r])
+        return (rv_pairs, final_values, rand_stack, esp_init)
+
+    except UcError as e:
+        print("ERROR: %s" % e)
+        return (rv_pairs, None, rand_stack, esp_init)
     
 
 class GadgetsCollector(object):
@@ -166,59 +237,28 @@ class GadgetsCollector(object):
                 print("0x%x:\t%s\t%s" %
                       (i.address, i.mnemonic, i.op_str))
             ###
-            #init unicorn enigne to clean memory space
-            try:
-                mu = Uc(UC_ARCH_X86, UC_MODE_32)
-                esp_init = ADDRESS + 0x112233
-                rv_pairs = {}
-                for r in regs_no_esp:
-                    rv_pairs[r] = rand()
-                rv_pairs[Registers.ESP] = esp_init
-                rand_stack = []
-                for i in range(8):
-                    rand_stack.append(rand())
+            (rv_pairs, final_values, rand_stack, esp_init) = emulate(g)
+            if final_values is None:
+                continue
+            #check modified regs
+            g.modified_regs = []
+            for r in regs_no_esp:
+                if rv_pairs[r] != final_values[r]:
+                    g.modified_regs.append(r)
+            #print g.modified_regs
+            #TODO: xchg    eax, esp
+            # ret not executed in unicorn
+            g.stack_fix = final_values[Registers.ESP] - \
+                esp_init + (ARCH_BITS / 8)
+            if g.stack_fix <= 0 or g.stack_fix > 64:
+                continue
 
-                # map 2MB memory for this emulation
-                mu.mem_map(ADDRESS, 2 * 1024 * 1024)
-                # write machine code to be emulated to memory
-                mu.mem_write(ADDRESS, g.hex)
-                # initialize stack
-                mu.reg_write(UC_X86_REG_ESP, esp_init)
-                #init registers with random values
-                for r in regs_no_esp:
-                    mu.reg_write(regs[r], rv_pairs[r])
-                    #print r, hex(rv_pairs[r])
-                #write stack
-                for i in range(len(rand_stack)):
-                    mu.mem_write(mu.reg_read(UC_X86_REG_ESP) + (ARCH_BITS/8)*i, pack('I', rand_stack[i]))
-                    #print hex(rand_stack[i])
-                
-                # emulate machine code in infinite time
-                mu.emu_start(ADDRESS, ADDRESS + len(g.hex) - 1)
-
-                final_values = {}
-                for r in regs:
-                    final_values[r] = mu.reg_read(regs[r])
-
-                #check modified regs
-                g.modified_regs = []
-                for r in regs_no_esp:
-                    if rv_pairs[r] != final_values[r]:
-                        g.modified_regs.append(r)
-                #print g.modified_regs
-                #TODO: xchg    eax, esp
-                g.stack_fix = final_values[Registers.ESP] - esp_init + (ARCH_BITS/8) #ret not executed in unicorn
-                if g.stack_fix <= 0 or g.stack_fix > 64:
-                    continue
-                
-                typed_gadgets[Types.LoadConst] += checkLoadConstGadget(
-                    rv_pairs, rand_stack, final_values, g)
-                typed_gadgets[Types.CopyReg] += checkCopyRegGadget(
-                    rv_pairs, rand_stack, final_values, g)
-                typed_gadgets[Types.BinOp] += checkBinOpGadget(
-                    rv_pairs, rand_stack, final_values, g)
-            except UcError as e:
-                print("ERROR: %s" % e)
+            typed_gadgets[Types.LoadConst] += checkLoadConstGadget(
+                rv_pairs, rand_stack, final_values, g)
+            typed_gadgets[Types.CopyReg] += checkCopyRegGadget(
+                rv_pairs, rand_stack, final_values, g)
+            typed_gadgets[Types.BinOp] += checkBinOpGadget(
+                rv_pairs, rand_stack, final_values, g)
 
         for t in typed_gadgets:
             for g in typed_gadgets[t]:
