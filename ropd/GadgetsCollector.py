@@ -24,6 +24,7 @@ md.detail = True
 ADDRESS = 0x1000000
 ARCH_BITS = 32
 PAGE_SIZE = 4 * 1024
+PACK_VALUE = 'I'
 
 regs = {Registers.EAX:  UC_X86_REG_EAX, Registers.EBX:  UC_X86_REG_EBX, 
         Registers.ECX:  UC_X86_REG_ECX, Registers.EDX:  UC_X86_REG_EDX, 
@@ -131,15 +132,17 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
 def hook_mem_invalid(uc, access, address, size, value, user_data):
     if access == UC_MEM_WRITE_UNMAPPED:
         #print("MEM INV WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
-        # map this memory in with 1KB in size
+        # map this memory in with page size, aligned
         uc.mem_map((address // PAGE_SIZE)*PAGE_SIZE , PAGE_SIZE)
         #print('MEM MAPPED 0x%x' % ((address // PAGE_SIZE) * PAGE_SIZE))
         # return True to indicate we want to continue emulation
         return True
     else: #access == UC_MEM_READ_UNMAPPED:
         #print("MEM INV READ at 0x%x, data size = %u" % (address, size))
-        # map this memory in with 1KB in size
+        # map this memory in with page size, aligned
         uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, PAGE_SIZE)
+        random_bytes = str(bytearray(random.getrandbits(8) for _ in xrange(PAGE_SIZE)))
+        uc.mem_write((address // PAGE_SIZE) * PAGE_SIZE, random_bytes)
         #print('MEM MAPPED 0x%x' % ((address // PAGE_SIZE) * PAGE_SIZE))
         return True
 
@@ -147,9 +150,14 @@ def hook_mem_invalid(uc, access, address, size, value, user_data):
 # callback for tracing memory access (READ or WRITE)
 def hook_mem_access(uc, access, address, size, value, user_data):
     if access == UC_MEM_WRITE:
-        print("MEM WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
+        #print("MEM WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
+        user_data[address] = value
     else:   # READ
-        print("MEM READ at 0x%x, data size = %u" % (address, size))
+        value = unpack(PACK_VALUE, uc.mem_read(address, ARCH_BITS/8))[0]
+        user_data[address] = value
+        #print("MEM READ at 0x%x, data size = %u, value = 0x%x" % (address, size, value))
+
+
 
 def emulate(g): #gadget g
     try:
@@ -176,14 +184,17 @@ def emulate(g): #gadget g
         #write stack
         for i in range(len(rand_stack)):
             mu.mem_write(mu.reg_read(UC_X86_REG_ESP) +
-                            (ARCH_BITS / 8) * i, pack('I', rand_stack[i]))
+                            (ARCH_BITS / 8) * i, pack(PACK_VALUE, rand_stack[i]))
             #print hex(rand_stack[i])
 
         # intercept invalid memory events
         mu.hook_add(UC_HOOK_MEM_READ_UNMAPPED |
                     UC_HOOK_MEM_WRITE_UNMAPPED, hook_mem_invalid)
         # tracing all memory READ & WRITE access
-        mu.hook_add(UC_HOOK_MEM_READ | UC_HOOK_MEM_WRITE, hook_mem_access)
+        address_written = {}
+        address_read = {}
+        mu.hook_add(UC_HOOK_MEM_WRITE, hook_mem_access, user_data=address_written)
+        mu.hook_add(UC_HOOK_MEM_READ, hook_mem_access, user_data=address_read)
         # emulate machine code in infinite time
         mu.emu_start(ADDRESS, ADDRESS + len(g.hex) - 1)
 
