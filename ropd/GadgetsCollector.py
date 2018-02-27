@@ -56,7 +56,8 @@ def checkLoadConstGadget(init_regs, init_stack, final_state, gadget):
     for r in gadget.modified_regs:
         for off in [i for i, x in enumerate(
             init_stack) if x == final_state[r]]:
-                result.append(LoadConst_Gadget(r, off*(ARCH_BITS/8), gadget))
+                if off <= gadget.stack_fix - (ARCH_BITS/8):
+                    result.append(LoadConst_Gadget(r, off*(ARCH_BITS/8), gadget))
     return result
 
 
@@ -130,32 +131,41 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
 
 # callback for tracing invalid memory access (READ or WRITE)
 def hook_mem_invalid(uc, access, address, size, value, user_data):
-    if access == UC_MEM_WRITE_UNMAPPED:
-        #print("MEM INV WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
+    uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, PAGE_SIZE)
+    return True
+    '''if access == UC_MEM_WRITE_UNMAPPED:
+        print("MEM INV WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
         # map this memory in with page size, aligned
         uc.mem_map((address // PAGE_SIZE)*PAGE_SIZE , PAGE_SIZE)
-        #print('MEM MAPPED 0x%x' % ((address // PAGE_SIZE) * PAGE_SIZE))
+        print('MEM MAPPED 0x%x' % ((address // PAGE_SIZE) * PAGE_SIZE))
         # return True to indicate we want to continue emulation
         return True
     else: #access == UC_MEM_READ_UNMAPPED:
-        #print("MEM INV READ at 0x%x, data size = %u" % (address, size))
+        print("MEM INV READ at 0x%x, data size = %u" % (address, size))
         # map this memory in with page size, aligned
         uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, PAGE_SIZE)
-        random_bytes = str(bytearray(random.getrandbits(8) for _ in xrange(PAGE_SIZE)))
-        uc.mem_write((address // PAGE_SIZE) * PAGE_SIZE, random_bytes)
-        #print('MEM MAPPED 0x%x' % ((address // PAGE_SIZE) * PAGE_SIZE))
-        return True
+        print('MEM MAPPED 0x%x' % ((address // PAGE_SIZE) * PAGE_SIZE))
+        return True'''
 
 
 # callback for tracing memory access (READ or WRITE)
 def hook_mem_access(uc, access, address, size, value, user_data):
+    address_written = user_data[0]
+    address_read = user_data[1]
     if access == UC_MEM_WRITE:
-        #print("MEM WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
-        user_data[address] = value
+        print("MEM WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
+        address_written[address] = value
     else:   # READ
-        value = unpack(PACK_VALUE, uc.mem_read(address, ARCH_BITS/8))[0]
-        user_data[address] = value
-        #print("MEM READ at 0x%x, data size = %u, value = 0x%x" % (address, size, value))
+        #value = unpack(PACK_VALUE, uc.mem_read(address, ARCH_BITS/8))[0]
+        #check if previously written or stack
+        if address not in address_written: #initialize if never written
+            value = rand()
+            uc.mem_write(address, pack(PACK_VALUE, value))
+        else:
+            #TODO: ignored real read size, only full registers
+            value = unpack(PACK_VALUE, uc.mem_read(address, ARCH_BITS/8))[0]
+        address_read[address] = value
+        print("MEM READ at 0x%x, data size = %u, value = 0x%x" % (address, size, value))
 
 
 
@@ -168,8 +178,12 @@ def emulate(g): #gadget g
             rv_pairs[r] = rand()
         rv_pairs[Registers.ESP] = esp_init
         rand_stack = []
+        address_written = {}
+        address_read = {}
         for i in range(8):
-            rand_stack.append(rand())
+            value = rand()
+            rand_stack.append(value)
+            address_written[esp_init + (ARCH_BITS/8)*i] = value
 
         # map 2MB memory for this emulation
         mu.mem_map(ADDRESS, 2 * 1024 * 1024)
@@ -191,21 +205,20 @@ def emulate(g): #gadget g
         mu.hook_add(UC_HOOK_MEM_READ_UNMAPPED |
                     UC_HOOK_MEM_WRITE_UNMAPPED, hook_mem_invalid)
         # tracing all memory READ & WRITE access
-        address_written = {}
-        address_read = {}
-        mu.hook_add(UC_HOOK_MEM_WRITE, hook_mem_access, user_data=address_written)
-        mu.hook_add(UC_HOOK_MEM_READ, hook_mem_access, user_data=address_read)
+        user_data = (address_written, address_read)
+        mu.hook_add(UC_HOOK_MEM_WRITE | UC_HOOK_MEM_READ,
+                    hook_mem_access, user_data=user_data)
         # emulate machine code in infinite time
         mu.emu_start(ADDRESS, ADDRESS + len(g.hex) - 1)
 
         final_values = {}
         for r in regs:
             final_values[r] = mu.reg_read(regs[r])
-        return (rv_pairs, final_values, rand_stack, esp_init)
+        return (rv_pairs, final_values, rand_stack, esp_init, address_written, address_read)
 
     except UcError as e:
         print("ERROR: %s" % e)
-        return (rv_pairs, None, rand_stack, esp_init)
+        return (rv_pairs, None, rand_stack, esp_init, address_written, address_read)
     
 
 class GadgetsCollector(object):
@@ -248,7 +261,8 @@ class GadgetsCollector(object):
                 print("0x%x:\t%s\t%s" %
                       (i.address, i.mnemonic, i.op_str))
             ###
-            (rv_pairs, final_values, rand_stack, esp_init) = emulate(g)
+            (rv_pairs, final_values, rand_stack, esp_init,
+             address_written, address_read) = emulate(g)
             if final_values is None:
                 continue
             #check modified regs
