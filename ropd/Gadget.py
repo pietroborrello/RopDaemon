@@ -106,16 +106,22 @@ class BinOp_Gadget(Gadget):  # dest = src1 OP src2
         return 'BinOp_Gadget(%s, %s, %s, %s)(%s, %s, %s, %s, %s)' % (self.dest.name, self.src1.name, op, self.src2.name, str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
 
 class ReadMem_Gadget(Gadget):  # dest = [addr_reg + offset]
-    def __init__(self, dest, addr_reg, offset):
+    def __init__(self, dest, addr_reg, offset, gadget):
         self.dest = dest
         self.addr_reg = addr_reg
         self.offset = offset
         super(ReadMem_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix)
 
+    def __str__(self):
+        mod = []
+        for r in self.modified_regs:
+            mod.append(r.name)
+        return 'ReadMem_Gadget(%s = [%s + %s])(%s, %s, %s, %s, %s)' % (self.dest.name, self.addr_reg.name, hex(self.offset), str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
+
 
 class WriteMem_Gadget(Gadget):  # [addr_reg + offset] = src
-    def __init__(self, addr_reg, offset, src):
+    def __init__(self, addr_reg, offset, src, gadget):
         self.src = src
         self.addr_reg = addr_reg
         self.offset = offset
@@ -124,7 +130,7 @@ class WriteMem_Gadget(Gadget):  # [addr_reg + offset] = src
 
 
 class ReadMemOp_Gadget(Gadget):  # dest OP= [addr_reg + offset]
-    def __init__(self, dest, op, addr_reg, offset):
+    def __init__(self, dest, op, addr_reg, offset, gadget):
         self.dest = dest
         self.op = op
         self.addr_reg = addr_reg
@@ -134,7 +140,7 @@ class ReadMemOp_Gadget(Gadget):  # dest OP= [addr_reg + offset]
 
 
 class WriteMemOp_Gadget(Gadget):  # [addr_reg + offset] OP= src
-    def __init__(self, addr_reg, offset, op, src):
+    def __init__(self, addr_reg, offset, op, src, gadget):
         self.src = src
         self.op = op 
         self.addr_reg = addr_reg

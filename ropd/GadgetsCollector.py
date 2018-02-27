@@ -25,6 +25,7 @@ ADDRESS = 0x1000000
 ARCH_BITS = 32
 PAGE_SIZE = 4 * 1024
 PACK_VALUE = 'I'
+MAX_INT = 0xFFFFFFFF
 
 regs = {Registers.EAX:  UC_X86_REG_EAX, Registers.EBX:  UC_X86_REG_EBX, 
         Registers.ECX:  UC_X86_REG_ECX, Registers.EDX:  UC_X86_REG_EDX, 
@@ -73,19 +74,19 @@ def checkCopyRegGadget(init_regs, init_stack, final_state, gadget):
 
 def compute_operation(a, op, b):
     if op == Operations.ADD:
-        return (a + b) & 0xFFFFFFFF
+        return (a + b) & MAX_INT
     elif op == Operations.SUB:
-        return (a - b) & 0xFFFFFFFF
+        return (a - b) & MAX_INT
     elif op == Operations.MUL:
-        return (a * b) & 0xFFFFFFFF
+        return (a * b) & MAX_INT
     elif op == Operations.DIV:
-        return (a // b) & 0xFFFFFFFF
+        return (a // b) & MAX_INT
     elif op == Operations.XOR:
-        return (a ^ b) & 0xFFFFFFFF
+        return (a ^ b) & MAX_INT
     elif op == Operations.OR:
-        return (a | b) & 0xFFFFFFFF
+        return (a | b) & MAX_INT
     elif op == Operations.AND:
-        return (a & b) & 0xFFFFFFFF
+        return (a & b) & MAX_INT
 
 
 def is_commutative(op, ):
@@ -131,7 +132,8 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
 
 # callback for tracing invalid memory access (READ or WRITE)
 def hook_mem_invalid(uc, access, address, size, value, user_data):
-    uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, PAGE_SIZE)
+    #memory access not aligned, so map two pages to be sure
+    uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, 2 * PAGE_SIZE)
     return True
     '''if access == UC_MEM_WRITE_UNMAPPED:
         print("MEM INV WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
@@ -166,6 +168,25 @@ def hook_mem_access(uc, access, address, size, value, user_data):
             value = unpack(PACK_VALUE, uc.mem_read(address, ARCH_BITS/8))[0]
         address_read[address] = value
         print("MEM READ at 0x%x, data size = %u, value = 0x%x" % (address, size, value))
+
+
+def checkReadMemGadget(
+    rv_pairs1, final_values1, address_read1, rv_pairs2, final_values2, address_read2, gadget):
+    result = []
+    for dest in gadget.modified_regs:
+        possible = set()
+        for addr in [addr for addr in address_read1 if address_read1[addr] == final_values1[dest]]:
+            for addr_reg in rv_pairs1:
+                if addr_reg is not Registers.ESP:
+                    offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
+                    possible.add((dest, addr_reg, offset))
+        for addr in [addr for addr in address_read2 if address_read2[addr] == final_values2[dest]]:
+            for addr_reg in rv_pairs2:
+                if addr_reg is not Registers.ESP:
+                    offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
+                    if (dest, addr_reg, offset) in possible:
+                        result.append(ReadMem_Gadget(dest, addr_reg, offset, gadget))
+    return result
 
 
 
@@ -284,6 +305,12 @@ class GadgetsCollector(object):
                 rv_pairs, rand_stack, final_values, g)
             typed_gadgets[Types.BinOp] += checkBinOpGadget(
                 rv_pairs, rand_stack, final_values, g)
+            #emulate two times for memory operations
+            (rv_pairs2, final_values2, rand_stack2, esp_init2,
+             address_written2, address_read2) = emulate(g)
+            typed_gadgets[Types.ReadMem] += checkReadMemGadget(
+                rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
+            
 
         for t in typed_gadgets:
             for g in typed_gadgets[t]:
