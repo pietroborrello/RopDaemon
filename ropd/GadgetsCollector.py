@@ -133,7 +133,9 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
                     for src2 in regs:
                         dest = Registers.EAX
                         src1 = Registers.EAX
+                        #check real div of 64bits
                         div_op_res = ((init_regs[Registers.EDX] << 32) + init_regs[src1]) / init_regs[src2]
+                        #check if result handled by hook_err
                         op_res = compute_operation(init_regs[src1], op, init_regs[src2])
                         if final_state[dest] == div_op_res:
                             result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
