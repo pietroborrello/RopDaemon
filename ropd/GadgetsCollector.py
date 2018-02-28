@@ -171,7 +171,7 @@ def hook_mem_access(uc, access, address, size, value, user_data):
     address_written = user_data[0]
     address_read = user_data[1]
     if access == UC_MEM_WRITE:
-        print("MEM WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
+        #print("MEM WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
         address_written[address] = value
     else:   # READ
         #value = unpack(PACK_VALUE, uc.mem_read(address, ARCH_BITS/8))[0]
@@ -183,7 +183,7 @@ def hook_mem_access(uc, access, address, size, value, user_data):
             #TODO: ignored real read size, only full registers
             value = unpack(PACK_VALUE, uc.mem_read(address, ARCH_BITS/8))[0]
         address_read[address] = value
-        print("MEM READ at 0x%x, data size = %u, value = 0x%x" % (address, size, value))
+        #print("MEM READ at 0x%x, data size = %u, value = 0x%x" % (address, size, value))
 
 
 def checkReadMemGadget(
@@ -231,6 +231,9 @@ def checkReadMemOpGadget(
         for op in Operations:
             for addr in address_read1:
                 if compute_operation(address_read1[addr], op, rv_pairs1[dest]) == final_values1[dest]:
+                    #ignore bad div
+                    if op == Operations.DIV and final_values1[dest] == 0:
+                        continue
                     for addr_reg in rv_pairs1:
                         if addr_reg is not Registers.ESP:
                             offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
@@ -253,6 +256,9 @@ def checkWriteMemOpGadget(
         for op in Operations:
             for addr in address_written1:
                 if addr in address_read1 and address_written1[addr] == compute_operation(address_read1[addr], op, rv_pairs1[src]):
+                    #ignore bad div
+                    if op == Operations.DIV and address_written1[addr] == 0:
+                        continue
                     for addr_reg in rv_pairs1:
                         if addr_reg is not Registers.ESP:
                             offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
@@ -370,7 +376,7 @@ class GadgetsCollector(object):
         gadgets = []
         for g in ropper_gadgets:
             address = g._lines[0][0] + g.imageBase
-            address_end = g._lines[-1][0] + g.imageBase + 1
+            address_end = g._lines[-1][0] + g.imageBase
             hex_bytes = g._bytes
             gadgets.append(Gadget(str(hex_bytes), address = address, address_end = address_end))
         return gadgets
