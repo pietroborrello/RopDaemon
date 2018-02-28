@@ -330,7 +330,7 @@ def emulate(g): #gadget g
         mu.hook_add(UC_HOOK_MEM_READ_UNMAPPED |
                     UC_HOOK_MEM_WRITE_UNMAPPED, hook_mem_invalid)
         #intercept CPU errors (probably due to div)
-        mu.hook_add(UC_HOOK_INTR, hook_err)
+        mu.hook_add(UC_HOOK_INTR, hook_err, user_data = ADDRESS + len(g.hex) - 1)
         # tracing all memory READ & WRITE access
         user_data = (address_written, address_read)
         mu.hook_add(UC_HOOK_MEM_WRITE | UC_HOOK_MEM_READ,
