@@ -126,7 +126,13 @@ class WriteMem_Gadget(Gadget):  # [addr_reg + offset] = src
         self.addr_reg = addr_reg
         self.offset = offset
         super(WriteMem_Gadget, self).__init__(gadget.hex, gadget.address,
-                                               gadget.address_end, gadget.modified_regs, gadget.stack_fix)                                    
+                                               gadget.address_end, gadget.modified_regs, gadget.stack_fix)  
+
+    def __str__(self):
+        mod = []
+        for r in self.modified_regs:
+            mod.append(r.name)
+        return 'WriteMem_Gadget([%s + %s] = %s)(%s, %s, %s, %s, %s)' % (self.addr_reg.name, hex(self.offset), self.src.name, str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
 
 
 class ReadMemOp_Gadget(Gadget):  # dest OP= [addr_reg + offset]
@@ -148,20 +154,38 @@ class WriteMemOp_Gadget(Gadget):  # [addr_reg + offset] OP= src
         super(WriteMemOp_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix)
 
+
+#AH: = SF: ZF: xx: AF: xx: PF: 1: CF
+# xx - unknown
+# mask: 0xd5
+# 2nd youngest bit of EFLAGS is set to 1 (reserved bit)
 class Lahf_Gadget(Gadget): #load FLAGS to AH
-    def __init__(gadget):
+    def __init__(self, gadget):
         super(Lahf_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix)
 
+    def __str__(self):
+        mod = []
+        for r in self.modified_regs:
+            mod.append(r.name)
+        return 'Lahf_Gadget(%s, %s, %s, %s, %s)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
 
 class OpEsp_Gadget(Gadget):  # esp=esp op reg
-    def __init__(self, register, offset, fix, gadget):
+    def __init__(self, register, operation, gadget):
         self.register = register
-        self.offset = offset
-        self.fix = fix
+        self.operation = operation
         super(OpEsp_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix)
 
-
+    def __str__(self):
+        mod = []
+        for r in self.modified_regs:
+            mod.append(r.name)
+        op = self.operation
+        if op == Operations.ADD:
+            op = '+'
+        elif op == Operations.SUB:
+            op = '-'
+        return 'OpEsp_Gadget(%s, %s)(%s, %s, %s, %s, %s)' % (op, self.register.name, str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
 
 

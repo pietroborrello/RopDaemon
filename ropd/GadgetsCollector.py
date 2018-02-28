@@ -22,10 +22,12 @@ md.detail = True
 
 # memory address where emulation starts
 ADDRESS = 0x1000000
+
 ARCH_BITS = 32
 PAGE_SIZE = 4 * 1024
 PACK_VALUE = 'I'
 MAX_INT = 0xFFFFFFFF
+FLAGS_MASK = 0xd5
 
 regs = {Registers.EAX:  UC_X86_REG_EAX, Registers.EBX:  UC_X86_REG_EBX, 
         Registers.ECX:  UC_X86_REG_ECX, Registers.EDX:  UC_X86_REG_EDX, 
@@ -37,8 +39,13 @@ regs_no_esp = {Registers.EAX:  UC_X86_REG_EAX, Registers.EBX:  UC_X86_REG_EBX,
                Registers.ESI:  UC_X86_REG_ESI, Registers.EDI:  UC_X86_REG_EDI,
                Registers.EBP:  UC_X86_REG_EBP}
 
+FLAGS_REG = UC_X86_REG_EFLAGS
+
 def rand():
-    return random.getrandbits(30)
+    r = random.getrandbits(30)
+    while r == 0:
+        r = random.getrandbits(30)
+    return r
 
 def filter_unsafe(gadgets):
     safe_gadgets = []
@@ -129,6 +136,13 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
 
     return result
 
+#TODO: uneffective
+def hook_err(uc, int_num, user_data):
+    print 'ERROR %s' % int_num
+    if int_num==0: #div fault
+        #set EDX to zero since EDX:EAX / reg didn't fit in 32 bits
+        uc.reg_write(UC_X86_REG_EDX, 0x0)
+    return True
 
 # callback for tracing invalid memory access (READ or WRITE)
 def hook_mem_invalid(uc, access, address, size, value, user_data):
@@ -189,6 +203,70 @@ def checkReadMemGadget(
     return result
 
 
+def checkWriteMemGadget(
+        rv_pairs1, address_written1, rv_pairs2, address_written2, gadget):
+    result = []
+    for src in regs_no_esp:
+        possible = set()
+        for addr in [addr for addr in address_written1 if address_written1[addr] == rv_pairs1[src]]:
+            for addr_reg in rv_pairs1:
+                if addr_reg is not Registers.ESP:
+                    offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
+                    possible.add((addr_reg, offset, src))
+        for addr in [addr for addr in address_written2 if address_written2[addr] == rv_pairs2[src]]:
+            for addr_reg in rv_pairs2:
+                if addr_reg is not Registers.ESP:
+                    offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
+                    if (addr_reg, offset, src) in possible:
+                        result.append(WriteMem_Gadget(
+                            addr_reg, offset, src, gadget))
+    return result
+
+def checkReadMemOpGadget(
+    rv_pairs1, final_values1, address_read1, rv_pairs2, final_values2, address_read2, gadget):
+    result = []
+    for dest in gadget.modified_regs:
+        possible = set()
+        for op in Operations:
+            for addr in address_read1:
+                if compute_operation(address_read1[addr], op, rv_pairs1[dest]) == final_values1[dest]]:
+                    for addr_reg in rv_pairs1:
+                        if addr_reg is not Registers.ESP:
+                            offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
+                            possible.add((dest, addr_reg, offset))
+            for addr in [addr for addr in address_read2 if address_read2[addr] == final_values2[dest]]:
+                for addr_reg in rv_pairs2:
+                    if addr_reg is not Registers.ESP:
+                        offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
+                        if (dest, addr_reg, offset) in possible:
+                            result.append(ReadMem_Gadget(dest, addr_reg, offset, gadget))
+    return result
+
+#AH: = SF: ZF: xx: AF: xx: PF: 1: CF
+# xx - unknown
+# mask: 0xd5
+# 2nd youngest bit of EFLAGS is set to 1 (reserved bit)
+def checkLahfGadget(flags_init, final_flags, final_state, gadget):
+    if flags_init == final_flags and Registers.EAX in gadget.modified_regs:
+        ah = ((final_state[Registers.EAX] >> 8) & FLAGS_MASK) | 2
+        if ah == (final_flags & FLAGS_MASK) | 2 :
+            return [Lahf_Gadget(gadget)]
+    return []
+
+
+def checkOpEspGadget(init_regs1, final_state1, init_regs2, final_state2, gadget):
+    # diff := stack_fix +/- register
+    diff1 = final_state1[Registers.ESP] - init_regs1[Registers.ESP]
+    diff2 = final_state2[Registers.ESP] - init_regs2[Registers.ESP]
+
+    for r in regs_no_esp:
+        stack_fix1 = compute_operation(diff1, Operations.SUB, init_regs1[r])
+        stack_fix2 = compute_operation(diff2, Operations.SUB, init_regs2[r])
+        if stack_fix1 == stack_fix2 and stack_fix1 + (ARCH_BITS / 8) > 0 and stack_fix1 + (ARCH_BITS / 8)< 0x1000:
+            gadget.stack_fix = stack_fix1 + (ARCH_BITS / 8)
+            return [OpEsp_Gadget(r, Operations.ADD, gadget)]
+
+    return []
 
 def emulate(g): #gadget g
     try:
@@ -205,6 +283,7 @@ def emulate(g): #gadget g
             value = rand()
             rand_stack.append(value)
             address_written[esp_init + (ARCH_BITS/8)*i] = value
+        flags_init = rand() & FLAGS_MASK
 
         # map 2MB memory for this emulation
         mu.mem_map(ADDRESS, 2 * 1024 * 1024)
@@ -216,6 +295,7 @@ def emulate(g): #gadget g
         for r in regs_no_esp:
             mu.reg_write(regs[r], rv_pairs[r])
             #print r, hex(rv_pairs[r])
+        mu.reg_write(FLAGS_REG, flags_init)
         #write stack
         for i in range(len(rand_stack)):
             mu.mem_write(mu.reg_read(UC_X86_REG_ESP) +
@@ -225,6 +305,8 @@ def emulate(g): #gadget g
         # intercept invalid memory events
         mu.hook_add(UC_HOOK_MEM_READ_UNMAPPED |
                     UC_HOOK_MEM_WRITE_UNMAPPED, hook_mem_invalid)
+        #intercept CPU errors (probably due to div)
+        mu.hook_add(UC_HOOK_INTR, hook_err)
         # tracing all memory READ & WRITE access
         user_data = (address_written, address_read)
         mu.hook_add(UC_HOOK_MEM_WRITE | UC_HOOK_MEM_READ,
@@ -235,11 +317,12 @@ def emulate(g): #gadget g
         final_values = {}
         for r in regs:
             final_values[r] = mu.reg_read(regs[r])
-        return (rv_pairs, final_values, rand_stack, esp_init, address_written, address_read)
+        final_flags = mu.reg_read(FLAGS_REG)
+        return (rv_pairs, final_values, rand_stack, esp_init, address_written, address_read, flags_init, final_flags)
 
     except UcError as e:
         print("ERROR: %s" % e)
-        return (rv_pairs, None, rand_stack, esp_init, address_written, address_read)
+        return (rv_pairs, None, rand_stack, esp_init, address_written, address_read, None, None)
     
 
 class GadgetsCollector(object):
@@ -283,8 +366,13 @@ class GadgetsCollector(object):
                       (i.address, i.mnemonic, i.op_str))
             ###
             (rv_pairs, final_values, rand_stack, esp_init,
-             address_written, address_read) = emulate(g)
-            if final_values is None:
+             address_written, address_read, flags_init, final_flags) = emulate(g)
+
+            #emulate two times for memory operations
+            (rv_pairs2, final_values2, rand_stack2, esp_init2,
+             address_written2, address_read2, flags_init2, final_flags2) = emulate(g)
+
+            if final_values is None or final_values2 is None:
                 continue
             #check modified regs
             g.modified_regs = []
@@ -296,7 +384,11 @@ class GadgetsCollector(object):
             # ret not executed in unicorn
             g.stack_fix = final_values[Registers.ESP] - \
                 esp_init + (ARCH_BITS / 8)
-            if g.stack_fix <= 0 or g.stack_fix > 64:
+
+            #also adjust stack fix as side effect
+            typed_gadgets[Types.OpEsp] += checkOpEspGadget(
+                rv_pairs, final_values, rv_pairs2, final_values2, g)
+            if g.stack_fix < 4 or g.stack_fix > 0x1000:
                 continue
 
             typed_gadgets[Types.LoadConst] += checkLoadConstGadget(
@@ -305,11 +397,12 @@ class GadgetsCollector(object):
                 rv_pairs, rand_stack, final_values, g)
             typed_gadgets[Types.BinOp] += checkBinOpGadget(
                 rv_pairs, rand_stack, final_values, g)
-            #emulate two times for memory operations
-            (rv_pairs2, final_values2, rand_stack2, esp_init2,
-             address_written2, address_read2) = emulate(g)
+            typed_gadgets[Types.Lahf] += checkLahfGadget(
+                flags_init, final_flags, final_values, g)
             typed_gadgets[Types.ReadMem] += checkReadMemGadget(
                 rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
+            typed_gadgets[Types.WriteMem] += checkWriteMemGadget(
+                rv_pairs, address_written, rv_pairs2, address_written2, g)
             
 
         for t in typed_gadgets:
