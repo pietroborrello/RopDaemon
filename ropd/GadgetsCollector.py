@@ -23,6 +23,7 @@ md.detail = True
 # memory address where emulation starts
 ADDRESS = 0x1000000
 MAX_BYTES_PER_INSTR = 15
+HOOK_ERR_VAL = 0x1
 
 ARCH_BITS = 32
 PAGE_SIZE = 4 * 1024
@@ -133,13 +134,16 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
                     for src2 in regs:
                         dest = Registers.EAX
                         src1 = Registers.EAX
-                        #check real div of 64bits
+                        # check real div of 64bits
                         div_op_res = ((init_regs[Registers.EDX] << 32) + init_regs[src1]) / init_regs[src2]
-                        #check if result handled by hook_err
+                        # check if result handled by hook_err
+                        hook_op_res = ((HOOK_ERR_VAL << 32) + init_regs[src1]) / init_regs[src2]
+                        # check if the gadget itself correctly zeroed EDX
                         op_res = compute_operation(init_regs[src1], op, init_regs[src2])
                         if final_state[dest] == div_op_res:
                             result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
-                            continue
+                        elif final_state[dest] == hook_op_res:
+                            result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
                         elif final_state[dest] == op_res and op_res != 0:
                             result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
             else:
@@ -160,7 +164,7 @@ def hook_err(uc, int_num, user_data):
         # probaly since EDX:EAX doesn't fit in 32 bits
         # if was real div_by_zero, after resume it will double fault, and re-handled as int 0x8
         # safely modify EDX, independently from init_value, that will be overwritten by div
-        uc.reg_write(regs[Registers.EDX], 0x0)
+        uc.reg_write(regs[Registers.EDX], HOOK_ERR_VAL)
         return True
     return False
 
