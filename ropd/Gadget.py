@@ -96,7 +96,7 @@ class BinOp_Gadget(Gadget):  # dest = src1 OP src2
         elif op == Operations.MUL:
             op = '*'
         elif op == Operations.DIV:
-            op = '//'
+            op = '/'
         elif op == Operations.XOR:
             op = '^'
         elif op == Operations.OR:
@@ -155,7 +155,7 @@ class ReadMemOp_Gadget(Gadget):  # dest OP= [addr_reg + offset]
         elif op == Operations.MUL:
             op = '*'
         elif op == Operations.DIV:
-            op = '//'
+            op = '/'
         elif op == Operations.XOR:
             op = '^'
         elif op == Operations.OR:
@@ -185,7 +185,7 @@ class WriteMemOp_Gadget(Gadget):  # [addr_reg + offset] OP= src
         elif op == Operations.MUL:
             op = '*'
         elif op == Operations.DIV:
-            op = '//'
+            op = '/'
         elif op == Operations.XOR:
             op = '^'
         elif op == Operations.OR:

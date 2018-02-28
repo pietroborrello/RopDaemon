@@ -22,12 +22,14 @@ md.detail = True
 
 # memory address where emulation starts
 ADDRESS = 0x1000000
+MAX_BYTES_PER_INSTR = 15
 
 ARCH_BITS = 32
 PAGE_SIZE = 4 * 1024
 PACK_VALUE = 'I'
 MAX_INT = 0xFFFFFFFF
 FLAGS_MASK = 0xd5
+
 
 regs = {Registers.EAX:  UC_X86_REG_EAX, Registers.EBX:  UC_X86_REG_EBX, 
         Registers.ECX:  UC_X86_REG_ECX, Registers.EDX:  UC_X86_REG_EDX, 
@@ -40,6 +42,7 @@ regs_no_esp = {Registers.EAX:  UC_X86_REG_EAX, Registers.EBX:  UC_X86_REG_EBX,
                Registers.EBP:  UC_X86_REG_EBP}
 
 FLAGS_REG = UC_X86_REG_EFLAGS
+IP_REG = UC_X86_REG_EIP
 
 def rand():
     r = random.getrandbits(30)
@@ -125,45 +128,45 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
                 for dest in [r for r in final_state if final_state[r] == op_res and r in gadget.modified_regs]:
                     result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
         else:
-            for src1, src2 in permutations(regs, 2):
-                op_res = compute_operation(
-                    init_regs[src1], op, init_regs[src2])
-                # if DIV, only valid EAX=EAX/src2, TODO: not op_res == 0 may miss some DIV gadgets
-                if op == Operations.DIV and (op_res == 0 or src1 != Registers.EAX):
-                        continue
-                for dest in [r for r in final_state if final_state[r] == op_res and r in gadget.modified_regs]:
-                    result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
-
+            # if DIV, only valid EAX=EAX/src2, TODO: not op_res == 0 may miss some DIV gadgets
+            if op == Operations.DIV:
+                    for src2 in regs:
+                        dest = Registers.EAX
+                        src1 = Registers.EAX
+                        div_op_res = ((init_regs[Registers.EDX] << 32) + init_regs[src1]) / init_regs[src2]
+                        op_res = compute_operation(init_regs[src1], op, init_regs[src2])
+                        if final_state[dest] == div_op_res:
+                            result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
+                            continue
+                        elif final_state[dest] == op_res and op_res != 0:
+                            result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
+            else:
+                for src1, src2 in permutations(regs, 2):
+                    op_res = compute_operation(
+                        init_regs[src1], op, init_regs[src2])
+                    for dest in [r for r in final_state if final_state[r] == op_res and r in gadget.modified_regs]:
+                        result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
+                        
     return result
 
-#TODO: uneffective
 def hook_err(uc, int_num, user_data):
-    print 'ERROR: interrupt %x' % int_num
-    if int_num==0: #div fault
-        #set EDX to zero since EDX:EAX / reg didn't fit in 32 bits
-        for r in regs:
-            print 'ERROR: %s 0x%x' % (r.name, uc.reg_read(regs[r]))
-        uc.reg_write(UC_X86_REG_EDX, 0x0)
-    return True
+    ip = uc.reg_read(IP_REG)
+    instr_bytes = str(uc.mem_read(ip, MAX_BYTES_PER_INSTR))
+    instr = md.disasm(instr_bytes, 0x0, count = 1).next()
+    #print 'ERROR: interrupt %x, due to: %s %s' % (int_num, instr.mnemonic, instr.op_str)
+    if int_num==0: #div by zero fault
+        # probaly since EDX:EAX doesn't fit in 32 bits
+        # if was real div_by_zero, after resume it will double fault, and re-handled as int 0x8
+        # safely modify EDX, independently from init_value, that will be overwritten by div
+        uc.reg_write(regs[Registers.EDX], 0x0)
+        return True
+    return False
 
 # callback for tracing invalid memory access (READ or WRITE)
 def hook_mem_invalid(uc, access, address, size, value, user_data):
-    #memory access not aligned, so map two pages to be sure
+    #memory access not necessarly aligned to page boundaries, so map two pages to be sure
     uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, 2 * PAGE_SIZE)
     return True
-    '''if access == UC_MEM_WRITE_UNMAPPED:
-        print("MEM INV WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
-        # map this memory in with page size, aligned
-        uc.mem_map((address // PAGE_SIZE)*PAGE_SIZE , PAGE_SIZE)
-        print('MEM MAPPED 0x%x' % ((address // PAGE_SIZE) * PAGE_SIZE))
-        # return True to indicate we want to continue emulation
-        return True
-    else: #access == UC_MEM_READ_UNMAPPED:
-        print("MEM INV READ at 0x%x, data size = %u" % (address, size))
-        # map this memory in with page size, aligned
-        uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, PAGE_SIZE)
-        print('MEM MAPPED 0x%x' % ((address // PAGE_SIZE) * PAGE_SIZE))
-        return True'''
 
 
 # callback for tracing memory access (READ or WRITE)
@@ -223,6 +226,7 @@ def checkWriteMemGadget(
                         result.append(WriteMem_Gadget(addr_reg, offset, src, gadget))
     return result
 
+# dest = [addr_reg + offset]
 def checkReadMemOpGadget(
     rv_pairs1, final_values1, address_read1, rv_pairs2, final_values2, address_read2, gadget):
     result = []
@@ -231,7 +235,7 @@ def checkReadMemOpGadget(
         for op in Operations:
             for addr in address_read1:
                 if compute_operation(address_read1[addr], op, rv_pairs1[dest]) == final_values1[dest]:
-                    #ignore bad div
+                    # ignore bad div
                     if op == Operations.DIV and final_values1[dest] == 0:
                         continue
                     for addr_reg in rv_pairs1:
@@ -256,7 +260,7 @@ def checkWriteMemOpGadget(
         for op in Operations:
             for addr in address_written1:
                 if addr in address_read1 and address_written1[addr] == compute_operation(address_read1[addr], op, rv_pairs1[src]):
-                    #ignore bad div
+                    # ignore bad div
                     if op == Operations.DIV and address_written1[addr] == 0:
                         continue
                     for addr_reg in rv_pairs1:
@@ -336,13 +340,13 @@ def emulate(g): #gadget g
         mu.hook_add(UC_HOOK_MEM_READ_UNMAPPED |
                     UC_HOOK_MEM_WRITE_UNMAPPED, hook_mem_invalid)
         #intercept CPU errors (probably due to div)
-        mu.hook_add(UC_HOOK_INTR, hook_err, user_data = ADDRESS + len(g.hex) - 1)
+        mu.hook_add(UC_HOOK_INTR, hook_err)
         # tracing all memory READ & WRITE access
         user_data = (address_written, address_read)
         mu.hook_add(UC_HOOK_MEM_WRITE | UC_HOOK_MEM_READ,
                     hook_mem_access, user_data=user_data)
         # emulate machine code in infinite time
-        mu.emu_start(ADDRESS, ADDRESS + len(g.hex) - 1)
+        mu.emu_start(ADDRESS, ADDRESS + (g.address_end - g.address))
 
         final_values = {}
         for r in regs:
