@@ -15,13 +15,6 @@ def main():
         description="This is RopCLI")
     
     parser.add_argument(
-        '-g',
-        '--gadget',
-        help="Binary stream to analyze in Hexadecimal (ex: b800400000505883c040)",
-        default=None)
-
-    
-    parser.add_argument(
         '-a',                
         '--architecture',
         help="Specify architecture (x86 or x86-64)",
@@ -32,10 +25,12 @@ def main():
         help="Input binary",
         default=None)
 
-
     args = parser.parse_args()
     gadget_collector = ropd.GadgetsCollector(args.binary)
-    gadget_collector.analyze()
+    typed_gadgets = gadget_collector.analyze()
+    for t in typed_gadgets:
+        for g in typed_gadgets[t]:
+            print g
     
     
 

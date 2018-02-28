@@ -24,6 +24,8 @@ md.detail = True
 ADDRESS = 0x1000000
 MAX_BYTES_PER_INSTR = 15
 HOOK_ERR_VAL = 0x1
+unsafe_classes = [X86_GRP_JUMP, X86_GRP_CALL, X86_GRP_INT]
+
 
 ARCH_BITS = 32
 PAGE_SIZE = 4 * 1024
@@ -53,7 +55,6 @@ def rand():
 
 def filter_unsafe(gadgets):
     safe_gadgets = []
-    unsafe_classes = [X86_GRP_JUMP, X86_GRP_CALL, X86_GRP_INT]
     for g in gadgets:
         unsafe = False
         for i in md.disasm(g.hex, g.address):
@@ -370,7 +371,7 @@ class GadgetsCollector(object):
         self._filename =  filename
         self._binary = None
 
-    def collect(self):
+    def collect(self, do_filter_unsafe=True):
         options = {'color': False,     # if gadgets are printed, use colored output: default: False
                    'badbytes': '',   # bad bytes which should not be in addresses or ropchains; default: ''
                    'all': False,      # Show all gadgets, this means to not remove double gadgets; default: False
@@ -389,21 +390,22 @@ class GadgetsCollector(object):
             address_end = g._lines[-1][0] + g.imageBase
             hex_bytes = g._bytes
             gadgets.append(Gadget(str(hex_bytes), address = address, address_end = address_end))
-        return gadgets
+        if do_filter_unsafe:
+            return filter_unsafe(gadgets)
+        else:
+            return gadgets
     
     def analyze(self):
-        gadgets = self.collect()
-        safe_gadgets = filter_unsafe(gadgets)
+        safe_gadgets = self.collect(do_filter_unsafe=True)
         typed_gadgets = {}
         for t in Types:
             typed_gadgets[t] = []
 
         for g in safe_gadgets:
             ###
-            print g
-            for i in md.disasm(g.hex, g.address):
-                print("0x%x:\t%s\t%s" %
-                      (i.address, i.mnemonic, i.op_str))
+            #print g
+            #for i in md.disasm(g.hex, g.address):
+            #    print("0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
             ###
             (rv_pairs, final_values, rand_stack, esp_init,
              address_written, address_read, flags_init, final_flags) = emulate(g)
@@ -448,10 +450,7 @@ class GadgetsCollector(object):
             typed_gadgets[Types.WriteMemOp] += checkWriteMemOpGadget(
                 rv_pairs, address_read, address_written, rv_pairs2, address_read2, address_written2, g)
             
-
-        for t in typed_gadgets:
-            for g in typed_gadgets[t]:
-                print g
+        return typed_gadgets
         
    
 
