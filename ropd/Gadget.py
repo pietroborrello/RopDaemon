@@ -143,6 +143,26 @@ class ReadMemOp_Gadget(Gadget):  # dest OP= [addr_reg + offset]
         self.offset = offset
         super(ReadMemOp_Gadget, self).__init__(gadget.hex, gadget.address,
                                              gadget.address_end, gadget.modified_regs, gadget.stack_fix)
+    def __str__(self):
+        mod = []
+        for r in self.modified_regs:
+            mod.append(r.name)
+        op = self.op
+        if op == Operations.ADD:
+            op = '+'
+        elif op == Operations.SUB:
+            op = '-'
+        elif op == Operations.MUL:
+            op = '*'
+        elif op == Operations.DIV:
+            op = '//'
+        elif op == Operations.XOR:
+            op = '^'
+        elif op == Operations.OR:
+            op = '|'
+        elif op == Operations.AND:
+            op = '&'
+        return 'ReadMemOp_Gadget(%s %s= [%s + %s])(%s, %s, %s, %s, %s)' % (self.dest.name, op, self.addr_reg.name, hex(self.offset), str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
 
 
 class WriteMemOp_Gadget(Gadget):  # [addr_reg + offset] OP= src
@@ -153,7 +173,26 @@ class WriteMemOp_Gadget(Gadget):  # [addr_reg + offset] OP= src
         self.offset = offset
         super(WriteMemOp_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix)
-
+    def __str__(self):
+        mod = []
+        for r in self.modified_regs:
+            mod.append(r.name)
+        op = self.op
+        if op == Operations.ADD:
+            op = '+'
+        elif op == Operations.SUB:
+            op = '-'
+        elif op == Operations.MUL:
+            op = '*'
+        elif op == Operations.DIV:
+            op = '//'
+        elif op == Operations.XOR:
+            op = '^'
+        elif op == Operations.OR:
+            op = '|'
+        elif op == Operations.AND:
+            op = '&'
+        return 'WriteMemOp_Gadget([%s + %s] %s= %s)(%s, %s, %s, %s, %s)' % (self.addr_reg.name, hex(self.offset), op, self.src.name, str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
 
 #AH: = SF: ZF: xx: AF: xx: PF: 1: CF
 # xx - unknown

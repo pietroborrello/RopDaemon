@@ -138,9 +138,11 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
 
 #TODO: uneffective
 def hook_err(uc, int_num, user_data):
-    print 'ERROR %s' % int_num
+    print 'ERROR: interrupt %x' % int_num
     if int_num==0: #div fault
         #set EDX to zero since EDX:EAX / reg didn't fit in 32 bits
+        for r in regs:
+            print 'ERROR: %s 0x%x' % (r.name, uc.reg_read(regs[r]))
         uc.reg_write(UC_X86_REG_EDX, 0x0)
     return True
 
@@ -218,8 +220,7 @@ def checkWriteMemGadget(
                 if addr_reg is not Registers.ESP:
                     offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
                     if (addr_reg, offset, src) in possible:
-                        result.append(WriteMem_Gadget(
-                            addr_reg, offset, src, gadget))
+                        result.append(WriteMem_Gadget(addr_reg, offset, src, gadget))
     return result
 
 def checkReadMemOpGadget(
@@ -229,17 +230,40 @@ def checkReadMemOpGadget(
         possible = set()
         for op in Operations:
             for addr in address_read1:
-                if compute_operation(address_read1[addr], op, rv_pairs1[dest]) == final_values1[dest]]:
+                if compute_operation(address_read1[addr], op, rv_pairs1[dest]) == final_values1[dest]:
                     for addr_reg in rv_pairs1:
                         if addr_reg is not Registers.ESP:
                             offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
                             possible.add((dest, addr_reg, offset))
-            for addr in [addr for addr in address_read2 if address_read2[addr] == final_values2[dest]]:
-                for addr_reg in rv_pairs2:
-                    if addr_reg is not Registers.ESP:
-                        offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
-                        if (dest, addr_reg, offset) in possible:
-                            result.append(ReadMem_Gadget(dest, addr_reg, offset, gadget))
+            for addr in address_read2:
+                if compute_operation(address_read2[addr], op, rv_pairs2[dest]) == final_values2[dest]:
+                    for addr_reg in rv_pairs2:
+                        if addr_reg is not Registers.ESP:
+                            offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
+                            if (dest, addr_reg, offset) in possible:
+                                result.append(ReadMemOp_Gadget(dest, op, addr_reg, offset, gadget))
+    return result
+
+# [addr_reg + offset] OP= src
+def checkWriteMemOpGadget(
+        rv_pairs1, address_read1, address_written1, rv_pairs2, address_read2, address_written2, gadget):
+    result = []
+    for src in regs_no_esp:
+        possible = set()
+        for op in Operations:
+            for addr in address_written1:
+                if addr in address_read1 and address_written1[addr] == compute_operation(address_read1[addr], op, rv_pairs1[src]):
+                    for addr_reg in rv_pairs1:
+                        if addr_reg is not Registers.ESP:
+                            offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
+                            possible.add((addr_reg, offset, src))
+            for addr in address_written2:
+                if addr in address_read2 and address_written2[addr] == compute_operation(address_read2[addr], op, rv_pairs2[src]):
+                    for addr_reg in rv_pairs2:
+                        if addr_reg is not Registers.ESP:
+                            offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
+                            if (addr_reg, offset, src) in possible:
+                                result.append(WriteMemOp_Gadget(addr_reg, offset, op, src, gadget))
     return result
 
 #AH: = SF: ZF: xx: AF: xx: PF: 1: CF
@@ -403,6 +427,10 @@ class GadgetsCollector(object):
                 rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
             typed_gadgets[Types.WriteMem] += checkWriteMemGadget(
                 rv_pairs, address_written, rv_pairs2, address_written2, g)
+            typed_gadgets[Types.ReadMemOp] += checkReadMemOpGadget(
+                rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
+            typed_gadgets[Types.WriteMemOp] += checkWriteMemOpGadget(
+                rv_pairs, address_read, address_written, rv_pairs2, address_read2, address_written2, g)
             
 
         for t in typed_gadgets:
