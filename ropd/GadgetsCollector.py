@@ -425,9 +425,9 @@ class GadgetsCollector(object):
         progr = 0
         for g in safe_gadgets:
             ###
-            print g
-            for i in md.disasm(g.hex, g.address):
-                print("0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
+            #print g
+            #for i in md.disasm(g.hex, g.address):
+            #    print("0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
             ###
             (rv_pairs, final_values, rand_stack, esp_init,
              address_written, address_read, flags_init, final_flags) = emulate(g)
