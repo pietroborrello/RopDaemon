@@ -9,6 +9,7 @@ from binascii import unhexlify, hexlify
 import random
 from struct import pack, unpack
 from itertools import permutations, combinations
+import progressbar
 from ropper import RopperService
 from Gadget import Gadget, Registers, Operations, Types
 from Gadget import *
@@ -172,6 +173,13 @@ def hook_err(uc, int_num, user_data):
 #TODO: qemu bug (Assertion failed: (map->sections_nb < TARGET_PAGE_SIZE), function phys_section_add_x86_64,file /private/tmp/pip-build-Awpvur/unicorn/src/qemu/exec.c, line 798)
 # callback for tracing invalid memory access (READ or WRITE)
 def hook_mem_invalid(uc, access, address, size, value, user_data):
+    mapped_pages_ref = user_data
+    mapped_pages = mapped_pages_ref[0]
+    # limit number of possible mapped pages, due to REP MOVS
+    if mapped_pages > 128:
+        return False
+    mapped_pages += 1
+    mapped_pages_ref[0] = mapped_pages
     #memory access not necessarly aligned to page boundaries, so map two pages to be sure
     uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, 2 * PAGE_SIZE)
     return True
@@ -350,8 +358,10 @@ def emulate(g): #gadget g
             #print hex(rand_stack[i])
 
         # intercept invalid memory events
+        mapped_pages = 0
+        mapped_pages_ref = [mapped_pages]
         mu.hook_add(UC_HOOK_MEM_READ_UNMAPPED |
-                    UC_HOOK_MEM_WRITE_UNMAPPED, hook_mem_invalid)
+                    UC_HOOK_MEM_WRITE_UNMAPPED, hook_mem_invalid, user_data=mapped_pages_ref)
         #intercept CPU errors (probably due to div)
         mu.hook_add(UC_HOOK_INTR, hook_err)
         # tracing all memory READ & WRITE access
@@ -359,16 +369,18 @@ def emulate(g): #gadget g
         mu.hook_add(UC_HOOK_MEM_WRITE | UC_HOOK_MEM_READ,
                     hook_mem_access, user_data=user_data)
         # emulate machine code in infinite time
-        mu.emu_start(ADDRESS, ADDRESS + (g.address_end - g.address))
+        mu.emu_start(ADDRESS, ADDRESS + (g.address_end - g.address), timeout=2*UC_SECOND_SCALE)
 
         final_values = {}
         for r in regs:
             final_values[r] = mu.reg_read(regs[r])
         final_flags = mu.reg_read(FLAGS_REG)
+        Uc.release_handle(mu)
         return (rv_pairs, final_values, rand_stack, esp_init, address_written, address_read, flags_init, final_flags)
 
     except UcError as e:
-        print("ERROR: %s" % e)
+        print("ERROR: %s at code %s" % (e, str(g.hex).encode('hex')))
+
         return (rv_pairs, None, rand_stack, esp_init, address_written, address_read, None, None)
     
 
@@ -378,6 +390,7 @@ class GadgetsCollector(object):
         self._binary = None
 
     def collect(self, do_filter_unsafe=True):
+        print 'Collecting...'
         options = {'color': False,     # if gadgets are printed, use colored output: default: False
                    'badbytes': '',   # bad bytes which should not be in addresses or ropchains; default: ''
                    'all': False,      # Show all gadgets, this means to not remove double gadgets; default: False
@@ -403,15 +416,18 @@ class GadgetsCollector(object):
     
     def analyze(self):
         safe_gadgets = self.collect(do_filter_unsafe=True)
+        print 'Analyzing...'
         typed_gadgets = {}
         for t in Types:
             typed_gadgets[t] = []
 
+        bar = progressbar.ProgressBar(redirect_stdout=True, max_value=len(safe_gadgets))
+        progr = 0
         for g in safe_gadgets:
             ###
-            #print g
-            #for i in md.disasm(g.hex, g.address):
-            #    print("0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
+            print g
+            for i in md.disasm(g.hex, g.address):
+                print("0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
             ###
             (rv_pairs, final_values, rand_stack, esp_init,
              address_written, address_read, flags_init, final_flags) = emulate(g)
@@ -432,13 +448,11 @@ class GadgetsCollector(object):
             # ret not executed in unicorn
             g.stack_fix = final_values[Registers.ESP] - \
                 esp_init + (ARCH_BITS / 8)
-
             #also adjust stack fix as side effect
             typed_gadgets[Types.OpEsp] += checkOpEspGadget(
                 rv_pairs, final_values, rv_pairs2, final_values2, g)
             if g.stack_fix < 4 or g.stack_fix > 0x1000:
                 continue
-
             typed_gadgets[Types.LoadConst] += checkLoadConstGadget(
                 rv_pairs, rand_stack, final_values, g)
             typed_gadgets[Types.CopyReg] += checkCopyRegGadget(
@@ -455,6 +469,10 @@ class GadgetsCollector(object):
                 rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
             typed_gadgets[Types.WriteMemOp] += checkWriteMemOpGadget(
                 rv_pairs, address_read, address_written, rv_pairs2, address_read2, address_written2, g)
+
+            # update progress bar   
+            progr += 1 
+            bar.update(progr)
             
         return typed_gadgets
         
