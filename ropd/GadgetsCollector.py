@@ -176,6 +176,7 @@ def hook_mem_invalid(uc, access, address, size, value, user_data):
     return True
 
 
+#TODO: manage REP MOVS
 # callback for tracing memory access (READ or WRITE)
 def hook_mem_access(uc, access, address, size, value, user_data):
     address_written = user_data[0]
@@ -188,7 +189,11 @@ def hook_mem_access(uc, access, address, size, value, user_data):
         #check if previously written or stack
         if address not in address_written: #initialize if never written
             value = rand()
-            uc.mem_write(address, pack(PACK_VALUE, value))
+            try:
+                uc.mem_write(address, pack(PACK_VALUE, value))
+            except UcError as e:
+                # probably due to REP MOVS
+                return False
         else:
             #TODO: ignored real read size, only full registers
             value = unpack(PACK_VALUE, uc.mem_read(address, ARCH_BITS/8))[0]
