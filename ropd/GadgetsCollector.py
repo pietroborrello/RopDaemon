@@ -169,6 +169,7 @@ def hook_err(uc, int_num, user_data):
         return True
     return False
 
+#TODO: qemu bug (Assertion failed: (map->sections_nb < TARGET_PAGE_SIZE), function phys_section_add_x86_64,file /private/tmp/pip-build-Awpvur/unicorn/src/qemu/exec.c, line 798)
 # callback for tracing invalid memory access (READ or WRITE)
 def hook_mem_invalid(uc, access, address, size, value, user_data):
     #memory access not necessarly aligned to page boundaries, so map two pages to be sure
