@@ -14,3 +14,7 @@ from Gadget import Gadget, Registers, Operations, Types
 from Gadget import *
 import angr
 
+
+class GadgetsVerifier(object):
+    def __init__(self, filename):
+        self._filename =  filename

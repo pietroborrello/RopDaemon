@@ -6,3 +6,4 @@ __license__ = "BSD 2-clause"
 __email__ = "pietro.borrello95@gmail.com"
 
 from GadgetsCollector import GadgetsCollector
+from GadgetsVerifier import GadgetsVerifier
