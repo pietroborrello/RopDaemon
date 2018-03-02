@@ -16,5 +16,17 @@ import angr
 
 
 class GadgetsVerifier(object):
-    def __init__(self, filename):
+    def __init__(self, filename, typed_gadgets):
         self._filename =  filename
+        self.typed_gadgets = typed_gadgets
+
+    def verify(self):
+        print 'Verifying...'
+        gadgets = {}
+        for t in self.typed_gadgets:
+            for g in self.typed_gadgets[t]:
+                #print g
+                if g.address not in gadgets:
+                    gadgets[g.address] = []
+                gadgets[g.address].append(g)
+        print 'Found %d different typed gadgets' % len(gadgets)

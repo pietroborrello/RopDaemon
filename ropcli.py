@@ -15,8 +15,8 @@ COLLECTED_EXTENSION = '.collected'
 
 
 def collect(binary, do_print=False):
-    gadget_collector = ropd.GadgetsCollector(binary)
-    typed_gadgets = gadget_collector.analyze()
+    gadgets_collector = ropd.GadgetsCollector(binary)
+    typed_gadgets = gadgets_collector.analyze()
     if do_print:
         for t in typed_gadgets:
             for g in typed_gadgets[t]:
@@ -25,16 +25,16 @@ def collect(binary, do_print=False):
         pickle.dump(typed_gadgets, collected_file)
     return typed_gadgets
 
-def verify(binary, typed_gadgets, do_print=True):
-    gadgets = {}
-    for t in typed_gadgets:
-        for g in typed_gadgets[t]:
-            #print g
-            if g.address not in gadgets:
-                gadgets[g.address] = []
-            gadgets[g.address].append(g)
-
-    print 'Found %d different typed gadgets' % len(gadgets)
+def verify(binary, do_print=True):
+    try:
+        with open(binary + COLLECTED_EXTENSION, 'rb') as collected_file:
+            typed_gadgets = pickle.load(collected_file)
+    except IOError as e:
+        print 'ERROR: %s' % e
+        print 'Did you collected gadget before verification?'
+        return
+    gadgets_verifier = ropd.GadgetsVerifier(binary, typed_gadgets)
+    gadgets_verifier.verify()
 
 
 def main():
@@ -52,17 +52,9 @@ def main():
     args = parser.parse_args()
     if args.collect:
         typed_gadgets = collect(args.binary)
-    else:
-        try:
-            with open(args.binary + COLLECTED_EXTENSION, 'rb') as collected_file:
-                typed_gadgets = pickle.load(collected_file)
-        except IOError as e:
-            print 'ERROR: %s' % e
-            print 'Did you collected gadget before verification?'
-            return
 
     if args.verify:
-        verified_gadgets = verify(args.binary, typed_gadgets)
+        verified_gadgets = verify(args.binary)
     
     
 
