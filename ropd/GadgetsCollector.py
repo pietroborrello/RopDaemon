@@ -23,8 +23,9 @@ md.detail = True
 
 # memory address where emulation starts
 ADDRESS = 0x1000000
-MAX_BYTES_PER_INSTR = 15
+MAX_BYTES_PER_INSTR = 0xf
 HOOK_ERR_VAL = 0x1
+MAX_RETN = 0x10
 unsafe_classes = [X86_GRP_JUMP, X86_GRP_CALL, X86_GRP_INT]
 
 
@@ -158,9 +159,9 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
     return result
 
 def hook_err(uc, int_num, user_data):
-    ip = uc.reg_read(IP_REG)
-    instr_bytes = str(uc.mem_read(ip, MAX_BYTES_PER_INSTR))
-    instr = md.disasm(instr_bytes, 0x0, count = 1).next()
+    #ip = uc.reg_read(IP_REG)
+    #instr_bytes = str(uc.mem_read(ip, MAX_BYTES_PER_INSTR))
+    #instr = md.disasm(instr_bytes, 0x0, count = 1).next()
     #print 'ERROR: interrupt %x, due to: %s %s' % (int_num, instr.mnemonic, instr.op_str)
     if int_num==0: #div by zero fault
         # probaly since EDX:EAX doesn't fit in 32 bits
@@ -387,7 +388,6 @@ def emulate(g): #gadget g
 class GadgetsCollector(object):
     def __init__(self, filename):
         self._filename =  filename
-        self._binary = None
 
     def collect(self, do_filter_unsafe=True):
         print 'Collecting...'
@@ -408,7 +408,16 @@ class GadgetsCollector(object):
             address = g._lines[0][0] + g.imageBase
             address_end = g._lines[-1][0] + g.imageBase
             hex_bytes = g._bytes
-            gadgets.append(Gadget(str(hex_bytes), address = address, address_end = address_end))
+            #check ret type
+            ret = md.disasm(str(hex_bytes[address_end - address:]), 0x0, count = 1).next()
+            if ret.id != X86_INS_RET:
+                continue
+            if ret.operands:
+                retn = ret.operands[0].value.imm
+            else:
+                retn = 0
+            if retn < MAX_RETN:
+                gadgets.append(Gadget(str(hex_bytes), address = address, address_end = address_end, retn=retn))
         if do_filter_unsafe:
             return filter_unsafe(gadgets)
         else:

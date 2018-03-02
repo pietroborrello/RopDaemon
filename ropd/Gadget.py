@@ -10,12 +10,13 @@ from enum import Enum
 
 
 class Gadget(object):
-    def __init__(self, hex, address=None, address_end=None, modified_regs=None, stack_fix=None):
+    def __init__(self, hex, address=None, address_end=None, modified_regs=None, stack_fix=None, retn=None):
         self.hex = hex
         self.address = address
         self.address_end = address_end
         self.modified_regs = modified_regs
         self.stack_fix = stack_fix
+        self.retn = retn
 
     def __str__(self):
         return 'Gadget(%s, %s, %s, %s, %s)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), self.modified_regs, self.stack_fix)
