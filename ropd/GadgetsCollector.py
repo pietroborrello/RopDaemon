@@ -36,15 +36,15 @@ MAX_INT = 0xFFFFFFFF
 FLAGS_MASK = 0xd5
 
 
-regs = {Registers.EAX:  UC_X86_REG_EAX, Registers.EBX:  UC_X86_REG_EBX, 
-        Registers.ECX:  UC_X86_REG_ECX, Registers.EDX:  UC_X86_REG_EDX, 
-        Registers.ESI:  UC_X86_REG_ESI, Registers.EDI:  UC_X86_REG_EDI, 
-        Registers.EBP:  UC_X86_REG_EBP, Registers.ESP:  UC_X86_REG_ESP}
+regs = {Registers.eax:  UC_X86_REG_EAX, Registers.ebx:  UC_X86_REG_EBX, 
+        Registers.ecx:  UC_X86_REG_ECX, Registers.edx:  UC_X86_REG_EDX, 
+        Registers.esi:  UC_X86_REG_ESI, Registers.edi:  UC_X86_REG_EDI, 
+        Registers.ebp:  UC_X86_REG_EBP, Registers.esp:  UC_X86_REG_ESP}
 
-regs_no_esp = {Registers.EAX:  UC_X86_REG_EAX, Registers.EBX:  UC_X86_REG_EBX,
-               Registers.ECX:  UC_X86_REG_ECX, Registers.EDX:  UC_X86_REG_EDX,
-               Registers.ESI:  UC_X86_REG_ESI, Registers.EDI:  UC_X86_REG_EDI,
-               Registers.EBP:  UC_X86_REG_EBP}
+regs_no_esp = {Registers.eax:  UC_X86_REG_EAX, Registers.ebx:  UC_X86_REG_EBX,
+               Registers.ecx:  UC_X86_REG_ECX, Registers.edx:  UC_X86_REG_EDX,
+               Registers.esi:  UC_X86_REG_ESI, Registers.edi:  UC_X86_REG_EDI,
+               Registers.ebp:  UC_X86_REG_EBP}
 
 FLAGS_REG = UC_X86_REG_EFLAGS
 IP_REG = UC_X86_REG_EIP
@@ -135,10 +135,10 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
             # if DIV, only valid EAX=EAX/src2, TODO: not op_res == 0 may miss some DIV gadgets
             if op == Operations.DIV:
                     for src2 in regs:
-                        dest = Registers.EAX
-                        src1 = Registers.EAX
+                        dest = Registers.eax
+                        src1 = Registers.eax
                         # check real div of 64bits
-                        div_op_res = ((init_regs[Registers.EDX] << 32) + init_regs[src1]) / init_regs[src2]
+                        div_op_res = ((init_regs[Registers.edx] << 32) + init_regs[src1]) / init_regs[src2]
                         # check if result handled by hook_err
                         hook_op_res = ((HOOK_ERR_VAL << 32) + init_regs[src1]) / init_regs[src2]
                         # check if the gadget itself correctly zeroed EDX
@@ -167,7 +167,7 @@ def hook_err(uc, int_num, user_data):
         # probaly since EDX:EAX doesn't fit in 32 bits
         # if was real div_by_zero, after resume it will double fault, and re-handled as int 0x8
         # safely modify EDX, independently from init_value, that will be overwritten by div
-        uc.reg_write(regs[Registers.EDX], HOOK_ERR_VAL)
+        uc.reg_write(regs[Registers.edx], HOOK_ERR_VAL)
         return True
     return False
 
@@ -218,12 +218,12 @@ def checkReadMemGadget(
         possible = set()
         for addr in [addr for addr in address_read1 if address_read1[addr] == final_values1[dest]]:
             for addr_reg in rv_pairs1:
-                if addr_reg is not Registers.ESP:
+                if addr_reg is not Registers.esp:
                     offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
                     possible.add((dest, addr_reg, offset))
         for addr in [addr for addr in address_read2 if address_read2[addr] == final_values2[dest]]:
             for addr_reg in rv_pairs2:
-                if addr_reg is not Registers.ESP:
+                if addr_reg is not Registers.esp:
                     offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
                     if (dest, addr_reg, offset) in possible:
                         result.append(ReadMem_Gadget(dest, addr_reg, offset, gadget))
@@ -237,12 +237,12 @@ def checkWriteMemGadget(
         possible = set()
         for addr in [addr for addr in address_written1 if address_written1[addr] == rv_pairs1[src]]:
             for addr_reg in rv_pairs1:
-                if addr_reg is not Registers.ESP:
+                if addr_reg is not Registers.esp:
                     offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
                     possible.add((addr_reg, offset, src))
         for addr in [addr for addr in address_written2 if address_written2[addr] == rv_pairs2[src]]:
             for addr_reg in rv_pairs2:
-                if addr_reg is not Registers.ESP:
+                if addr_reg is not Registers.esp:
                     offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
                     if (addr_reg, offset, src) in possible:
                         result.append(WriteMem_Gadget(addr_reg, offset, src, gadget))
@@ -261,13 +261,13 @@ def checkReadMemOpGadget(
                     if op == Operations.DIV and final_values1[dest] == 0:
                         continue
                     for addr_reg in rv_pairs1:
-                        if addr_reg is not Registers.ESP:
+                        if addr_reg is not Registers.esp:
                             offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
                             possible.add((dest, addr_reg, offset))
             for addr in address_read2:
                 if compute_operation(address_read2[addr], op, rv_pairs2[dest]) == final_values2[dest]:
                     for addr_reg in rv_pairs2:
-                        if addr_reg is not Registers.ESP:
+                        if addr_reg is not Registers.esp:
                             offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
                             if (dest, addr_reg, offset) in possible:
                                 result.append(ReadMemOp_Gadget(dest, op, addr_reg, offset, gadget))
@@ -286,13 +286,13 @@ def checkWriteMemOpGadget(
                     if op == Operations.DIV and address_written1[addr] == 0:
                         continue
                     for addr_reg in rv_pairs1:
-                        if addr_reg is not Registers.ESP:
+                        if addr_reg is not Registers.esp:
                             offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
                             possible.add((addr_reg, offset, src))
             for addr in address_written2:
                 if addr in address_read2 and address_written2[addr] == compute_operation(address_read2[addr], op, rv_pairs2[src]):
                     for addr_reg in rv_pairs2:
-                        if addr_reg is not Registers.ESP:
+                        if addr_reg is not Registers.esp:
                             offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
                             if (addr_reg, offset, src) in possible:
                                 result.append(WriteMemOp_Gadget(addr_reg, offset, op, src, gadget))
@@ -303,8 +303,8 @@ def checkWriteMemOpGadget(
 # mask: 0xd5
 # 2nd youngest bit of EFLAGS is set to 1 (reserved bit)
 def checkLahfGadget(flags_init, final_flags, final_state, gadget):
-    if flags_init == final_flags and Registers.EAX in gadget.modified_regs:
-        ah = ((final_state[Registers.EAX] >> 8) & FLAGS_MASK) | 2
+    if flags_init == final_flags and Registers.eax in gadget.modified_regs:
+        ah = ((final_state[Registers.eax] >> 8) & FLAGS_MASK) | 2
         if ah == (final_flags & FLAGS_MASK) | 2 :
             return [Lahf_Gadget(gadget)]
     return []
@@ -312,8 +312,8 @@ def checkLahfGadget(flags_init, final_flags, final_state, gadget):
 
 def checkOpEspGadget(init_regs1, final_state1, init_regs2, final_state2, gadget):
     # diff := stack_fix +/- register
-    diff1 = final_state1[Registers.ESP] - init_regs1[Registers.ESP]
-    diff2 = final_state2[Registers.ESP] - init_regs2[Registers.ESP]
+    diff1 = final_state1[Registers.esp] - init_regs1[Registers.esp]
+    diff2 = final_state2[Registers.esp] - init_regs2[Registers.esp]
 
     for r in regs_no_esp:
         stack_fix1 = compute_operation(diff1, Operations.SUB, init_regs1[r])
@@ -331,7 +331,7 @@ def emulate(g): #gadget g
         rv_pairs = {}
         for r in regs_no_esp:
             rv_pairs[r] = rand()
-        rv_pairs[Registers.ESP] = esp_init
+        rv_pairs[Registers.esp] = esp_init
         rand_stack = []
         address_written = {}
         address_read = {}
@@ -455,7 +455,7 @@ class GadgetsCollector(object):
             #print g.modified_regs
             #TODO: xchg    eax, esp
             # ret not executed in unicorn
-            g.stack_fix = final_values[Registers.ESP] - \
+            g.stack_fix = final_values[Registers.esp] - \
                 esp_init + (ARCH_BITS / 8)
             #also adjust stack fix as side effect
             typed_gadgets[Types.OpEsp] += checkOpEspGadget(

@@ -39,7 +39,7 @@ type gadget =
                 stack_fix *)
                 '''
 
-Registers = Enum('Registers', 'EAX EBX ECX EDX ESI EDI EBP ESP')
+Registers = Enum('Registers', 'eax ebx ecx edx esi edi ebp esp')
 Operations = Enum('Operations', 'ADD SUB MUL DIV XOR OR AND')
 Types = Enum(
     'Types', 'LoadConst CopyReg  BinOp ReadMem WriteMem ReadMemOp WriteMemOp Lahf OpEsp')
