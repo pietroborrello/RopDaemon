@@ -7,6 +7,7 @@ __email__ = "pietro.borrello95@gmail.com"
 
 from binascii import unhexlify, hexlify
 from enum import Enum
+import capstone
 
 
 class Gadget(object):
@@ -20,6 +21,14 @@ class Gadget(object):
 
     def __str__(self):
         return 'Gadget(%s, %s, %s, %s, %s)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), self.modified_regs, self.stack_fix)
+    
+    def dump(self):
+        md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
+        md.detail = True
+        ris = ''
+        for i in md.disasm(self.hex, self.address):
+            ris += ("0x%x:\t%s\t%s\n" % (i.address, i.mnemonic, i.op_str))
+        return ris
 
 
 #GADGET TYPES
