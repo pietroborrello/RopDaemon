@@ -180,6 +180,10 @@ def verifyWriteMemOpGadget(project, g, init_state, final_state):
             return True
     return False
 
+def verifyOpEspGadget(project, g, init_state, final_state):
+    return not final_state.satisfiable(extra_constraints=
+        [final_state.regs.sp != compute_operation(init_state.regs.sp + g.stack_fix, g.operation, init_state.registers.load(g.register.name))])
+
 class GadgetsVerifier(object):
     def __init__(self, filename, typed_gadgets):
         self.filename =  filename
@@ -201,14 +205,14 @@ class GadgetsVerifier(object):
         for t in Types:
             verified_gadgets[t] = []
         for addr, gad_list in gadgets.iteritems():
-            #verify modified registers and stack fix once for all
+            # verify modified registers and stack fix once for all
             if not gad_list:
                 print 'DISCARDED: empty list - %x' % addr
                 continue
             first_g = gad_list[0]
             init_state = generic_state.copy()
             init_state.regs.ip = first_g.address
-            #since ends with ret it will have unconstrained successors
+            # since ends with ret it will have unconstrained successors
             succ = project.factory.successors(init_state).unconstrained_successors
             if len(succ) == 0:
                 print 'DISCARDED: not a valid gadget'
@@ -218,12 +222,17 @@ class GadgetsVerifier(object):
                 print 'DISCARDED: wrong modified regs'
                 print first_g.dump()
                 continue
-            if not verifyStackFix(first_g, init_state, final_state):
-                print 'DISCARDED: wrong stack fix'
-                print first_g.dump()
-                continue
-
+        
             for g in gad_list:
+                # maybe OpEsp_gadget
+                if type(g) is OpEsp_Gadget and verifyOpEspGadget(project, g, init_state, final_state):
+                    # add esp to modified regs
+                    #g.modified_regs.append(Registers.esp)
+                    verified_gadgets[Types.OpEsp].append(g)
+                elif not verifyStackFix(g, init_state, final_state):
+                    print 'DISCARDED: wrong stack fix'
+                    print g
+                    print g.dump()
                 if type(g) is CopyReg_Gadget and verifyCopyRegGadget(project, g, init_state, final_state):
                     verified_gadgets[Types.CopyReg].append(g)
                 elif type(g) is LoadConst_Gadget and verifyLoadConstGadget(project, g, init_state, final_state):
@@ -238,14 +247,11 @@ class GadgetsVerifier(object):
                     verified_gadgets[Types.ReadMemOp].append(g)
                 elif type(g) is WriteMemOp_Gadget and verifyWriteMemOpGadget(project, g, init_state, final_state):
                     verified_gadgets[Types.WriteMemOp].append(g)
-                    print 'OK:'
-                    print g
-                    print g.dump()
-                    continue
                 elif type(g) is Lahf_Gadget and verifyLahfGadget(project, g, init_state, final_state):
                     verified_gadgets[Types.Lahf].append(g)
                 elif type(g) is OpEsp_Gadget:
-	                continue
+                    # just checked
+                    continue
                 else:
                     print 'DISCARDED:'
                     print g
