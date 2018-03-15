@@ -13,8 +13,26 @@ import progressbar
 from Gadget import Gadget, Registers, Operations, Types
 from Gadget import *
 import angr
+import sys
 import claripy
 from GadgetsCollector import FLAGS_MASK
+
+ANGR_MEM = 'mem'
+ANGR_READ = 'read'
+ANGR_WRITE = 'write'
+
+# TODO: use fully symbolic addresses to manage memory accesses
+
+class ConcretizationChecker(angr.concretization_strategies.SimConcretizationStrategy):
+
+    def __init__(self, type, limit, **kwargs):
+        super(ConcretizationChecker, self).__init__(**kwargs)
+        self.type = type
+        self.limit = limit
+
+    def _concretize(self, memory, addr):
+        print 'ADDR: %s' % addr
+
 
 def make_initial_state(project, stack_length):
     """
@@ -28,6 +46,8 @@ def make_initial_state(project, stack_length):
     initial_state.options.discard(angr.options.CGC_ZERO_FILL_UNCONSTRAINED_MEMORY)
     initial_state.options.update({angr.options.TRACK_REGISTER_ACTIONS, angr.options.TRACK_MEMORY_ACTIONS,
                                   angr.options.TRACK_JMP_ACTIONS, angr.options.TRACK_CONSTRAINT_ACTIONS})
+    #initial_state.memory.read_strategies.insert(0, ConcretizationChecker('load', 1))
+    #initial_state.memory.write_strategies.insert(0, ConcretizationChecker('store', 1))
     symbolic_stack = initial_state.se.BVS("symbolic_stack", project.arch.bits*stack_length)
     initial_state.memory.store(initial_state.regs.sp, symbolic_stack)
     if initial_state.arch.bp_offset != initial_state.arch.sp_offset:
@@ -109,6 +129,17 @@ def verifyLahfGadget(project, g, init_state, final_state):
     ah = ((final_state.registers.load(Registers.eax.name) >> 8) & FLAGS_MASK) | 2
     return not final_state.satisfiable(extra_constraints=[ ah != flags])
 
+def verifyReadMemGadget(project, g, init_state, final_state):
+    # if fully symboloc memory
+    '''mem_content = init_state.memory.load(init_state.registers.load(g.addr_reg.name) + g.offset, project.arch.bits / 8, endness=init_state.arch.memory_endness)
+    return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != mem_content])'''
+    for a in final_state.history.filter_actions(read_from=ANGR_MEM):
+        constraints = False
+        constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
+        constraints = claripy.Or(constraints, final_state.registers.load(g.dest.name) != a.data.ast)
+        if not final_state.satisfiable(extra_constraints=[constraints]):
+            return True
+    return False
 
 class GadgetsVerifier(object):
     def __init__(self, filename, typed_gadgets):
@@ -160,8 +191,11 @@ class GadgetsVerifier(object):
                     verified_gadgets[Types.LoadConst].append(g)
                 elif type(g) is BinOp_Gadget and verifyBinOpGadget(project, g, init_state, final_state):
                     verified_gadgets[Types.BinOp].append(g)
-                elif type(g) is ReadMem_Gadget:
-                    continue
+                elif type(g) is ReadMem_Gadget and verifyReadMemGadget(project, g, init_state, final_state):
+                    verified_gadgets[Types.ReadMem].append(g)
+                    print 'OK:'
+                    print g
+                    print g.dump()
                 elif type(g) is WriteMem_Gadget:
                     continue
                 elif type(g) is ReadMemOp_Gadget:
@@ -170,9 +204,6 @@ class GadgetsVerifier(object):
                     continue
                 elif type(g) is Lahf_Gadget and verifyLahfGadget(project, g, init_state, final_state):
                     verified_gadgets[Types.Lahf].append(g)
-                    print 'OK:'
-                    print g
-                    print g.dump()
                 elif type(g) is OpEsp_Gadget:
 	                continue
                 else:
