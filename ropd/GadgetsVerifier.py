@@ -134,9 +134,48 @@ def verifyReadMemGadget(project, g, init_state, final_state):
     '''mem_content = init_state.memory.load(init_state.registers.load(g.addr_reg.name) + g.offset, project.arch.bits / 8, endness=init_state.arch.memory_endness)
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != mem_content])'''
     for a in final_state.history.filter_actions(read_from=ANGR_MEM):
+        # check if it is the read action responsible of the read
         constraints = False
         constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
         constraints = claripy.Or(constraints, final_state.registers.load(g.dest.name) != a.data.ast)
+        # UNSAT that wrong address or wrong dest
+        if not final_state.satisfiable(extra_constraints=[constraints]):
+            return True
+    return False
+
+def verifyWriteMemGadget(project, g, init_state, final_state):
+    for a in final_state.history.filter_actions(write_to=ANGR_MEM):
+        # check if it is the action responsible for the write
+        constraints = False
+        constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
+        constraints = claripy.Or(constraints, init_state.registers.load(g.src.name) != a.data.ast)
+        if not final_state.satisfiable(extra_constraints=[constraints]):
+            return True
+    return False
+
+def verifyReadMemOpGadget(project, g, init_state, final_state):
+    for a in final_state.history.filter_actions(read_from=ANGR_MEM):
+        constraints = False
+        constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
+        constraints = claripy.Or(constraints, final_state.registers.load(g.dest.name) != compute_operation(init_state.registers.load(g.dest.name), g.op, a.data.ast))
+        if not final_state.satisfiable(extra_constraints=[constraints]):
+            return True
+    return False
+
+def verifyWriteMemOpGadget(project, g, init_state, final_state):
+    # find original data in the memory location
+    found = False
+    for a in final_state.history.filter_actions(read_from=ANGR_MEM):
+        constraints = (init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
+        if not final_state.satisfiable(extra_constraints=[constraints]):
+            data = a.data.ast
+            found = True
+    if not found:
+        return False
+    for a in final_state.history.filter_actions(write_to=ANGR_MEM):
+        constraints = False
+        constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
+        constraints = claripy.Or(constraints, a.data.ast != compute_operation(data, g.op, init_state.registers.load(g.src.name)))
         if not final_state.satisfiable(extra_constraints=[constraints]):
             return True
     return False
@@ -193,14 +232,15 @@ class GadgetsVerifier(object):
                     verified_gadgets[Types.BinOp].append(g)
                 elif type(g) is ReadMem_Gadget and verifyReadMemGadget(project, g, init_state, final_state):
                     verified_gadgets[Types.ReadMem].append(g)
+                elif type(g) is WriteMem_Gadget and verifyWriteMemGadget(project, g, init_state, final_state):
+                    verified_gadgets[Types.WriteMem].append(g)
+                elif type(g) is ReadMemOp_Gadget and verifyReadMemOpGadget(project, g, init_state, final_state):
+                    verified_gadgets[Types.ReadMemOp].append(g)
+                elif type(g) is WriteMemOp_Gadget and verifyWriteMemOpGadget(project, g, init_state, final_state):
+                    verified_gadgets[Types.WriteMemOp].append(g)
                     print 'OK:'
                     print g
                     print g.dump()
-                elif type(g) is WriteMem_Gadget:
-                    continue
-                elif type(g) is ReadMemOp_Gadget:
-                    continue
-                elif type(g) is WriteMemOp_Gadget:
                     continue
                 elif type(g) is Lahf_Gadget and verifyLahfGadget(project, g, init_state, final_state):
                     verified_gadgets[Types.Lahf].append(g)

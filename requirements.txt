@@ -4,3 +4,4 @@ enum34
 unicorn
 progressbar2
 ipdb
+angr
