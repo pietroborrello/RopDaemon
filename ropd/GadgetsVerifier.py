@@ -14,6 +14,7 @@ from Gadget import Gadget, Registers, Operations, Types
 from Gadget import *
 import angr
 import claripy
+from GadgetsCollector import FLAGS_MASK
 
 def make_initial_state(project, stack_length):
     """
@@ -43,7 +44,9 @@ def make_symbolic_state(project, stack_length=8):
     symbolic_state = input_state.copy()
     # overwrite all registers
     for reg in Registers:
-        symbolic_state.registers.store(reg.name, symbolic_state.se.BVS("sreg_" + reg.name + "-", project.arch.bits))
+        symbolic_state.registers.store(reg.name, symbolic_state.se.BVS("sreg_" + reg.name, project.arch.bits))
+    #overwrite flags
+    symbolic_state.registers.store('flags', symbolic_state.se.BVS("sreg_" + "flags", project.arch.bits))
     # restore sp
     symbolic_state.regs.sp = input_state.regs.sp
     # restore bp
@@ -77,6 +80,34 @@ def verifyModReg(g, init_state, final_state):
 def verifyCopyRegGadget(project, g, init_state, final_state):
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != init_state.registers.load(g.src.name)])
 
+def compute_operation(a, op, b):
+    if op == Operations.ADD:
+        return (a + b) 
+    elif op == Operations.SUB:
+        return (a - b) 
+    elif op == Operations.MUL:
+        return (a * b) 
+    elif op == Operations.DIV:
+        return (a // b) 
+    elif op == Operations.XOR:
+        return (a ^ b) 
+    elif op == Operations.OR:
+        return (a | b) 
+    elif op == Operations.AND:
+        return (a & b) 
+
+def verifyBinOpGadget(project, g, init_state, final_state):
+    return not final_state.satisfiable(extra_constraints=
+        [final_state.registers.load(g.dest.name) != compute_operation(init_state.registers.load(g.src1.name), g.op, init_state.registers.load(g.src2.name))])
+
+def verifyLoadConstGadget(project, g, init_state, final_state):
+    load_content = init_state.memory.load(init_state.regs.sp + g.offset, project.arch.bits / 8, endness=init_state.arch.memory_endness)
+    return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.register.name) != load_content]) 
+
+def verifyLahfGadget(project, g, init_state, final_state):
+    flags = (init_state.regs.flags & FLAGS_MASK) | 2
+    ah = ((final_state.registers.load(Registers.eax.name) >> 8) & FLAGS_MASK) | 2
+    return not final_state.satisfiable(extra_constraints=[ ah != flags])
 
 
 class GadgetsVerifier(object):
@@ -110,7 +141,7 @@ class GadgetsVerifier(object):
             #since ends with ret it will have unconstrained successors
             succ = project.factory.successors(init_state).unconstrained_successors
             if len(succ) == 0:
-                print 'DISCARDED: no successors'
+                print 'DISCARDED: not a valid gadget'
                 break
             final_state = succ[0]
             if not verifyModReg(first_g, init_state, final_state):
@@ -125,13 +156,10 @@ class GadgetsVerifier(object):
             for g in gad_list:
                 if type(g) is CopyReg_Gadget and verifyCopyRegGadget(project, g, init_state, final_state):
                     verified_gadgets[Types.CopyReg].append(g)
-                    print 'OK:'
-                    print g
-                    print g.dump()
-                elif type(g) is LoadConst_Gadget:
-                    continue
-                elif type(g) is BinOp_Gadget:
-                    continue
+                elif type(g) is LoadConst_Gadget and verifyLoadConstGadget(project, g, init_state, final_state):
+                    verified_gadgets[Types.LoadConst].append(g)
+                elif type(g) is BinOp_Gadget and verifyBinOpGadget(project, g, init_state, final_state):
+                    verified_gadgets[Types.BinOp].append(g)
                 elif type(g) is ReadMem_Gadget:
                     continue
                 elif type(g) is WriteMem_Gadget:
@@ -140,8 +168,11 @@ class GadgetsVerifier(object):
                     continue
                 elif type(g) is WriteMemOp_Gadget:
                     continue
-                elif type(g) is Lahf_Gadget:
-                    continue
+                elif type(g) is Lahf_Gadget and verifyLahfGadget(project, g, init_state, final_state):
+                    verified_gadgets[Types.Lahf].append(g)
+                    print 'OK:'
+                    print g
+                    print g.dump()
                 elif type(g) is OpEsp_Gadget:
 	                continue
                 else:
