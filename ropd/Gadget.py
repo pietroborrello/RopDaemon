@@ -22,6 +22,9 @@ class Gadget(object):
     def __str__(self):
         return 'Gadget(%s, %s, %s, %s, %s)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), self.modified_regs, self.stack_fix)
     
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+    
     def dump(self):
         md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
         md.detail = True

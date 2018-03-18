@@ -38,6 +38,7 @@ def make_initial_state(project, stack_length):
     """
     :return: an initial state with a symbolic stack and good options for rop
     """
+    # TODO: PIE - main_opts={'custom_base_addr': 0}
     initial_state = project.factory.blank_state(
         add_options={angr.options.AVOID_MULTIVALUED_READS, angr.options.AVOID_MULTIVALUED_WRITES,
                      angr.options.NO_SYMBOLIC_JUMP_RESOLUTION, angr.options.CGC_NO_SYMBOLIC_RECEIVE_LENGTH,
@@ -135,9 +136,13 @@ def verifyReadMemGadget(project, g, init_state, final_state):
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != mem_content])'''
     for a in final_state.history.filter_actions(read_from=ANGR_MEM):
         # check if it is the read action responsible of the read
-        constraints = False
-        constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
-        constraints = claripy.Or(constraints, final_state.registers.load(g.dest.name) != a.data.ast)
+        try:
+            constraints = False
+            constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
+            constraints = claripy.Or(constraints, final_state.registers.load(g.dest.name) != a.data.ast)
+        except claripy.errors.ClaripyOperationError as e:
+            # an exception will be raised if composing constraints with different bit size operands, we are interested only in full register operations
+            continue
         # UNSAT that wrong address or wrong dest
         if not final_state.satisfiable(extra_constraints=[constraints]):
             return True
@@ -146,18 +151,26 @@ def verifyReadMemGadget(project, g, init_state, final_state):
 def verifyWriteMemGadget(project, g, init_state, final_state):
     for a in final_state.history.filter_actions(write_to=ANGR_MEM):
         # check if it is the action responsible for the write
-        constraints = False
-        constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
-        constraints = claripy.Or(constraints, init_state.registers.load(g.src.name) != a.data.ast)
+        try:
+            constraints = False
+            constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
+            constraints = claripy.Or(constraints, init_state.registers.load(g.src.name) != a.data.ast)
+        except claripy.errors.ClaripyOperationError as e:
+            # an exception will be raised if composing constraints with different bit size operands, we are interested only in full register operations
+            continue
         if not final_state.satisfiable(extra_constraints=[constraints]):
             return True
     return False
 
 def verifyReadMemOpGadget(project, g, init_state, final_state):
     for a in final_state.history.filter_actions(read_from=ANGR_MEM):
-        constraints = False
-        constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
-        constraints = claripy.Or(constraints, final_state.registers.load(g.dest.name) != compute_operation(init_state.registers.load(g.dest.name), g.op, a.data.ast))
+        try:
+            constraints = False
+            constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
+            constraints = claripy.Or(constraints, final_state.registers.load(g.dest.name) != compute_operation(init_state.registers.load(g.dest.name), g.op, a.data.ast))
+        except claripy.errors.ClaripyOperationError as e:
+            # an exception will be raised if composing constraints with different bit size operands, we are interested only in full register operations
+            continue
         if not final_state.satisfiable(extra_constraints=[constraints]):
             return True
     return False
@@ -173,9 +186,13 @@ def verifyWriteMemOpGadget(project, g, init_state, final_state):
     if not found:
         return False
     for a in final_state.history.filter_actions(write_to=ANGR_MEM):
-        constraints = False
-        constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
-        constraints = claripy.Or(constraints, a.data.ast != compute_operation(data, g.op, init_state.registers.load(g.src.name)))
+        try:
+            constraints = False
+            constraints = claripy.Or(constraints, init_state.registers.load(g.addr_reg.name) + g.offset != a.addr.ast)
+            constraints = claripy.Or(constraints, a.data.ast != compute_operation(data, g.op, init_state.registers.load(g.src.name)))
+        except claripy.errors.ClaripyOperationError as e:
+            # an exception will be raised if composing constraints with different bit size operands, we are interested only in full register operations
+            continue
         if not final_state.satisfiable(extra_constraints=[constraints]):
             return True
     return False
@@ -190,17 +207,20 @@ class GadgetsVerifier(object):
         self.typed_gadgets = typed_gadgets
 
     def verify(self):
-        project = angr.Project(self.filename)
+        project = angr.Project(self.filename, load_options={'main_opts': {'custom_base_addr': 0}})
         generic_state = make_symbolic_state(project)
         print 'Verifying...'
         gadgets = {}
+        verified_num = 0
+        original_num = 0
         for t in self.typed_gadgets:
             for g in self.typed_gadgets[t]:
                 #print g
                 if g.address not in gadgets:
                     gadgets[g.address] = []
                 gadgets[g.address].append(g)
-        print 'Found %d different typed gadgets' % len(gadgets)
+                original_num += 1
+        print 'Found %d different typed gadgets' % original_num
         verified_gadgets = {}
         for t in Types:
             verified_gadgets[t] = []
@@ -213,10 +233,15 @@ class GadgetsVerifier(object):
             init_state = generic_state.copy()
             init_state.regs.ip = first_g.address
             # since ends with ret it will have unconstrained successors
-            succ = project.factory.successors(init_state).unconstrained_successors
+            try:
+                succ = project.factory.successors(init_state).unconstrained_successors
+            # gadget may be strange, very strange opcode can be present
+            except angr.errors.SimIRSBNoDecodeError as e:
+                continue
             if len(succ) == 0:
                 print 'DISCARDED: not a valid gadget'
-                break
+                print first_g.dump()
+                continue
             final_state = succ[0]
             if not verifyModReg(first_g, init_state, final_state):
                 print 'DISCARDED: wrong modified regs'
@@ -256,44 +281,8 @@ class GadgetsVerifier(object):
                     print 'DISCARDED:'
                     print g
                     print g.dump()
-
-
-'''
-CopyReg_Gadget(EAX, EBX)(89d8c3, 0x8048735, 0x8048737, ['EAX'], 4)
-0x8048735:      mov     eax, ebx
-0x8048737:      ret
-
-project = angr.Project('a.out')
-
-initial_state = project.factory.blank_state(
-        add_options={angr.options.AVOID_MULTIVALUED_READS, angr.options.AVOID_MULTIVALUED_WRITES,
-                     angr.options.NO_SYMBOLIC_JUMP_RESOLUTION, angr.options.CGC_NO_SYMBOLIC_RECEIVE_LENGTH,
-                     angr.options.NO_SYMBOLIC_SYSCALL_RESOLUTION, angr.options.TRACK_ACTION_HISTORY},
-        remove_options=angr.options.resilience | angr.options.simplification)
-initial_state.options.discard(angr.options.CGC_ZERO_FILL_UNCONSTRAINED_MEMORY)
-initial_state.options.update({angr.options.TRACK_REGISTER_ACTIONS, angr.options.TRACK_MEMORY_ACTIONS,
-                                angr.options.TRACK_JMP_ACTIONS, angr.options.TRACK_CONSTRAINT_ACTIONS})
-
-
-init_state = project.factory.blank_state(addr=0x8048735)
-
-for reg in project.arch.default_symbolic_registers except eip, esp:
-init_state.registers.store('eax', init_state.se.BVS("sreg_" + 'eax' + "-", project.arch.bits))
-init_state.registers.store('ebx', init_state.se.BVS("sreg_" + 'ebx' + "-", project.arch.bits))
-
-
-#since ends with ret it will have unconstrained successors
-final_state = project.factory.successors(init_state).unconstrained_successors[0]
-#final_state.regs.eax is init_state.regs.ebx
-
-final_state.solver.add(final_state.regs.eax != init_state.regs.ebx)
-final_state.satisfiable() #must be false
-
-final_state = project.factory.successors(init_state).unconstrained_successors[0]
-final_state.solver.add(final_state.regs.eax != init_state.regs.ebx)
-final_state.satisfiable() #must be false
-    
-
-#project.arch.registers['rsp']
-#project.arch.default_symbolic_registers
-'''
+        for t in verified_gadgets:
+            for g in verified_gadgets[t]:
+                verified_num += 1
+        print 'Found %d different verified gadgets' % verified_num
+        return verified_gadgets

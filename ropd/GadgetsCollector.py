@@ -182,7 +182,10 @@ def hook_mem_invalid(uc, access, address, size, value, user_data):
     mapped_pages += 1
     mapped_pages_ref[0] = mapped_pages
     #memory access not necessarly aligned to page boundaries, so map two pages to be sure
-    uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, 2 * PAGE_SIZE)
+    try:
+        uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, 2 * PAGE_SIZE)
+    except UcError as e:
+        print 'ERROR: Invalid memory mapping for %x' % ((address // PAGE_SIZE) * PAGE_SIZE)
     return True
 
 
