@@ -7,7 +7,7 @@ __email__ = "pietro.borrello95@gmail.com"
 
 
 import logging
-logging.basicConfig(filename='ropd.log',filemode='w', level=logging.DEBUG)
+logging.basicConfig(filename='ropd.log',filemode='w', format='%(levelname)s:%(message)s',level=logging.WARNING)
 
 import argparse
 import ropd

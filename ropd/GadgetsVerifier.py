@@ -238,17 +238,14 @@ class GadgetsVerifier(object):
                 succ = project.factory.successors(init_state).unconstrained_successors
             # gadget may be strange, very strange opcode can be present
             except angr.errors.SimIRSBNoDecodeError as e:
-                logging.warning('DISCARDED: not recognized instructions')
-                logging.warning(first_g.dump())
+                logging.warning('DISCARDED: not recognized instructions\n' + first_g.dump())
                 continue
             if len(succ) == 0:
-                logging.warning('DISCARDED: not a valid gadget')
-                logging.warning(first_g.dump())
+                logging.warning('DISCARDED: not a valid gadget\n' + first_g.dump())
                 continue
             final_state = succ[0]
             if not verifyModReg(first_g, init_state, final_state):
-                logging.warning('DISCARDED: wrong modified regs')
-                logging.warning(first_g.dump())
+                logging.warning('DISCARDED: wrong modified regs\n' + first_g.dump())
                 continue
         
             for g in gad_list:
@@ -258,9 +255,7 @@ class GadgetsVerifier(object):
                     #g.modified_regs.append(Registers.esp)
                     verified_gadgets[Types.OpEsp].append(g)
                 elif not verifyStackFix(g, init_state, final_state):
-                    logging.warning('DISCARDED: wrong stack fix')
-                    logging.warning(g)
-                    logging.warning(g.dump())
+                    logging.warning('DISCARDED: wrong stack fix\n'+ str(g) + '\n' + g.dump())
                 if type(g) is CopyReg_Gadget and verifyCopyRegGadget(project, g, init_state, final_state):
                     verified_gadgets[Types.CopyReg].append(g)
                 elif type(g) is LoadConst_Gadget and verifyLoadConstGadget(project, g, init_state, final_state):
@@ -281,9 +276,7 @@ class GadgetsVerifier(object):
                     # just checked
                     continue
                 else:
-                    logging.warning('DISCARDED:')
-                    logging.warning(g)
-                    logging.warning(g.dump())
+                    logging.warning('DISCARDED:\n' + str(g) + '\n' + g.dump())
         for t in verified_gadgets:
             for g in verified_gadgets[t]:
                 verified_num += 1
