@@ -9,7 +9,7 @@ from binascii import unhexlify, hexlify
 import random
 from struct import pack, unpack
 from itertools import permutations, combinations
-import progressbar
+from tqdm import *
 from ropper import RopperService
 from Gadget import Gadget, Registers, Operations, Types
 from Gadget import *
@@ -17,6 +17,7 @@ import capstone
 from capstone.x86 import *
 from unicorn import *
 from unicorn.x86_const import *
+import logging
 
 md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
 md.detail = True
@@ -185,7 +186,7 @@ def hook_mem_invalid(uc, access, address, size, value, user_data):
     try:
         uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, 2 * PAGE_SIZE)
     except UcError as e:
-        print 'ERROR: Invalid memory mapping for %x' % ((address // PAGE_SIZE) * PAGE_SIZE)
+        logging.warning('Invalid memory mapping for %x', ((address // PAGE_SIZE) * PAGE_SIZE))
     return True
 
 
@@ -383,7 +384,7 @@ def emulate(g): #gadget g
         return (rv_pairs, final_values, rand_stack, esp_init, address_written, address_read, flags_init, final_flags)
 
     except UcError as e:
-        print("ERROR: %s at code %s" % (e, str(g.hex).encode('hex')))
+        logging.warning("%s at code %s" , e, str(g.hex).encode('hex'))
 
         return (rv_pairs, None, rand_stack, esp_init, address_written, address_read, None, None)
     
@@ -433,9 +434,8 @@ class GadgetsCollector(object):
         for t in Types:
             typed_gadgets[t] = []
 
-        bar = progressbar.ProgressBar(redirect_stdout=True, max_value=len(safe_gadgets))
-        progr = 0
-        for g in safe_gadgets:
+        # tqdm: progressbar wrapper
+        for g in tqdm(safe_gadgets):
             ###
             #print g
             #for i in md.disasm(g.hex, g.address):
@@ -481,10 +481,6 @@ class GadgetsCollector(object):
                 rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
             typed_gadgets[Types.WriteMemOp] += checkWriteMemOpGadget(
                 rv_pairs, address_read, address_written, rv_pairs2, address_read2, address_written2, g)
-
-            # update progress bar   
-            progr += 1 
-            bar.update(progr)
             
         return typed_gadgets
         

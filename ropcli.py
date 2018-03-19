@@ -6,6 +6,9 @@ __license__ = "BSD 2-clause"
 __email__ = "pietro.borrello95@gmail.com"
 
 
+import logging
+logging.basicConfig(filename='ropd.log',filemode='w', level=logging.DEBUG)
+
 import argparse
 import ropd
 import pickle
@@ -58,14 +61,22 @@ def dump_file(binary):
             
     
 def diff():
-    with open('ls.verified', 'rb') as file1:
+    with open('a.out.verified', 'rb') as file1:
             typed_gadgets1 = pickle.load(file1)
-            with open('ls.1.verified', 'rb') as file2:
+            with open('a.out.1.verified', 'rb') as file2:
                 typed_gadgets2 = pickle.load(file2)
                 for t in typed_gadgets1:
                     l1 = typed_gadgets1[t]
                     l2 = typed_gadgets2[t]
-                    continue
+                    for l in l1:
+                        if l not in l2:
+                            print '[+]', l
+                            print l.dump()
+                    for l in l2:
+                        if l not in l1:
+                            print '[-]', l
+                            print l.dump()
+                        
 
 
             

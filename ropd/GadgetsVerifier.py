@@ -9,13 +9,14 @@ from binascii import unhexlify, hexlify
 import random
 from struct import pack, unpack
 from itertools import permutations, combinations
-import progressbar
+from tqdm import *
 from Gadget import Gadget, Registers, Operations, Types
 from Gadget import *
 import angr
 import sys
 import claripy
 from GadgetsCollector import FLAGS_MASK
+import logging
 
 ANGR_MEM = 'mem'
 ANGR_READ = 'read'
@@ -215,7 +216,6 @@ class GadgetsVerifier(object):
         original_num = 0
         for t in self.typed_gadgets:
             for g in self.typed_gadgets[t]:
-                #print g
                 if g.address not in gadgets:
                     gadgets[g.address] = []
                 gadgets[g.address].append(g)
@@ -224,10 +224,11 @@ class GadgetsVerifier(object):
         verified_gadgets = {}
         for t in Types:
             verified_gadgets[t] = []
-        for addr, gad_list in gadgets.iteritems():
+        for addr in tqdm(gadgets):
+            gad_list = gadgets[addr]
             # verify modified registers and stack fix once for all
             if not gad_list:
-                print 'DISCARDED: empty list - %x' % addr
+                logging.warning('DISCARDED: empty list - %x', addr)
                 continue
             first_g = gad_list[0]
             init_state = generic_state.copy()
@@ -237,15 +238,17 @@ class GadgetsVerifier(object):
                 succ = project.factory.successors(init_state).unconstrained_successors
             # gadget may be strange, very strange opcode can be present
             except angr.errors.SimIRSBNoDecodeError as e:
+                logging.warning('DISCARDED: not recognized instructions')
+                logging.warning(first_g.dump())
                 continue
             if len(succ) == 0:
-                print 'DISCARDED: not a valid gadget'
-                print first_g.dump()
+                logging.warning('DISCARDED: not a valid gadget')
+                logging.warning(first_g.dump())
                 continue
             final_state = succ[0]
             if not verifyModReg(first_g, init_state, final_state):
-                print 'DISCARDED: wrong modified regs'
-                print first_g.dump()
+                logging.warning('DISCARDED: wrong modified regs')
+                logging.warning(first_g.dump())
                 continue
         
             for g in gad_list:
@@ -255,9 +258,9 @@ class GadgetsVerifier(object):
                     #g.modified_regs.append(Registers.esp)
                     verified_gadgets[Types.OpEsp].append(g)
                 elif not verifyStackFix(g, init_state, final_state):
-                    print 'DISCARDED: wrong stack fix'
-                    print g
-                    print g.dump()
+                    logging.warning('DISCARDED: wrong stack fix')
+                    logging.warning(g)
+                    logging.warning(g.dump())
                 if type(g) is CopyReg_Gadget and verifyCopyRegGadget(project, g, init_state, final_state):
                     verified_gadgets[Types.CopyReg].append(g)
                 elif type(g) is LoadConst_Gadget and verifyLoadConstGadget(project, g, init_state, final_state):
@@ -278,9 +281,9 @@ class GadgetsVerifier(object):
                     # just checked
                     continue
                 else:
-                    print 'DISCARDED:'
-                    print g
-                    print g.dump()
+                    logging.warning('DISCARDED:')
+                    logging.warning(g)
+                    logging.warning(g.dump())
         for t in verified_gadgets:
             for g in verified_gadgets[t]:
                 verified_num += 1

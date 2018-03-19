@@ -2,6 +2,6 @@ capstone
 ropper
 enum34
 unicorn
-progressbar2
+tqdm
 ipdb
 angr
