@@ -481,7 +481,11 @@ class GadgetsCollector(object):
                 rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
             typed_gadgets[Types.WriteMemOp] += checkWriteMemOpGadget(
                 rv_pairs, address_read, address_written, rv_pairs2, address_read2, address_written2, g)
-            
+        original_num = 0
+        for t in typed_gadgets:
+            for g in typed_gadgets[t]:
+                original_num += 1
+        print 'Found %d different typed gadgets' % original_num
         return typed_gadgets
         
    

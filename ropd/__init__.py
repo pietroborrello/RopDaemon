@@ -7,3 +7,4 @@ __email__ = "pietro.borrello95@gmail.com"
 
 from GadgetsCollector import GadgetsCollector
 from GadgetsVerifier import GadgetsVerifier
+from GadgetsPlayer import GadgetsPlayer

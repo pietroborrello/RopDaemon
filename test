@@ -1,5 +1,0 @@
-./ropcli.py a.out | grep -i load | wc -l
-./ropcli.py a.out | grep -i binop | wc -l
-./ropcli.py a.out | grep -i copy | wc -l
-./ropcli.py a.out | grep -i opesp | wc -l
-

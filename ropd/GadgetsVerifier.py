@@ -32,7 +32,7 @@ class ConcretizationChecker(angr.concretization_strategies.SimConcretizationStra
         self.limit = limit
 
     def _concretize(self, memory, addr):
-        print 'ADDR: %s' % addr
+        print('ADDR: %s' % addr)
 
 
 def make_initial_state(project, stack_length):
@@ -210,17 +210,14 @@ class GadgetsVerifier(object):
     def verify(self):
         project = angr.Project(self.filename, load_options={'main_opts': {'custom_base_addr': 0}})
         generic_state = make_symbolic_state(project)
-        print 'Verifying...'
+        print('Verifying...')
         gadgets = {}
         verified_num = 0
-        original_num = 0
         for t in self.typed_gadgets:
             for g in self.typed_gadgets[t]:
                 if g.address not in gadgets:
                     gadgets[g.address] = []
                 gadgets[g.address].append(g)
-                original_num += 1
-        print 'Found %d different typed gadgets' % original_num
         verified_gadgets = {}
         for t in Types:
             verified_gadgets[t] = []
@@ -239,6 +236,10 @@ class GadgetsVerifier(object):
             # gadget may be strange, very strange opcode can be present
             except angr.errors.SimIRSBNoDecodeError as e:
                 logging.warning('DISCARDED: not recognized instructions\n' + first_g.dump())
+                continue
+            except Exception as e:
+                logging.error(e)
+                logging.warning('DISCARDED: unsupported instructions\n' + first_g.dump())
                 continue
             if len(succ) == 0:
                 logging.warning('DISCARDED: not a valid gadget\n' + first_g.dump())
@@ -280,5 +281,5 @@ class GadgetsVerifier(object):
         for t in verified_gadgets:
             for g in verified_gadgets[t]:
                 verified_num += 1
-        print 'Found %d different verified gadgets' % verified_num
+        print('Found %d different verified gadgets' % verified_num)
         return verified_gadgets

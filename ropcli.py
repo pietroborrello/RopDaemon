@@ -7,7 +7,7 @@ __email__ = "pietro.borrello95@gmail.com"
 
 
 import logging
-logging.basicConfig(filename='ropd.log',filemode='w', format='%(levelname)s:%(message)s',level=logging.WARNING)
+logging.basicConfig(filename='ropd.log',filemode='w', format='%(levelname)s:%(message)s',level=logging.WARNING) #to mask angr infos
 
 import argparse
 import ropd
@@ -26,6 +26,7 @@ def collect(binary, do_print=False):
                 print g
     with open(binary + COLLECTED_EXTENSION, 'wb') as collected_file:
         pickle.dump(typed_gadgets, collected_file)
+    print 'Collected gadgets saved in', binary + COLLECTED_EXTENSION
     return typed_gadgets
 
 def verify(binary, do_print=False):
@@ -44,6 +45,7 @@ def verify(binary, do_print=False):
                 print g
     with open(binary + VERIFIED_EXTENSION, 'wb') as collected_file:
         pickle.dump(verified_gadgets, collected_file)
+    print 'Verified gadgets saved in', binary + VERIFIED_EXTENSION
     return verified_gadgets
 
 def dump_file(binary):
@@ -56,7 +58,18 @@ def dump_file(binary):
                     print g.dump()
     except IOError as e:
         print 'ERROR: %s' % e
-        print 'Did you collected gadget before dumping?'
+        print 'Did you collected and verified gadgets before?'
+        return
+
+def stats(binary):
+    try:
+        with open(binary + VERIFIED_EXTENSION, 'rb') as collected_file:
+            gadgets = pickle.load(collected_file)
+            gadgets_player = ropd.GadgetsPlayer(binary, gadgets)
+            gadgets_player.stats()
+    except IOError as e:
+        print 'ERROR: %s' % e
+        print 'Did you collected and verified gadgets before?'
         return
             
     
@@ -95,7 +108,10 @@ def main():
 
     parser.add_argument( '-d', '--dump', help="dump gadgets file", action="store_true")
 
+    parser.add_argument('--stats', help="statistics about verified gadgets", action="store_true")
+
     args = parser.parse_args()
+    logging.warning('Analyzing %s', args.binary)
     if args.collect:
         typed_gadgets = collect(args.binary)
 
@@ -104,6 +120,9 @@ def main():
 
     if args.dump:
         dump_file(args.binary)
+
+    if args.stats:
+        stats(args.binary)
     
     
 

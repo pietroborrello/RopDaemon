@@ -1,0 +1,5211 @@
+WriteMemOp_Gadget([ebx + 0x5e5b14c4] ^= eax)(3183c4145b5ec3, 0x7858, 0x785e, [], 4)
+0x7858:	xor	dword ptr [ebx + 0x5e5b14c4], eax
+0x785e:	ret	
+
+WriteMemOp_Gadget([eax + 0x0] += eax)(010083c4185bc3, 0x3ec3, 0x3ec9, ['ebx'], 32)
+0x3ec3:	add	dword ptr [eax], eax
+0x3ec5:	add	esp, 0x18
+0x3ec8:	pop	ebx
+0x3ec9:	ret	
+
+WriteMemOp_Gadget([esi + 0x0] += ecx)(010e1441c3, 0x2114e, 0x21152, ['eax'], 4)
+0x2114e:	add	dword ptr [esi], ecx
+0x21150:	adc	al, 0x41
+0x21152:	ret	
+
+WriteMemOp_Gadget([ecx + 0x0] += ebx)(0119c083e0e083c0748842095bc3, 0xb28c, 0xb299, ['ebx'], 8)
+0xb28c:	add	dword ptr [ecx], ebx
+0xb28e:	rol	byte ptr [ebx - 0x3f7c1f20], 0x74
+0xb295:	mov	byte ptr [edx + 9], al
+0xb298:	pop	ebx
+0xb299:	ret	
+
+WriteMemOp_Gadget([ecx + 0x0] += ebx)(f80119c083e0e083c0748842095bc3, 0xb28b, 0xb299, ['ebx'], 8)
+0xb28b:	clc	
+0xb28c:	add	dword ptr [ecx], ebx
+0xb28e:	rol	byte ptr [ebx - 0x3f7c1f20], 0x74
+0xb295:	mov	byte ptr [edx + 9], al
+0xb298:	pop	ebx
+0xb299:	ret	
+
+WriteMemOp_Gadget([eax + 0x0] += eax)(9001000039c3, 0x12297, 0x1229c, [], 4)
+0x12297:	nop	
+0x12298:	add	dword ptr [eax], eax
+0x1229a:	add	byte ptr [ecx], bh
+0x1229c:	ret	
+
+WriteMemOp_Gadget([eax + 0x0] += eax)(01000039c3, 0x12298, 0x1229c, [], 4)
+0x12298:	add	dword ptr [eax], eax
+0x1229a:	add	byte ptr [ecx], bh
+0x1229c:	ret	
+
+WriteMemOp_Gadget([ecx + 0x0] += ebx)(f80119c083e0b583c0788842095bc3, 0xb2bc, 0xb2ca, ['ebx'], 8)
+0xb2bc:	clc	
+0xb2bd:	add	dword ptr [ecx], ebx
+0xb2bf:	rol	byte ptr [ebx - 0x3f7c4a20], 0x78
+0xb2c6:	mov	byte ptr [edx + 9], al
+0xb2c9:	pop	ebx
+0xb2ca:	ret	
+
+WriteMemOp_Gadget([ecx + 0x0] += ebx)(0119c083e0b583c0788842095bc3, 0xb2bd, 0xb2ca, ['ebx'], 8)
+0xb2bd:	add	dword ptr [ecx], ebx
+0xb2bf:	rol	byte ptr [ebx - 0x3f7c4a20], 0x78
+0xb2c6:	mov	byte ptr [edx + 9], al
+0xb2c9:	pop	ebx
+0xb2ca:	ret	
+
+WriteMemOp_Gadget([eax + 0x0] += eax)(6bfc0f84200100008b04248b2cb083c3, 0xe728, 0xe737, ['edi', 'eax'], 4)
+0xe728:	imul	edi, esp, 0xf
+0xe72b:	test	byte ptr [eax], ah
+0xe72d:	add	dword ptr [eax], eax
+0xe72f:	add	byte ptr [ebx + 0x2c8b2404], cl
+0xe735:	mov	al, 0x83
+0xe737:	ret	
+
+WriteMemOp_Gadget([edx + 0x0] += ecx)(020348010ac3, 0x1e3d1, 0x1e3d6, ['eax'], 4)
+0x1e3d1:	add	al, byte ptr [ebx]
+0x1e3d3:	dec	eax
+0x1e3d4:	add	dword ptr [edx], ecx
+0x1e3d6:	ret	
+
+WriteMemOp_Gadget([edx + 0x0] += ecx)(48010ac3, 0x1e3d3, 0x1e3d6, ['eax'], 4)
+0x1e3d3:	dec	eax
+0x1e3d4:	add	dword ptr [edx], ecx
+0x1e3d6:	ret	
+
+WriteMemOp_Gadget([edx + 0x0] += ecx)(010ac3, 0x1e3d4, 0x1e3d6, [], 4)
+0x1e3d4:	add	dword ptr [edx], ecx
+0x1e3d6:	ret	
+
+WriteMemOp_Gadget([ecx + 0xf1e89c8] += ecx)(0189c8891e0fb6510184d2751b5b5ec3, 0xb491, 0xb4a0, ['edx'], 4)
+0xb491:	add	dword ptr [ecx + 0xf1e89c8], ecx
+0xb497:	mov	dh, 0x51
+0xb499:	add	dword ptr [edx + edx*8 + 0x5e5b1b75], eax
+0xb4a0:	ret	
+
+WriteMemOp_Gadget([ebx + 0x0] |= eax)(090335020a0e1441c3, 0x1fcc4, 0x1fccc, ['eax', 'ecx'], 4)
+0x1fcc4:	or	dword ptr [ebx], eax
+0x1fcc6:	xor	eax, 0x140e0a02
+0x1fccb:	inc	ecx
+0x1fccc:	ret	
+
+WriteMemOp_Gadget([eax + 0x0] += eax)(010041c3, 0x1de4e, 0x1de51, ['ecx'], 4)
+0x1de4e:	add	dword ptr [eax], eax
+0x1de50:	inc	ecx
+0x1de51:	ret	
+
+WriteMemOp_Gadget([eax + 0x0] += eax)(0100899048120000c3, 0xadec, 0xadf4, [], 4)
+0xadec:	add	dword ptr [eax], eax
+0xadee:	mov	dword ptr [eax + 0x1248], edx
+0xadf4:	ret	
+
+WriteMemOp_Gadget([eax + 0x0] += eax)(0100889044120000c3, 0xae0c, 0xae14, [], 4)
+0xae0c:	add	dword ptr [eax], eax
+0xae0e:	mov	byte ptr [eax + 0x1244], dl
+0xae14:	ret	
+
+WriteMemOp_Gadget([ebp + 0x8b1c74c0] += eax)(0185c0741c8b410483c3, 0xbe19, 0xbe22, ['eax', 'ecx'], 4)
+0xbe19:	add	dword ptr [ebp - 0x74e38b40], eax
+0xbe1f:	inc	ecx
+0xbe20:	add	al, 0x83
+0xbe22:	ret	
+
+WriteMemOp_Gadget([ecx + 0x10dc90] += ecx)(018990dc100000f3c3, 0x4e2c, 0x4e34, ['ebx'], 4)
+0x4e2c:	add	dword ptr [ecx + 0x10dc90], ecx
+0x4e32:	add	bl, dh
+0x4e34:	ret	
+
+WriteMemOp_Gadget([eax + 0x0] += eax)(84200100008b04248b2cb083c3, 0xe72b, 0xe737, ['eax'], 4)
+0xe72b:	test	byte ptr [eax], ah
+0xe72d:	add	dword ptr [eax], eax
+0xe72f:	add	byte ptr [ebx + 0x2c8b2404], cl
+0xe735:	mov	al, 0x83
+0xe737:	ret	
+
+WriteMemOp_Gadget([eax + 0x0] += eax)(0100008b04248b2cb083c3, 0xe72d, 0xe737, ['eax'], 4)
+0xe72d:	add	dword ptr [eax], eax
+0xe72f:	add	byte ptr [ebx + 0x2c8b2404], cl
+0xe735:	mov	al, 0x83
+0xe737:	ret	
+
+WriteMemOp_Gadget([ebx + 0x5e] |= ebx)(095b5ec3, 0x4f7e, 0x4f81, [], 4)
+0x4f7e:	or	dword ptr [ebx + 0x5e], ebx
+0x4f81:	ret	
+
+BinOp_Gadget(ecx, ebp, +, ecx)(01e9bdb0ffff908d742600b8ffffffffc3, 0x985d, 0x986d, ['eax', 'ebp', 'ecx'], 4)
+0x985d:	add	ecx, ebp
+0x985f:	mov	ebp, 0x90ffffb0
+0x9864:	lea	esi, dword ptr [esi]
+0x9868:	mov	eax, 0xffffffff
+0x986d:	ret	
+
+BinOp_Gadget(ecx, ebp, +, ecx)(01e9bdb1ffff908d742600b8ffffffffc3, 0x975d, 0x976d, ['eax', 'ebp', 'ecx'], 4)
+0x975d:	add	ecx, ebp
+0x975f:	mov	ebp, 0x90ffffb1
+0x9764:	lea	esi, dword ptr [esi]
+0x9768:	mov	eax, 0xffffffff
+0x976d:	ret	
+
+BinOp_Gadget(edx, edx, ^, esi)(31f289135b5ec3, 0xfdc3, 0xfdc9, ['edx', 'ebx', 'esi'], 12)
+0xfdc3:	xor	edx, esi
+0xfdc5:	mov	dword ptr [ebx], edx
+0xfdc7:	pop	ebx
+0xfdc8:	pop	esi
+0xfdc9:	ret	
+
+BinOp_Gadget(edx, edx, ^, ecx)(33d1000083c4085bc3, 0x15ecf, 0x15ed7, ['edx', 'ebx'], 16)
+0x15ecf:	xor	edx, ecx
+0x15ed1:	add	byte ptr [eax], al
+0x15ed3:	add	esp, 8
+0x15ed6:	pop	ebx
+0x15ed7:	ret	
+
+BinOp_Gadget(edx, eax, |, edx)(5b5e09c20f94c0c3, 0x3efc, 0x3f03, ['eax', 'edx', 'ebx', 'esi'], 12)
+0x3efc:	pop	ebx
+0x3efd:	pop	esi
+0x3efe:	or	edx, eax
+0x3f00:	sete	al
+0x3f03:	ret	
+
+BinOp_Gadget(edx, eax, |, edx)(5e09c20f94c0c3, 0x3efd, 0x3f03, ['eax', 'edx', 'esi'], 8)
+0x3efd:	pop	esi
+0x3efe:	or	edx, eax
+0x3f00:	sete	al
+0x3f03:	ret	
+
+BinOp_Gadget(edx, eax, |, edx)(09c20f94c0c3, 0x3efe, 0x3f03, ['eax', 'edx'], 4)
+0x3efe:	or	edx, eax
+0x3f00:	sete	al
+0x3f03:	ret	
+
+BinOp_Gadget(ecx, ebp, +, ecx)(01e93db1ffff908d742600b8ffffffffc3, 0x97dd, 0x97ed, ['eax', 'ecx'], 4)
+0x97dd:	add	ecx, ebp
+0x97df:	cmp	eax, 0x90ffffb1
+0x97e4:	lea	esi, dword ptr [esi]
+0x97e8:	mov	eax, 0xffffffff
+0x97ed:	ret	
+
+LoadConst_Gadget(edi, 0x0)(1083c41c5b5e5f5dc3, 0x4815, 0x481d, ['edi', 'ebp'], 12)
+0x4815:	adc	byte ptr [ebx + 0x5e5b1cc4], al
+0x481b:	pop	edi
+0x481c:	pop	ebp
+0x481d:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(1083c41c5b5e5f5dc3, 0x4815, 0x481d, ['edi', 'ebp'], 12)
+0x4815:	adc	byte ptr [ebx + 0x5e5b1cc4], al
+0x481b:	pop	edi
+0x481c:	pop	ebp
+0x481d:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(0c31c05b5e5f5dc3, 0xdc04, 0xdc0b, ['eax', 'ebp'], 8)
+0xdc04:	or	al, 0x31
+0xdc06:	rcr	byte ptr [ebx + 0x5e], 0x5f
+0xdc0a:	pop	ebp
+0xdc0b:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(d275ec5bc3, 0xb01b, 0xb01f, ['ebx'], 8)
+0xb01b:	sal	byte ptr [ebp - 0x14], cl
+0xb01e:	pop	ebx
+0xb01f:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(ec5bc3, 0xb01d, 0xb01f, ['eax', 'ebx'], 8)
+0xb01d:	in	al, dx
+0xb01e:	pop	ebx
+0xb01f:	ret	
+
+LoadConst_Gadget(ebx, 0x8)(ba0100000083c40889d05bc3, 0x14022, 0x1402d, ['eax', 'edx', 'ebx'], 16)
+0x14022:	mov	edx, 1
+0x14027:	add	esp, 8
+0x1402a:	mov	eax, edx
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+LoadConst_Gadget(ebx, 0x8)(0100000083c40889d05bc3, 0x14023, 0x1402d, ['eax', 'ebx'], 16)
+0x14023:	add	dword ptr [eax], eax
+0x14025:	add	byte ptr [eax], al
+0x14027:	add	esp, 8
+0x1402a:	mov	eax, edx
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(00000083c40889d05bc3, 0x14024, 0x1402d, ['ebx'], 8)
+0x14024:	add	byte ptr [eax], al
+0x14026:	add	byte ptr [ebx - 0x2f76f73c], al
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+LoadConst_Gadget(ebx, 0x8)(000083c40889d05bc3, 0x14025, 0x1402d, ['eax', 'ebx'], 16)
+0x14025:	add	byte ptr [eax], al
+0x14027:	add	esp, 8
+0x1402a:	mov	eax, edx
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(0083c40889d05bc3, 0x14026, 0x1402d, ['ebx'], 8)
+0x14026:	add	byte ptr [ebx - 0x2f76f73c], al
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+LoadConst_Gadget(ebx, 0x8)(83c40889d05bc3, 0x14027, 0x1402d, ['eax', 'ebx'], 16)
+0x14027:	add	esp, 8
+0x1402a:	mov	eax, edx
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89d05bc3, 0x1402a, 0x1402d, ['eax', 'ebx'], 8)
+0x1402a:	mov	eax, edx
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(0e83c4045b5ec3, 0xb04b, 0xb051, ['ebx', 'esi'], 12)
+0xb04b:	push	cs
+0xb04c:	add	esp, 4
+0xb04f:	pop	ebx
+0xb050:	pop	esi
+0xb051:	ret	
+
+LoadConst_Gadget(esi, 0x4)(0e83c4045b5ec3, 0xb04b, 0xb051, ['ebx', 'esi'], 12)
+0xb04b:	push	cs
+0xb04c:	add	esp, 4
+0xb04f:	pop	ebx
+0xb050:	pop	esi
+0xb051:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(000000753183c4145b5ec3, 0x7854, 0x785e, ['ebx', 'esi'], 32)
+0x7854:	add	byte ptr [eax], al
+0x7856:	add	byte ptr [ebp + 0x31], dh
+0x7859:	add	esp, 0x14
+0x785c:	pop	ebx
+0x785d:	pop	esi
+0x785e:	ret	
+
+LoadConst_Gadget(esi, 0x18)(000000753183c4145b5ec3, 0x7854, 0x785e, ['ebx', 'esi'], 32)
+0x7854:	add	byte ptr [eax], al
+0x7856:	add	byte ptr [ebp + 0x31], dh
+0x7859:	add	esp, 0x14
+0x785c:	pop	ebx
+0x785d:	pop	esi
+0x785e:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(00753183c4145b5ec3, 0x7856, 0x785e, ['ebx', 'esi'], 32)
+0x7856:	add	byte ptr [ebp + 0x31], dh
+0x7859:	add	esp, 0x14
+0x785c:	pop	ebx
+0x785d:	pop	esi
+0x785e:	ret	
+
+LoadConst_Gadget(esi, 0x18)(00753183c4145b5ec3, 0x7856, 0x785e, ['ebx', 'esi'], 32)
+0x7856:	add	byte ptr [ebp + 0x31], dh
+0x7859:	add	esp, 0x14
+0x785c:	pop	ebx
+0x785d:	pop	esi
+0x785e:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(d172f331c083c4045b5ec3, 0xc05a, 0xc064, ['eax', 'ebx', 'esi'], 16)
+0xc05a:	sal	dword ptr [edx - 0xd], 1
+0xc05d:	xor	eax, eax
+0xc05f:	add	esp, 4
+0xc062:	pop	ebx
+0xc063:	pop	esi
+0xc064:	ret	
+
+LoadConst_Gadget(esi, 0x8)(d172f331c083c4045b5ec3, 0xc05a, 0xc064, ['eax', 'ebx', 'esi'], 16)
+0xc05a:	sal	dword ptr [edx - 0xd], 1
+0xc05d:	xor	eax, eax
+0xc05f:	add	esp, 4
+0xc062:	pop	ebx
+0xc063:	pop	esi
+0xc064:	ret	
+
+LoadConst_Gadget(edi, 0x8)(89f05b5e5f5dc3, 0x6063, 0x6069, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x6063:	mov	eax, esi
+0x6065:	pop	ebx
+0x6066:	pop	esi
+0x6067:	pop	edi
+0x6068:	pop	ebp
+0x6069:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(89f05b5e5f5dc3, 0x6063, 0x6069, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x6063:	mov	eax, esi
+0x6065:	pop	ebx
+0x6066:	pop	esi
+0x6067:	pop	edi
+0x6068:	pop	ebp
+0x6069:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89f05b5e5f5dc3, 0x6063, 0x6069, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x6063:	mov	eax, esi
+0x6065:	pop	ebx
+0x6066:	pop	esi
+0x6067:	pop	edi
+0x6068:	pop	ebp
+0x6069:	ret	
+
+LoadConst_Gadget(esi, 0x4)(89f05b5e5f5dc3, 0x6063, 0x6069, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x6063:	mov	eax, esi
+0x6065:	pop	ebx
+0x6066:	pop	esi
+0x6067:	pop	edi
+0x6068:	pop	ebp
+0x6069:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(8b0083c4045b5ec3, 0xc065, 0xc06c, ['eax', 'ebx', 'esi'], 16)
+0xc065:	mov	eax, dword ptr [eax]
+0xc067:	add	esp, 4
+0xc06a:	pop	ebx
+0xc06b:	pop	esi
+0xc06c:	ret	
+
+LoadConst_Gadget(esi, 0x8)(8b0083c4045b5ec3, 0xc065, 0xc06c, ['eax', 'ebx', 'esi'], 16)
+0xc065:	mov	eax, dword ptr [eax]
+0xc067:	add	esp, 4
+0xc06a:	pop	ebx
+0xc06b:	pop	esi
+0xc06c:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(ef83c40489d05b5ec3, 0xb068, 0xb070, ['eax', 'ebx', 'esi'], 16)
+0xb068:	out	dx, eax
+0xb069:	add	esp, 4
+0xb06c:	mov	eax, edx
+0xb06e:	pop	ebx
+0xb06f:	pop	esi
+0xb070:	ret	
+
+LoadConst_Gadget(esi, 0x8)(ef83c40489d05b5ec3, 0xb068, 0xb070, ['eax', 'ebx', 'esi'], 16)
+0xb068:	out	dx, eax
+0xb069:	add	esp, 4
+0xb06c:	mov	eax, edx
+0xb06e:	pop	ebx
+0xb06f:	pop	esi
+0xb070:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(83c40489d05b5ec3, 0xb069, 0xb070, ['eax', 'ebx', 'esi'], 16)
+0xb069:	add	esp, 4
+0xb06c:	mov	eax, edx
+0xb06e:	pop	ebx
+0xb06f:	pop	esi
+0xb070:	ret	
+
+LoadConst_Gadget(esi, 0x8)(83c40489d05b5ec3, 0xb069, 0xb070, ['eax', 'ebx', 'esi'], 16)
+0xb069:	add	esp, 4
+0xb06c:	mov	eax, edx
+0xb06e:	pop	ebx
+0xb06f:	pop	esi
+0xb070:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89d05b5ec3, 0xb06c, 0xb070, ['eax', 'ebx', 'esi'], 12)
+0xb06c:	mov	eax, edx
+0xb06e:	pop	ebx
+0xb06f:	pop	esi
+0xb070:	ret	
+
+LoadConst_Gadget(esi, 0x4)(89d05b5ec3, 0xb06c, 0xb070, ['eax', 'ebx', 'esi'], 12)
+0xb06c:	mov	eax, edx
+0xb06e:	pop	ebx
+0xb06f:	pop	esi
+0xb070:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(19c083e0b583c0788842095bc3, 0xb2be, 0xb2ca, ['eax', 'ebx'], 8)
+0xb2be:	sbb	eax, eax
+0xb2c0:	and	eax, 0xffffffb5
+0xb2c3:	add	eax, 0x78
+0xb2c6:	mov	byte ptr [edx + 9], al
+0xb2c9:	pop	ebx
+0xb2ca:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0883c44c5b5e5f5dc3, 0x12882, 0x1288a, ['edi', 'ebp'], 12)
+0x12882:	or	byte ptr [ebx + 0x5e5b4cc4], al
+0x12888:	pop	edi
+0x12889:	pop	ebp
+0x1288a:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0883c44c5b5e5f5dc3, 0x12882, 0x1288a, ['edi', 'ebp'], 12)
+0x12882:	or	byte ptr [ebx + 0x5e5b4cc4], al
+0x12888:	pop	edi
+0x12889:	pop	ebp
+0x1288a:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(010083c4185bc3, 0x3ec3, 0x3ec9, ['ebx'], 32)
+0x3ec3:	add	dword ptr [eax], eax
+0x3ec5:	add	esp, 0x18
+0x3ec8:	pop	ebx
+0x3ec9:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(000000751383c4185bc3, 0xc89c, 0xc8a5, ['ebx'], 32)
+0xc89c:	add	byte ptr [eax], al
+0xc89e:	add	byte ptr [ebp + 0x13], dh
+0xc8a1:	add	esp, 0x18
+0xc8a4:	pop	ebx
+0xc8a5:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(00751383c4185bc3, 0xc89e, 0xc8a5, ['ebx'], 32)
+0xc89e:	add	byte ptr [ebp + 0x13], dh
+0xc8a1:	add	esp, 0x18
+0xc8a4:	pop	ebx
+0xc8a5:	ret	
+
+LoadConst_Gadget(edi, 0x0)(610a0e1441c3, 0x208a0, 0x208a5, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x208a0:	popal	
+0x208a1:	or	cl, byte ptr [esi]
+0x208a3:	adc	al, 0x41
+0x208a5:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(610a0e1441c3, 0x208a0, 0x208a5, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x208a0:	popal	
+0x208a1:	or	cl, byte ptr [esi]
+0x208a3:	adc	al, 0x41
+0x208a5:	ret	
+
+LoadConst_Gadget(edx, 0x14)(610a0e1441c3, 0x208a0, 0x208a5, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x208a0:	popal	
+0x208a1:	or	cl, byte ptr [esi]
+0x208a3:	adc	al, 0x41
+0x208a5:	ret	
+
+LoadConst_Gadget(ebx, 0x10)(610a0e1441c3, 0x208a0, 0x208a5, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x208a0:	popal	
+0x208a1:	or	cl, byte ptr [esi]
+0x208a3:	adc	al, 0x41
+0x208a5:	ret	
+
+LoadConst_Gadget(esi, 0x4)(610a0e1441c3, 0x208a0, 0x208a5, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x208a0:	popal	
+0x208a1:	or	cl, byte ptr [esi]
+0x208a3:	adc	al, 0x41
+0x208a5:	ret	
+
+LoadConst_Gadget(edi, 0x4)(c0741583c40c5b5e5f5dc3, 0xa0a2, 0xa0ac, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xa0a2:	sal	byte ptr [ebp + edx - 0x7d], 0xc4
+0xa0a7:	or	al, 0x5b
+0xa0a9:	pop	esi
+0xa0aa:	pop	edi
+0xa0ab:	pop	ebp
+0xa0ac:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(c0741583c40c5b5e5f5dc3, 0xa0a2, 0xa0ac, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xa0a2:	sal	byte ptr [ebp + edx - 0x7d], 0xc4
+0xa0a7:	or	al, 0x5b
+0xa0a9:	pop	esi
+0xa0aa:	pop	edi
+0xa0ab:	pop	ebp
+0xa0ac:	ret	
+
+LoadConst_Gadget(esi, 0x0)(c0741583c40c5b5e5f5dc3, 0xa0a2, 0xa0ac, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xa0a2:	sal	byte ptr [ebp + edx - 0x7d], 0xc4
+0xa0a7:	or	al, 0x5b
+0xa0a9:	pop	esi
+0xa0aa:	pop	edi
+0xa0ab:	pop	ebp
+0xa0ac:	ret	
+
+LoadConst_Gadget(edi, 0x4)(1583c40c5b5e5f5dc3, 0xa0a4, 0xa0ac, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xa0a4:	adc	eax, 0x5b0cc483
+0xa0a9:	pop	esi
+0xa0aa:	pop	edi
+0xa0ab:	pop	ebp
+0xa0ac:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(1583c40c5b5e5f5dc3, 0xa0a4, 0xa0ac, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xa0a4:	adc	eax, 0x5b0cc483
+0xa0a9:	pop	esi
+0xa0aa:	pop	edi
+0xa0ab:	pop	ebp
+0xa0ac:	ret	
+
+LoadConst_Gadget(esi, 0x0)(1583c40c5b5e5f5dc3, 0xa0a4, 0xa0ac, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xa0a4:	adc	eax, 0x5b0cc483
+0xa0a9:	pop	esi
+0xa0aa:	pop	edi
+0xa0ab:	pop	ebp
+0xa0ac:	ret	
+
+LoadConst_Gadget(edx, 0x0)(5a0a0e1441c3, 0x1d171, 0x1d176, ['eax', 'edx', 'ecx'], 8)
+0x1d171:	pop	edx
+0x1d172:	or	cl, byte ptr [esi]
+0x1d174:	adc	al, 0x41
+0x1d176:	ret	
+
+LoadConst_Gadget(edi, 0x0)(da83c41c5b5e5f5dc3, 0x158aa, 0x158b2, ['edi', 'ebp'], 12)
+0x158aa:	fiadd	dword ptr [ebx + 0x5e5b1cc4]
+0x158b0:	pop	edi
+0x158b1:	pop	ebp
+0x158b2:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(da83c41c5b5e5f5dc3, 0x158aa, 0x158b2, ['edi', 'ebp'], 12)
+0x158aa:	fiadd	dword ptr [ebx + 0x5e5b1cc4]
+0x158b0:	pop	edi
+0x158b1:	pop	ebp
+0x158b2:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0b83c41c5b5e5f5dc3, 0x140af, 0x140b7, ['edi', 'eax', 'ebp'], 12)
+0x140af:	or	eax, dword ptr [ebx + 0x5e5b1cc4]
+0x140b5:	pop	edi
+0x140b6:	pop	ebp
+0x140b7:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0b83c41c5b5e5f5dc3, 0x140af, 0x140b7, ['edi', 'eax', 'ebp'], 12)
+0x140af:	or	eax, dword ptr [ebx + 0x5e5b1cc4]
+0x140b5:	pop	edi
+0x140b6:	pop	ebp
+0x140b7:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(10b80100000083c4045b5ec3, 0xb0bf, 0xb0ca, ['ebx', 'esi'], 16)
+0xb0bf:	adc	byte ptr [eax + 1], bh
+0xb0c5:	add	esp, 4
+0xb0c8:	pop	ebx
+0xb0c9:	pop	esi
+0xb0ca:	ret	
+
+LoadConst_Gadget(esi, 0x8)(10b80100000083c4045b5ec3, 0xb0bf, 0xb0ca, ['ebx', 'esi'], 16)
+0xb0bf:	adc	byte ptr [eax + 1], bh
+0xb0c5:	add	esp, 4
+0xb0c8:	pop	ebx
+0xb0c9:	pop	esi
+0xb0ca:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(b80100000083c4045b5ec3, 0xb0c0, 0xb0ca, ['eax', 'ebx', 'esi'], 16)
+0xb0c0:	mov	eax, 1
+0xb0c5:	add	esp, 4
+0xb0c8:	pop	ebx
+0xb0c9:	pop	esi
+0xb0ca:	ret	
+
+LoadConst_Gadget(esi, 0x8)(b80100000083c4045b5ec3, 0xb0c0, 0xb0ca, ['eax', 'ebx', 'esi'], 16)
+0xb0c0:	mov	eax, 1
+0xb0c5:	add	esp, 4
+0xb0c8:	pop	ebx
+0xb0c9:	pop	esi
+0xb0ca:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(0100000083c4045b5ec3, 0xb0c1, 0xb0ca, ['ebx', 'esi'], 16)
+0xb0c1:	add	dword ptr [eax], eax
+0xb0c3:	add	byte ptr [eax], al
+0xb0c5:	add	esp, 4
+0xb0c8:	pop	ebx
+0xb0c9:	pop	esi
+0xb0ca:	ret	
+
+LoadConst_Gadget(esi, 0x8)(0100000083c4045b5ec3, 0xb0c1, 0xb0ca, ['ebx', 'esi'], 16)
+0xb0c1:	add	dword ptr [eax], eax
+0xb0c3:	add	byte ptr [eax], al
+0xb0c5:	add	esp, 4
+0xb0c8:	pop	ebx
+0xb0c9:	pop	esi
+0xb0ca:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(5d0a0e1441c3, 0x1e0cd, 0x1e0d2, ['eax', 'ebp', 'ecx'], 8)
+0x1e0cd:	pop	ebp
+0x1e0ce:	or	cl, byte ptr [esi]
+0x1e0d0:	adc	al, 0x41
+0x1e0d2:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(31c083c4045b5ec3, 0xb0df, 0xb0e6, ['eax', 'ebx', 'esi'], 16)
+0xb0df:	xor	eax, eax
+0xb0e1:	add	esp, 4
+0xb0e4:	pop	ebx
+0xb0e5:	pop	esi
+0xb0e6:	ret	
+
+LoadConst_Gadget(esi, 0x8)(31c083c4045b5ec3, 0xb0df, 0xb0e6, ['eax', 'ebx', 'esi'], 16)
+0xb0df:	xor	eax, eax
+0xb0e1:	add	esp, 4
+0xb0e4:	pop	ebx
+0xb0e5:	pop	esi
+0xb0e6:	ret	
+
+LoadConst_Gadget(esi, 0x0)(84ffff83c41083c4045b5ec3, 0x98fd, 0x9908, ['eax', 'esi'], 8)
+0x98fd:	test	bh, bh
+0x98ff:	inc	dword ptr [ebx - 0x3b7cef3c]
+0x9905:	add	al, 0x5b
+0x9907:	pop	esi
+0x9908:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0083c47c5b5e5f5dc3, 0xf10c, 0xf114, ['edi', 'ebp'], 12)
+0xf10c:	add	byte ptr [ebx + 0x5e5b7cc4], al
+0xf112:	pop	edi
+0xf113:	pop	ebp
+0xf114:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0083c47c5b5e5f5dc3, 0xf10c, 0xf114, ['edi', 'ebp'], 12)
+0xf10c:	add	byte ptr [ebx + 0x5e5b7cc4], al
+0xf112:	pop	edi
+0xf113:	pop	ebp
+0xf114:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(0089d85b5e5f5dc3, 0x5113, 0x511a, ['ebp'], 8)
+0x5113:	add	byte ptr [ecx + 0x5f5e5bd8], cl
+0x5119:	pop	ebp
+0x511a:	ret	
+
+LoadConst_Gadget(edi, 0x8)(89d85b5e5f5dc3, 0x5114, 0x511a, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x5114:	mov	eax, ebx
+0x5116:	pop	ebx
+0x5117:	pop	esi
+0x5118:	pop	edi
+0x5119:	pop	ebp
+0x511a:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(89d85b5e5f5dc3, 0x5114, 0x511a, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x5114:	mov	eax, ebx
+0x5116:	pop	ebx
+0x5117:	pop	esi
+0x5118:	pop	edi
+0x5119:	pop	ebp
+0x511a:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89d85b5e5f5dc3, 0x5114, 0x511a, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x5114:	mov	eax, ebx
+0x5116:	pop	ebx
+0x5117:	pop	esi
+0x5118:	pop	edi
+0x5119:	pop	ebp
+0x511a:	ret	
+
+LoadConst_Gadget(esi, 0x4)(89d85b5e5f5dc3, 0x5114, 0x511a, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x5114:	mov	eax, ebx
+0x5116:	pop	ebx
+0x5117:	pop	esi
+0x5118:	pop	edi
+0x5119:	pop	ebp
+0x511a:	ret	
+
+LoadConst_Gadget(edi, 0x0)(d85b5e5f5dc3, 0x5115, 0x511a, ['edi', 'ebp'], 12)
+0x5115:	fcomp	dword ptr [ebx + 0x5e]
+0x5118:	pop	edi
+0x5119:	pop	ebp
+0x511a:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(d85b5e5f5dc3, 0x5115, 0x511a, ['edi', 'ebp'], 12)
+0x5115:	fcomp	dword ptr [ebx + 0x5e]
+0x5118:	pop	edi
+0x5119:	pop	ebp
+0x511a:	ret	
+
+LoadConst_Gadget(eax, 0x0)(8b0424c3, 0xa932, 0xa935, ['eax'], 4)
+0xa932:	mov	eax, dword ptr [esp]
+0xa935:	ret	
+
+LoadConst_Gadget(esi, 0x0)(8b3424c3, 0xa936, 0xa939, ['esi'], 4)
+0xa936:	mov	esi, dword ptr [esp]
+0xa939:	ret	
+
+LoadConst_Gadget(edi, 0x0)(1c89d85b5e5f5dc3, 0xc137, 0xc13e, ['edi', 'eax', 'ebp'], 12)
+0xc137:	sbb	al, 0x89
+0xc139:	fcomp	dword ptr [ebx + 0x5e]
+0xc13c:	pop	edi
+0xc13d:	pop	ebp
+0xc13e:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(1c89d85b5e5f5dc3, 0xc137, 0xc13e, ['edi', 'eax', 'ebp'], 12)
+0xc137:	sbb	al, 0x89
+0xc139:	fcomp	dword ptr [ebx + 0x5e]
+0xc13c:	pop	edi
+0xc13d:	pop	ebp
+0xc13e:	ret	
+
+LoadConst_Gadget(edi, 0x0)(8b3c24c3, 0xa93a, 0xa93d, ['edi'], 4)
+0xa93a:	mov	edi, dword ptr [esp]
+0xa93d:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(00750683c4145b5ec3, 0xb93c, 0xb944, ['ebx', 'esi'], 32)
+0xb93c:	add	byte ptr [ebp + 6], dh
+0xb93f:	add	esp, 0x14
+0xb942:	pop	ebx
+0xb943:	pop	esi
+0xb944:	ret	
+
+LoadConst_Gadget(esi, 0x18)(00750683c4145b5ec3, 0xb93c, 0xb944, ['ebx', 'esi'], 32)
+0xb93c:	add	byte ptr [ebp + 6], dh
+0xb93f:	add	esp, 0x14
+0xb942:	pop	ebx
+0xb943:	pop	esi
+0xb944:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0083c42c5b5e5f5dc3, 0xd93d, 0xd945, ['edi', 'ebp'], 12)
+0xd93d:	add	byte ptr [ebx + 0x5e5b2cc4], al
+0xd943:	pop	edi
+0xd944:	pop	ebp
+0xd945:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0083c42c5b5e5f5dc3, 0xd93d, 0xd945, ['edi', 'ebp'], 12)
+0xd93d:	add	byte ptr [ebx + 0x5e5b2cc4], al
+0xd943:	pop	edi
+0xd944:	pop	ebp
+0xd945:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(8b2c24c3, 0xa93e, 0xa941, ['ebp'], 4)
+0xa93e:	mov	ebp, dword ptr [esp]
+0xa941:	ret	
+
+LoadConst_Gadget(edi, 0x0)(ff83c4105b5e5fc3, 0x4946, 0x494d, ['edi'], 8)
+0x4946:	inc	dword ptr [ebx + 0x5e5b10c4]
+0x494c:	pop	edi
+0x494d:	ret	
+
+LoadConst_Gadget(edi, 0x18)(83c4105b5e5fc3, 0x4947, 0x494d, ['edi', 'ebx', 'esi'], 32)
+0x4947:	add	esp, 0x10
+0x494a:	pop	ebx
+0x494b:	pop	esi
+0x494c:	pop	edi
+0x494d:	ret	
+
+LoadConst_Gadget(ebx, 0x10)(83c4105b5e5fc3, 0x4947, 0x494d, ['edi', 'ebx', 'esi'], 32)
+0x4947:	add	esp, 0x10
+0x494a:	pop	ebx
+0x494b:	pop	esi
+0x494c:	pop	edi
+0x494d:	ret	
+
+LoadConst_Gadget(esi, 0x14)(83c4105b5e5fc3, 0x4947, 0x494d, ['edi', 'ebx', 'esi'], 32)
+0x4947:	add	esp, 0x10
+0x494a:	pop	ebx
+0x494b:	pop	esi
+0x494c:	pop	edi
+0x494d:	ret	
+
+LoadConst_Gadget(edi, 0x0)(105b5e5fc3, 0x4949, 0x494d, ['edi'], 8)
+0x4949:	adc	byte ptr [ebx + 0x5e], bl
+0x494c:	pop	edi
+0x494d:	ret	
+
+LoadConst_Gadget(edi, 0x0)(2883c41c5b5e5f5dc3, 0xe955, 0xe95d, ['edi', 'ebp'], 12)
+0xe955:	sub	byte ptr [ebx + 0x5e5b1cc4], al
+0xe95b:	pop	edi
+0xe95c:	pop	ebp
+0xe95d:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(2883c41c5b5e5f5dc3, 0xe955, 0xe95d, ['edi', 'ebp'], 12)
+0xe955:	sub	byte ptr [ebx + 0x5e5b1cc4], al
+0xe95b:	pop	edi
+0xe95c:	pop	ebp
+0xe95d:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(1184d275e789f05b5ec3, 0xc16c, 0xc175, ['ebx', 'esi'], 12)
+0xc16c:	adc	dword ptr [edx + edx*8 - 0xf76188b], eax
+0xc173:	pop	ebx
+0xc174:	pop	esi
+0xc175:	ret	
+
+LoadConst_Gadget(esi, 0x4)(1184d275e789f05b5ec3, 0xc16c, 0xc175, ['ebx', 'esi'], 12)
+0xc16c:	adc	dword ptr [edx + edx*8 - 0xf76188b], eax
+0xc173:	pop	ebx
+0xc174:	pop	esi
+0xc175:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(0000005e5f5dc3, 0x13d92, 0x13d98, ['ebp'], 8)
+0x13d92:	add	byte ptr [eax], al
+0x13d94:	add	byte ptr [esi + 0x5f], bl
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(d275e789f05b5ec3, 0xc16e, 0xc175, ['eax', 'ebx', 'esi'], 12)
+0xc16e:	sal	byte ptr [ebp - 0x19], cl
+0xc171:	mov	eax, esi
+0xc173:	pop	ebx
+0xc174:	pop	esi
+0xc175:	ret	
+
+LoadConst_Gadget(esi, 0x4)(d275e789f05b5ec3, 0xc16e, 0xc175, ['eax', 'ebx', 'esi'], 12)
+0xc16e:	sal	byte ptr [ebp - 0x19], cl
+0xc171:	mov	eax, esi
+0xc173:	pop	ebx
+0xc174:	pop	esi
+0xc175:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89f05b5ec3, 0xc171, 0xc175, ['eax', 'ebx', 'esi'], 12)
+0xc171:	mov	eax, esi
+0xc173:	pop	ebx
+0xc174:	pop	esi
+0xc175:	ret	
+
+LoadConst_Gadget(esi, 0x4)(89f05b5ec3, 0xc171, 0xc175, ['eax', 'ebx', 'esi'], 12)
+0xc171:	mov	eax, esi
+0xc173:	pop	ebx
+0xc174:	pop	esi
+0xc175:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(005e5f5dc3, 0x13d94, 0x13d98, ['ebp'], 8)
+0x13d94:	add	byte ptr [esi + 0x5f], bl
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(edi, 0x8)(00750a5b31c05e5fc3, 0xb97b, 0xb983, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xb97b:	add	byte ptr [ebp + 0xa], dh
+0xb97e:	pop	ebx
+0xb97f:	xor	eax, eax
+0xb981:	pop	esi
+0xb982:	pop	edi
+0xb983:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(00750a5b31c05e5fc3, 0xb97b, 0xb983, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xb97b:	add	byte ptr [ebp + 0xa], dh
+0xb97e:	pop	ebx
+0xb97f:	xor	eax, eax
+0xb981:	pop	esi
+0xb982:	pop	edi
+0xb983:	ret	
+
+LoadConst_Gadget(esi, 0x4)(00750a5b31c05e5fc3, 0xb97b, 0xb983, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xb97b:	add	byte ptr [ebp + 0xa], dh
+0xb97e:	pop	ebx
+0xb97f:	xor	eax, eax
+0xb981:	pop	esi
+0xb982:	pop	edi
+0xb983:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5b31c05e5fc3, 0xb97e, 0xb983, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xb97e:	pop	ebx
+0xb97f:	xor	eax, eax
+0xb981:	pop	esi
+0xb982:	pop	edi
+0xb983:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b31c05e5fc3, 0xb97e, 0xb983, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xb97e:	pop	ebx
+0xb97f:	xor	eax, eax
+0xb981:	pop	esi
+0xb982:	pop	edi
+0xb983:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b31c05e5fc3, 0xb97e, 0xb983, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xb97e:	pop	ebx
+0xb97f:	xor	eax, eax
+0xb981:	pop	esi
+0xb982:	pop	edi
+0xb983:	ret	
+
+LoadConst_Gadget(edi, 0x4)(31c05e5fc3, 0xb97f, 0xb983, ['edi', 'eax', 'esi'], 12)
+0xb97f:	xor	eax, eax
+0xb981:	pop	esi
+0xb982:	pop	edi
+0xb983:	ret	
+
+LoadConst_Gadget(esi, 0x0)(31c05e5fc3, 0xb97f, 0xb983, ['edi', 'eax', 'esi'], 12)
+0xb97f:	xor	eax, eax
+0xb981:	pop	esi
+0xb982:	pop	edi
+0xb983:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(30e8b06b000083c4185bc3, 0x498a, 0x4994, ['eax', 'ebx'], 32)
+0x498a:	xor	al, ch
+0x498c:	mov	al, 0x6b
+0x498e:	add	byte ptr [eax], al
+0x4990:	add	esp, 0x18
+0x4993:	pop	ebx
+0x4994:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(b06b000083c4185bc3, 0x498c, 0x4994, ['eax', 'ebx'], 32)
+0x498c:	mov	al, 0x6b
+0x498e:	add	byte ptr [eax], al
+0x4990:	add	esp, 0x18
+0x4993:	pop	ebx
+0x4994:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(6b000083c4185bc3, 0x498d, 0x4994, ['eax', 'ebx'], 32)
+0x498d:	imul	eax, dword ptr [eax], 0
+0x4990:	add	esp, 0x18
+0x4993:	pop	ebx
+0x4994:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(000083c4185bc3, 0x498e, 0x4994, ['ebx'], 32)
+0x498e:	add	byte ptr [eax], al
+0x4990:	add	esp, 0x18
+0x4993:	pop	ebx
+0x4994:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(32e80084ffff83c41083c4045b5ec3, 0x999a, 0x99a8, ['ebx', 'esi', 'ecx'], 16)
+0x999a:	xor	ch, al
+0x999c:	add	byte ptr [edi + edi*8 + 0x10c483ff], al
+0x99a3:	add	esp, 4
+0x99a6:	pop	ebx
+0x99a7:	pop	esi
+0x99a8:	ret	
+
+LoadConst_Gadget(esi, 0x8)(32e80084ffff83c41083c4045b5ec3, 0x999a, 0x99a8, ['ebx', 'esi', 'ecx'], 16)
+0x999a:	xor	ch, al
+0x999c:	add	byte ptr [edi + edi*8 + 0x10c483ff], al
+0x99a3:	add	esp, 4
+0x99a6:	pop	ebx
+0x99a7:	pop	esi
+0x99a8:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(0084ffff83c41083c4045b5ec3, 0x999c, 0x99a8, ['ebx', 'esi'], 16)
+0x999c:	add	byte ptr [edi + edi*8 + 0x10c483ff], al
+0x99a3:	add	esp, 4
+0x99a6:	pop	ebx
+0x99a7:	pop	esi
+0x99a8:	ret	
+
+LoadConst_Gadget(esi, 0x8)(0084ffff83c41083c4045b5ec3, 0x999c, 0x99a8, ['ebx', 'esi'], 16)
+0x999c:	add	byte ptr [edi + edi*8 + 0x10c483ff], al
+0x99a3:	add	esp, 4
+0x99a6:	pop	ebx
+0x99a7:	pop	esi
+0x99a8:	ret	
+
+LoadConst_Gadget(edi, 0x8)(905bb8010000005e5fc3, 0xb99f, 0xb9a8, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xb99f:	nop	
+0xb9a0:	pop	ebx
+0xb9a1:	mov	eax, 1
+0xb9a6:	pop	esi
+0xb9a7:	pop	edi
+0xb9a8:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(905bb8010000005e5fc3, 0xb99f, 0xb9a8, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xb99f:	nop	
+0xb9a0:	pop	ebx
+0xb9a1:	mov	eax, 1
+0xb9a6:	pop	esi
+0xb9a7:	pop	edi
+0xb9a8:	ret	
+
+LoadConst_Gadget(esi, 0x4)(905bb8010000005e5fc3, 0xb99f, 0xb9a8, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xb99f:	nop	
+0xb9a0:	pop	ebx
+0xb9a1:	mov	eax, 1
+0xb9a6:	pop	esi
+0xb9a7:	pop	edi
+0xb9a8:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(485bc3, 0x101a1, 0x101a3, ['eax', 'ebx'], 8)
+0x101a1:	dec	eax
+0x101a2:	pop	ebx
+0x101a3:	ret	
+
+LoadConst_Gadget(edi, 0x0)(b0405f0a0e1441c3, 0x1c9a7, 0x1c9ae, ['edi', 'eax', 'ecx'], 8)
+0x1c9a7:	mov	al, 0x40
+0x1c9a9:	pop	edi
+0x1c9aa:	or	cl, byte ptr [esi]
+0x1c9ac:	adc	al, 0x41
+0x1c9ae:	ret	
+
+LoadConst_Gadget(edi, 0x0)(405f0a0e1441c3, 0x1c9a8, 0x1c9ae, ['edi', 'eax', 'ecx'], 8)
+0x1c9a8:	inc	eax
+0x1c9a9:	pop	edi
+0x1c9aa:	or	cl, byte ptr [esi]
+0x1c9ac:	adc	al, 0x41
+0x1c9ae:	ret	
+
+LoadConst_Gadget(edi, 0x0)(5f0a0e1441c3, 0x1c9a9, 0x1c9ae, ['edi', 'eax', 'ecx'], 8)
+0x1c9a9:	pop	edi
+0x1c9aa:	or	cl, byte ptr [esi]
+0x1c9ac:	adc	al, 0x41
+0x1c9ae:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(1085c0750485f6750683c4045b5ec3, 0x129ac, 0x129ba, ['eax', 'edx', 'ebx', 'esi'], 16)
+0x129ac:	adc	byte ptr [ebp - 0x7afb8a40], al
+0x129b2:	div	byte ptr [ebp + 6]
+0x129b5:	add	esp, 4
+0x129b8:	pop	ebx
+0x129b9:	pop	esi
+0x129ba:	ret	
+
+LoadConst_Gadget(esi, 0x8)(1085c0750485f6750683c4045b5ec3, 0x129ac, 0x129ba, ['eax', 'edx', 'ebx', 'esi'], 16)
+0x129ac:	adc	byte ptr [ebp - 0x7afb8a40], al
+0x129b2:	div	byte ptr [ebp + 6]
+0x129b5:	add	esp, 4
+0x129b8:	pop	ebx
+0x129b9:	pop	esi
+0x129ba:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(0485f6750683c4045b5ec3, 0x129b0, 0x129ba, ['eax', 'edx', 'ebx', 'esi'], 16)
+0x129b0:	add	al, 0x85
+0x129b2:	div	byte ptr [ebp + 6]
+0x129b5:	add	esp, 4
+0x129b8:	pop	ebx
+0x129b9:	pop	esi
+0x129ba:	ret	
+
+LoadConst_Gadget(esi, 0x8)(0485f6750683c4045b5ec3, 0x129b0, 0x129ba, ['eax', 'edx', 'ebx', 'esi'], 16)
+0x129b0:	add	al, 0x85
+0x129b2:	div	byte ptr [ebp + 6]
+0x129b5:	add	esp, 4
+0x129b8:	pop	ebx
+0x129b9:	pop	esi
+0x129ba:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(0683c4045b5ec3, 0x129b4, 0x129ba, ['ebx', 'esi'], 12)
+0x129b4:	push	es
+0x129b5:	add	esp, 4
+0x129b8:	pop	ebx
+0x129b9:	pop	esi
+0x129ba:	ret	
+
+LoadConst_Gadget(esi, 0x4)(0683c4045b5ec3, 0x129b4, 0x129ba, ['ebx', 'esi'], 12)
+0x129b4:	push	es
+0x129b5:	add	esp, 4
+0x129b8:	pop	ebx
+0x129b9:	pop	esi
+0x129ba:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0081c4ac0400005b5e5f5dc3, 0x109b5, 0x109c0, ['edi', 'ebp'], 12)
+0x109b5:	add	byte ptr [ecx + 0x4acc4], al
+0x109bb:	add	byte ptr [ebx + 0x5e], bl
+0x109be:	pop	edi
+0x109bf:	pop	ebp
+0x109c0:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0081c4ac0400005b5e5f5dc3, 0x109b5, 0x109c0, ['edi', 'ebp'], 12)
+0x109b5:	add	byte ptr [ecx + 0x4acc4], al
+0x109bb:	add	byte ptr [ebx + 0x5e], bl
+0x109be:	pop	edi
+0x109bf:	pop	ebp
+0x109c0:	ret	
+
+LoadConst_Gadget(edi, 0x0)(ac0400005b5e5f5dc3, 0x109b8, 0x109c0, ['edi', 'eax', 'ebp', 'esi'], 12)
+0x109b8:	lodsb	al, byte ptr [esi]
+0x109b9:	add	al, 0
+0x109bb:	add	byte ptr [ebx + 0x5e], bl
+0x109be:	pop	edi
+0x109bf:	pop	ebp
+0x109c0:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(ac0400005b5e5f5dc3, 0x109b8, 0x109c0, ['edi', 'eax', 'ebp', 'esi'], 12)
+0x109b8:	lodsb	al, byte ptr [esi]
+0x109b9:	add	al, 0
+0x109bb:	add	byte ptr [ebx + 0x5e], bl
+0x109be:	pop	edi
+0x109bf:	pop	ebp
+0x109c0:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0400005b5e5f5dc3, 0x109b9, 0x109c0, ['edi', 'ebp'], 12)
+0x109b9:	add	al, 0
+0x109bb:	add	byte ptr [ebx + 0x5e], bl
+0x109be:	pop	edi
+0x109bf:	pop	ebp
+0x109c0:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0400005b5e5f5dc3, 0x109b9, 0x109c0, ['edi', 'ebp'], 12)
+0x109b9:	add	al, 0
+0x109bb:	add	byte ptr [ebx + 0x5e], bl
+0x109be:	pop	edi
+0x109bf:	pop	ebp
+0x109c0:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(30e8806b000083c4185bc3, 0x49ba, 0x49c4, ['eax', 'ebx'], 32)
+0x49ba:	xor	al, ch
+0x49bc:	sub	byte ptr [ebx], 0
+0x49c0:	add	esp, 0x18
+0x49c3:	pop	ebx
+0x49c4:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(806b000083c4185bc3, 0x49bc, 0x49c4, ['ebx'], 32)
+0x49bc:	sub	byte ptr [ebx], 0
+0x49c0:	add	esp, 0x18
+0x49c3:	pop	ebx
+0x49c4:	ret	
+
+LoadConst_Gadget(edi, 0x8)(8d83746fffff5b5e5f0f45c2c3, 0xe9d5, 0xe9e1, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xe9d5:	lea	eax, dword ptr [ebx - 0x908c]
+0xe9db:	pop	ebx
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(8d83746fffff5b5e5f0f45c2c3, 0xe9d5, 0xe9e1, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xe9d5:	lea	eax, dword ptr [ebx - 0x908c]
+0xe9db:	pop	ebx
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(esi, 0x4)(8d83746fffff5b5e5f0f45c2c3, 0xe9d5, 0xe9e1, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xe9d5:	lea	eax, dword ptr [ebx - 0x908c]
+0xe9db:	pop	ebx
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(edi, 0x8)(83746fffff5b5e5f0f45c2c3, 0xe9d6, 0xe9e1, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xe9d6:	xor	dword ptr [edi + ebp*2 - 1], 0xffffffff
+0xe9db:	pop	ebx
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(83746fffff5b5e5f0f45c2c3, 0xe9d6, 0xe9e1, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xe9d6:	xor	dword ptr [edi + ebp*2 - 1], 0xffffffff
+0xe9db:	pop	ebx
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(esi, 0x4)(83746fffff5b5e5f0f45c2c3, 0xe9d6, 0xe9e1, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xe9d6:	xor	dword ptr [edi + ebp*2 - 1], 0xffffffff
+0xe9db:	pop	ebx
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5b5e5f0f45c2c3, 0xe9db, 0xe9e1, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xe9db:	pop	ebx
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b5e5f0f45c2c3, 0xe9db, 0xe9e1, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xe9db:	pop	ebx
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b5e5f0f45c2c3, 0xe9db, 0xe9e1, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xe9db:	pop	ebx
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(edi, 0x4)(5e5f0f45c2c3, 0xe9dc, 0xe9e1, ['edi', 'eax', 'esi'], 12)
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(esi, 0x0)(5e5f0f45c2c3, 0xe9dc, 0xe9e1, ['edi', 'eax', 'esi'], 12)
+0xe9dc:	pop	esi
+0xe9dd:	pop	edi
+0xe9de:	cmovne	eax, edx
+0xe9e1:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(83ffff83c41083c4045b5ec3, 0x99ed, 0x99f8, ['ebx', 'esi'], 32)
+0x99ed:	cmp	edi, 0xff
+0x99f0:	add	esp, 0x10
+0x99f3:	add	esp, 4
+0x99f6:	pop	ebx
+0x99f7:	pop	esi
+0x99f8:	ret	
+
+LoadConst_Gadget(esi, 0x18)(83ffff83c41083c4045b5ec3, 0x99ed, 0x99f8, ['ebx', 'esi'], 32)
+0x99ed:	cmp	edi, 0xff
+0x99f0:	add	esp, 0x10
+0x99f3:	add	esp, 4
+0x99f6:	pop	ebx
+0x99f7:	pop	esi
+0x99f8:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(0119c083e0e083c0748842095bc3, 0xb28c, 0xb299, ['ebx'], 8)
+0xb28c:	add	dword ptr [ecx], ebx
+0xb28e:	rol	byte ptr [ebx - 0x3f7c1f20], 0x74
+0xb295:	mov	byte ptr [edx + 9], al
+0xb298:	pop	ebx
+0xb299:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0300005b5e5f5dc3, 0x9203, 0x920a, ['edi', 'eax', 'ebp'], 12)
+0x9203:	add	eax, dword ptr [eax]
+0x9205:	add	byte ptr [ebx + 0x5e], bl
+0x9208:	pop	edi
+0x9209:	pop	ebp
+0x920a:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0300005b5e5f5dc3, 0x9203, 0x920a, ['edi', 'eax', 'ebp'], 12)
+0x9203:	add	eax, dword ptr [eax]
+0x9205:	add	byte ptr [ebx + 0x5e], bl
+0x9208:	pop	edi
+0x9209:	pop	ebp
+0x920a:	ret	
+
+LoadConst_Gadget(edi, 0x8)(f85b5e5f5dc3, 0xaa04, 0xaa09, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0xaa04:	clc	
+0xaa05:	pop	ebx
+0xaa06:	pop	esi
+0xaa07:	pop	edi
+0xaa08:	pop	ebp
+0xaa09:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(f85b5e5f5dc3, 0xaa04, 0xaa09, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0xaa04:	clc	
+0xaa05:	pop	ebx
+0xaa06:	pop	esi
+0xaa07:	pop	edi
+0xaa08:	pop	ebp
+0xaa09:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(f85b5e5f5dc3, 0xaa04, 0xaa09, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0xaa04:	clc	
+0xaa05:	pop	ebx
+0xaa06:	pop	esi
+0xaa07:	pop	edi
+0xaa08:	pop	ebp
+0xaa09:	ret	
+
+LoadConst_Gadget(esi, 0x4)(f85b5e5f5dc3, 0xaa04, 0xaa09, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0xaa04:	clc	
+0xaa05:	pop	ebx
+0xaa06:	pop	esi
+0xaa07:	pop	edi
+0xaa08:	pop	ebp
+0xaa09:	ret	
+
+LoadConst_Gadget(edi, 0x8)(83ff095b0f45c25e5fc3, 0xea05, 0xea0e, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea05:	cmp	edi, 9
+0xea08:	pop	ebx
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(83ff095b0f45c25e5fc3, 0xea05, 0xea0e, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea05:	cmp	edi, 9
+0xea08:	pop	ebx
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(esi, 0x4)(83ff095b0f45c25e5fc3, 0xea05, 0xea0e, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea05:	cmp	edi, 9
+0xea08:	pop	ebx
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(edi, 0x8)(ff095b0f45c25e5fc3, 0xea06, 0xea0e, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea06:	dec	dword ptr [ecx]
+0xea08:	pop	ebx
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(ff095b0f45c25e5fc3, 0xea06, 0xea0e, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea06:	dec	dword ptr [ecx]
+0xea08:	pop	ebx
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(esi, 0x4)(ff095b0f45c25e5fc3, 0xea06, 0xea0e, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea06:	dec	dword ptr [ecx]
+0xea08:	pop	ebx
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5b0f45c25e5fc3, 0xea08, 0xea0e, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea08:	pop	ebx
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b0f45c25e5fc3, 0xea08, 0xea0e, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea08:	pop	ebx
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b0f45c25e5fc3, 0xea08, 0xea0e, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea08:	pop	ebx
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(edi, 0x4)(0f45c25e5fc3, 0xea09, 0xea0e, ['edi', 'eax', 'esi'], 12)
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0f45c25e5fc3, 0xea09, 0xea0e, ['edi', 'eax', 'esi'], 12)
+0xea09:	cmovne	eax, edx
+0xea0c:	pop	esi
+0xea0d:	pop	edi
+0xea0e:	ret	
+
+LoadConst_Gadget(edi, 0x4)(005bf3a65e0f95c05fc3, 0x4219, 0x4222, ['edi', 'eax', 'esi'], 12)
+0x4219:	add	byte ptr [ebx - 0xd], bl
+0x421c:	cmpsb	byte ptr [esi], byte ptr es:[edi]
+0x421d:	pop	esi
+0x421e:	setne	al
+0x4221:	pop	edi
+0x4222:	ret	
+
+LoadConst_Gadget(esi, 0x0)(005bf3a65e0f95c05fc3, 0x4219, 0x4222, ['edi', 'eax', 'esi'], 12)
+0x4219:	add	byte ptr [ebx - 0xd], bl
+0x421c:	cmpsb	byte ptr [esi], byte ptr es:[edi]
+0x421d:	pop	esi
+0x421e:	setne	al
+0x4221:	pop	edi
+0x4222:	ret	
+
+LoadConst_Gadget(edi, 0x4)(a65e0f95c05fc3, 0x421c, 0x4222, ['edi', 'eax', 'esi'], 12)
+0x421c:	cmpsb	byte ptr [esi], byte ptr es:[edi]
+0x421d:	pop	esi
+0x421e:	setne	al
+0x4221:	pop	edi
+0x4222:	ret	
+
+LoadConst_Gadget(esi, 0x0)(a65e0f95c05fc3, 0x421c, 0x4222, ['edi', 'eax', 'esi'], 12)
+0x421c:	cmpsb	byte ptr [esi], byte ptr es:[edi]
+0x421d:	pop	esi
+0x421e:	setne	al
+0x4221:	pop	edi
+0x4222:	ret	
+
+LoadConst_Gadget(edi, 0x4)(5e0f95c05fc3, 0x421d, 0x4222, ['edi', 'eax', 'esi'], 12)
+0x421d:	pop	esi
+0x421e:	setne	al
+0x4221:	pop	edi
+0x4222:	ret	
+
+LoadConst_Gadget(esi, 0x0)(5e0f95c05fc3, 0x421d, 0x4222, ['edi', 'eax', 'esi'], 12)
+0x421d:	pop	esi
+0x421e:	setne	al
+0x4221:	pop	edi
+0x4222:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0f95c05fc3, 0x421e, 0x4222, ['edi', 'eax'], 8)
+0x421e:	setne	al
+0x4221:	pop	edi
+0x4222:	ret	
+
+LoadConst_Gadget(edi, 0x0)(b089d85b5e5f5dc3, 0xba1f, 0xba26, ['edi', 'eax', 'ebp'], 12)
+0xba1f:	mov	al, 0x89
+0xba21:	fcomp	dword ptr [ebx + 0x5e]
+0xba24:	pop	edi
+0xba25:	pop	ebp
+0xba26:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(b089d85b5e5f5dc3, 0xba1f, 0xba26, ['edi', 'eax', 'ebp'], 12)
+0xba1f:	mov	al, 0x89
+0xba21:	fcomp	dword ptr [ebx + 0x5e]
+0xba24:	pop	edi
+0xba25:	pop	ebp
+0xba26:	ret	
+
+LoadConst_Gadget(edi, 0x0)(5fc3, 0x4221, 0x4222, ['edi'], 8)
+0x4221:	pop	edi
+0x4222:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(83c4145b5ec3, 0x5222, 0x5227, ['ebx', 'esi'], 32)
+0x5222:	add	esp, 0x14
+0x5225:	pop	ebx
+0x5226:	pop	esi
+0x5227:	ret	
+
+LoadConst_Gadget(esi, 0x18)(83c4145b5ec3, 0x5222, 0x5227, ['ebx', 'esi'], 32)
+0x5222:	add	esp, 0x14
+0x5225:	pop	ebx
+0x5226:	pop	esi
+0x5227:	ret	
+
+LoadConst_Gadget(esi, 0x0)(145b5ec3, 0x5224, 0x5227, ['eax', 'esi'], 8)
+0x5224:	adc	al, 0x5b
+0x5226:	pop	esi
+0x5227:	ret	
+
+LoadConst_Gadget(edi, 0x8)(31c05b5e5fc3, 0x4228, 0x422d, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4228:	xor	eax, eax
+0x422a:	pop	ebx
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(31c05b5e5fc3, 0x4228, 0x422d, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4228:	xor	eax, eax
+0x422a:	pop	ebx
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(esi, 0x4)(31c05b5e5fc3, 0x4228, 0x422d, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4228:	xor	eax, eax
+0x422a:	pop	ebx
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(edi, 0x0)(da83c42c5b5e5f5dc3, 0x15a2a, 0x15a32, ['edi', 'ebp'], 12)
+0x15a2a:	fiadd	dword ptr [ebx + 0x5e5b2cc4]
+0x15a30:	pop	edi
+0x15a31:	pop	ebp
+0x15a32:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(da83c42c5b5e5f5dc3, 0x15a2a, 0x15a32, ['edi', 'ebp'], 12)
+0x15a2a:	fiadd	dword ptr [ebx + 0x5e5b2cc4]
+0x15a30:	pop	edi
+0x15a31:	pop	ebp
+0x15a32:	ret	
+
+LoadConst_Gadget(edi, 0x4)(5e5fc3, 0x422b, 0x422d, ['edi', 'esi'], 12)
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(esi, 0x0)(5e5fc3, 0x422b, 0x422d, ['edi', 'esi'], 12)
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(1085c0750485f6751f83c4045b5ec3, 0x12a2c, 0x12a3a, ['eax', 'ebx', 'esi'], 16)
+0x12a2c:	adc	byte ptr [ebp - 0x7afb8a40], al
+0x12a32:	div	byte ptr [ebp + 0x1f]
+0x12a35:	add	esp, 4
+0x12a38:	pop	ebx
+0x12a39:	pop	esi
+0x12a3a:	ret	
+
+LoadConst_Gadget(esi, 0x8)(1085c0750485f6751f83c4045b5ec3, 0x12a2c, 0x12a3a, ['eax', 'ebx', 'esi'], 16)
+0x12a2c:	adc	byte ptr [ebp - 0x7afb8a40], al
+0x12a32:	div	byte ptr [ebp + 0x1f]
+0x12a35:	add	esp, 4
+0x12a38:	pop	ebx
+0x12a39:	pop	esi
+0x12a3a:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(c0750485f6751f83c4045b5ec3, 0x12a2e, 0x12a3a, ['eax', 'ebx', 'esi'], 16)
+0x12a2e:	sal	byte ptr [ebp + 4], 0x85
+0x12a32:	div	byte ptr [ebp + 0x1f]
+0x12a35:	add	esp, 4
+0x12a38:	pop	ebx
+0x12a39:	pop	esi
+0x12a3a:	ret	
+
+LoadConst_Gadget(esi, 0x8)(c0750485f6751f83c4045b5ec3, 0x12a2e, 0x12a3a, ['eax', 'ebx', 'esi'], 16)
+0x12a2e:	sal	byte ptr [ebp + 4], 0x85
+0x12a32:	div	byte ptr [ebp + 0x1f]
+0x12a35:	add	esp, 4
+0x12a38:	pop	ebx
+0x12a39:	pop	esi
+0x12a3a:	ret	
+
+LoadConst_Gadget(edi, 0x4)(1c5b89f85e5f5dc3, 0xaa2f, 0xaa36, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xaa2f:	sbb	al, 0x5b
+0xaa31:	mov	eax, edi
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(1c5b89f85e5f5dc3, 0xaa2f, 0xaa36, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xaa2f:	sbb	al, 0x5b
+0xaa31:	mov	eax, edi
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(esi, 0x0)(1c5b89f85e5f5dc3, 0xaa2f, 0xaa36, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xaa2f:	sbb	al, 0x5b
+0xaa31:	mov	eax, edi
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(0485f6751f83c4045b5ec3, 0x12a30, 0x12a3a, ['eax', 'ebx', 'esi'], 16)
+0x12a30:	add	al, 0x85
+0x12a32:	div	byte ptr [ebp + 0x1f]
+0x12a35:	add	esp, 4
+0x12a38:	pop	ebx
+0x12a39:	pop	esi
+0x12a3a:	ret	
+
+LoadConst_Gadget(esi, 0x8)(0485f6751f83c4045b5ec3, 0x12a30, 0x12a3a, ['eax', 'ebx', 'esi'], 16)
+0x12a30:	add	al, 0x85
+0x12a32:	div	byte ptr [ebp + 0x1f]
+0x12a35:	add	esp, 4
+0x12a38:	pop	ebx
+0x12a39:	pop	esi
+0x12a3a:	ret	
+
+LoadConst_Gadget(edi, 0x4)(89f85e5f5dc3, 0xaa31, 0xaa36, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xaa31:	mov	eax, edi
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(89f85e5f5dc3, 0xaa31, 0xaa36, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xaa31:	mov	eax, edi
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(esi, 0x0)(89f85e5f5dc3, 0xaa31, 0xaa36, ['edi', 'eax', 'ebp', 'esi'], 16)
+0xaa31:	mov	eax, edi
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(edi, 0x4)(f85e5f5dc3, 0xaa32, 0xaa36, ['edi', 'ebp', 'esi'], 16)
+0xaa32:	clc	
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(f85e5f5dc3, 0xaa32, 0xaa36, ['edi', 'ebp', 'esi'], 16)
+0xaa32:	clc	
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(esi, 0x0)(f85e5f5dc3, 0xaa32, 0xaa36, ['edi', 'ebp', 'esi'], 16)
+0xaa32:	clc	
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5b5e5f0f95c0c3, 0x4233, 0x4239, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4233:	pop	ebx
+0x4234:	pop	esi
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b5e5f0f95c0c3, 0x4233, 0x4239, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4233:	pop	ebx
+0x4234:	pop	esi
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b5e5f0f95c0c3, 0x4233, 0x4239, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4233:	pop	ebx
+0x4234:	pop	esi
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(edi, 0x4)(5e5f0f95c0c3, 0x4234, 0x4239, ['edi', 'eax', 'esi'], 12)
+0x4234:	pop	esi
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(esi, 0x0)(5e5f0f95c0c3, 0x4234, 0x4239, ['edi', 'eax', 'esi'], 12)
+0x4234:	pop	esi
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(edi, 0x0)(5f0f95c0c3, 0x4235, 0x4239, ['edi', 'eax'], 8)
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(edi, 0x8)(8d837c6fffff5b5e5f0f45c2c3, 0xea3d, 0xea49, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea3d:	lea	eax, dword ptr [ebx - 0x9084]
+0xea43:	pop	ebx
+0xea44:	pop	esi
+0xea45:	pop	edi
+0xea46:	cmovne	eax, edx
+0xea49:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(8d837c6fffff5b5e5f0f45c2c3, 0xea3d, 0xea49, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea3d:	lea	eax, dword ptr [ebx - 0x9084]
+0xea43:	pop	ebx
+0xea44:	pop	esi
+0xea45:	pop	edi
+0xea46:	cmovne	eax, edx
+0xea49:	ret	
+
+LoadConst_Gadget(esi, 0x4)(8d837c6fffff5b5e5f0f45c2c3, 0xea3d, 0xea49, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea3d:	lea	eax, dword ptr [ebx - 0x9084]
+0xea43:	pop	ebx
+0xea44:	pop	esi
+0xea45:	pop	edi
+0xea46:	cmovne	eax, edx
+0xea49:	ret	
+
+LoadConst_Gadget(edi, 0x8)(837c6fffff5b5e5f0f45c2c3, 0xea3e, 0xea49, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea3e:	cmp	dword ptr [edi + ebp*2 - 1], -1
+0xea43:	pop	ebx
+0xea44:	pop	esi
+0xea45:	pop	edi
+0xea46:	cmovne	eax, edx
+0xea49:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(837c6fffff5b5e5f0f45c2c3, 0xea3e, 0xea49, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea3e:	cmp	dword ptr [edi + ebp*2 - 1], -1
+0xea43:	pop	ebx
+0xea44:	pop	esi
+0xea45:	pop	edi
+0xea46:	cmovne	eax, edx
+0xea49:	ret	
+
+LoadConst_Gadget(esi, 0x4)(837c6fffff5b5e5f0f45c2c3, 0xea3e, 0xea49, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xea3e:	cmp	dword ptr [edi + ebp*2 - 1], -1
+0xea43:	pop	ebx
+0xea44:	pop	esi
+0xea45:	pop	edi
+0xea46:	cmovne	eax, edx
+0xea49:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(ff83c41031c083c4045b5ec3, 0x12a48, 0x12a53, ['ebx', 'esi'], 16)
+0x12a48:	inc	dword ptr [ebx - 0x3fceef3c]
+0x12a4e:	add	esp, 4
+0x12a51:	pop	ebx
+0x12a52:	pop	esi
+0x12a53:	ret	
+
+LoadConst_Gadget(esi, 0x8)(ff83c41031c083c4045b5ec3, 0x12a48, 0x12a53, ['ebx', 'esi'], 16)
+0x12a48:	inc	dword ptr [ebx - 0x3fceef3c]
+0x12a4e:	add	esp, 4
+0x12a51:	pop	ebx
+0x12a52:	pop	esi
+0x12a53:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(83c41031c083c4045b5ec3, 0x12a49, 0x12a53, ['eax', 'ebx', 'esi'], 32)
+0x12a49:	add	esp, 0x10
+0x12a4c:	xor	eax, eax
+0x12a4e:	add	esp, 4
+0x12a51:	pop	ebx
+0x12a52:	pop	esi
+0x12a53:	ret	
+
+LoadConst_Gadget(esi, 0x18)(83c41031c083c4045b5ec3, 0x12a49, 0x12a53, ['eax', 'ebx', 'esi'], 32)
+0x12a49:	add	esp, 0x10
+0x12a4c:	xor	eax, eax
+0x12a4e:	add	esp, 4
+0x12a51:	pop	ebx
+0x12a52:	pop	esi
+0x12a53:	ret	
+
+LoadConst_Gadget(edi, 0x8)(89e85b5e5f5dc3, 0x724c, 0x7252, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x724c:	mov	eax, ebp
+0x724e:	pop	ebx
+0x724f:	pop	esi
+0x7250:	pop	edi
+0x7251:	pop	ebp
+0x7252:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(89e85b5e5f5dc3, 0x724c, 0x7252, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x724c:	mov	eax, ebp
+0x724e:	pop	ebx
+0x724f:	pop	esi
+0x7250:	pop	edi
+0x7251:	pop	ebp
+0x7252:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89e85b5e5f5dc3, 0x724c, 0x7252, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x724c:	mov	eax, ebp
+0x724e:	pop	ebx
+0x724f:	pop	esi
+0x7250:	pop	edi
+0x7251:	pop	ebp
+0x7252:	ret	
+
+LoadConst_Gadget(esi, 0x4)(89e85b5e5f5dc3, 0x724c, 0x7252, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x724c:	mov	eax, ebp
+0x724e:	pop	ebx
+0x724f:	pop	esi
+0x7250:	pop	edi
+0x7251:	pop	ebp
+0x7252:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(1cff30e8806b000083c4185bc3, 0x49b8, 0x49c4, ['eax', 'ebx'], 32)
+0x49b8:	sbb	al, 0xff
+0x49ba:	xor	al, ch
+0x49bc:	sub	byte ptr [ebx], 0
+0x49c0:	add	esp, 0x18
+0x49c3:	pop	ebx
+0x49c4:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(0b8b1683c4045b5e8d04c2c3, 0xba70, 0xba7b, ['eax', 'ebx', 'esi', 'ecx'], 12)
+0xba70:	or	ecx, dword ptr [ebx + 0x4c48316]
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(esi, 0x4)(0b8b1683c4045b5e8d04c2c3, 0xba70, 0xba7b, ['eax', 'ebx', 'esi', 'ecx'], 12)
+0xba70:	or	ecx, dword ptr [ebx + 0x4c48316]
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(8b1683c4045b5e8d04c2c3, 0xba71, 0xba7b, ['eax', 'edx', 'ebx', 'esi'], 16)
+0xba71:	mov	edx, dword ptr [esi]
+0xba73:	add	esp, 4
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(esi, 0x8)(8b1683c4045b5e8d04c2c3, 0xba71, 0xba7b, ['eax', 'edx', 'ebx', 'esi'], 16)
+0xba71:	mov	edx, dword ptr [esi]
+0xba73:	add	esp, 4
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(1683c4045b5e8d04c2c3, 0xba72, 0xba7b, ['eax', 'ebx', 'esi'], 12)
+0xba72:	push	ss
+0xba73:	add	esp, 4
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(esi, 0x4)(1683c4045b5e8d04c2c3, 0xba72, 0xba7b, ['eax', 'ebx', 'esi'], 12)
+0xba72:	push	ss
+0xba73:	add	esp, 4
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(83c4045b5e8d04c2c3, 0xba73, 0xba7b, ['eax', 'ebx', 'esi'], 16)
+0xba73:	add	esp, 4
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(esi, 0x8)(83c4045b5e8d04c2c3, 0xba73, 0xba7b, ['eax', 'ebx', 'esi'], 16)
+0xba73:	add	esp, 4
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(esi, 0x0)(045b5e8d04c2c3, 0xba75, 0xba7b, ['eax', 'esi'], 8)
+0xba75:	add	al, 0x5b
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0083c41c5b5e5f5dc3, 0x4a76, 0x4a7e, ['edi', 'ebp'], 12)
+0x4a76:	add	byte ptr [ebx + 0x5e5b1cc4], al
+0x4a7c:	pop	edi
+0x4a7d:	pop	ebp
+0x4a7e:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0083c41c5b5e5f5dc3, 0x4a76, 0x4a7e, ['edi', 'ebp'], 12)
+0x4a76:	add	byte ptr [ebx + 0x5e5b1cc4], al
+0x4a7c:	pop	edi
+0x4a7d:	pop	ebp
+0x4a7e:	ret	
+
+LoadConst_Gadget(esi, 0x0)(5e8d04c2c3, 0xba77, 0xba7b, ['eax', 'esi'], 8)
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(000000753f83c4185bc3, 0x4288, 0x4291, ['ebx'], 32)
+0x4288:	add	byte ptr [eax], al
+0x428a:	add	byte ptr [ebp + 0x3f], dh
+0x428d:	add	esp, 0x18
+0x4290:	pop	ebx
+0x4291:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(00753f83c4185bc3, 0x428a, 0x4291, ['ebx'], 32)
+0x428a:	add	byte ptr [ebp + 0x3f], dh
+0x428d:	add	esp, 0x18
+0x4290:	pop	ebx
+0x4291:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(f80119c083e0e083c0748842095bc3, 0xb28b, 0xb299, ['ebx'], 8)
+0xb28b:	clc	
+0xb28c:	add	dword ptr [ecx], ebx
+0xb28e:	rol	byte ptr [ebx - 0x3f7c1f20], 0x74
+0xb295:	mov	byte ptr [edx + 9], al
+0xb298:	pop	ebx
+0xb299:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(3f83c4185bc3, 0x428c, 0x4291, ['eax', 'ebx'], 32)
+0x428c:	aas	
+0x428d:	add	esp, 0x18
+0x4290:	pop	ebx
+0x4291:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(19c083e0e083c0748842095bc3, 0xb28d, 0xb299, ['eax', 'ebx'], 8)
+0xb28d:	sbb	eax, eax
+0xb28f:	and	eax, 0xffffffe0
+0xb292:	add	eax, 0x74
+0xb295:	mov	byte ptr [edx + 9], al
+0xb298:	pop	ebx
+0xb299:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(c083e0e083c0748842095bc3, 0xb28e, 0xb299, ['ebx'], 8)
+0xb28e:	rol	byte ptr [ebx - 0x3f7c1f20], 0x74
+0xb295:	mov	byte ptr [edx + 9], al
+0xb298:	pop	ebx
+0xb299:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(83e0e083c0748842095bc3, 0xb28f, 0xb299, ['eax', 'ebx'], 8)
+0xb28f:	and	eax, 0xffffffe0
+0xb292:	add	eax, 0x74
+0xb295:	mov	byte ptr [edx + 9], al
+0xb298:	pop	ebx
+0xb299:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(83c0748842095bc3, 0xb292, 0xb299, ['eax', 'ebx'], 8)
+0xb292:	add	eax, 0x74
+0xb295:	mov	byte ptr [edx + 9], al
+0xb298:	pop	ebx
+0xb299:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(c0748842095bc3, 0xb293, 0xb299, ['ebx'], 8)
+0xb293:	sal	byte ptr [eax + ecx*4 + 0x42], 9
+0xb298:	pop	ebx
+0xb299:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(8842095bc3, 0xb295, 0xb299, ['ebx'], 8)
+0xb295:	mov	byte ptr [edx + 9], al
+0xb298:	pop	ebx
+0xb299:	ret	
+
+LoadConst_Gadget(edi, 0x18)(000083c4105b5e5fc3, 0x52aa, 0x52b2, ['edi', 'ebx', 'esi'], 32)
+0x52aa:	add	byte ptr [eax], al
+0x52ac:	add	esp, 0x10
+0x52af:	pop	ebx
+0x52b0:	pop	esi
+0x52b1:	pop	edi
+0x52b2:	ret	
+
+LoadConst_Gadget(ebx, 0x10)(000083c4105b5e5fc3, 0x52aa, 0x52b2, ['edi', 'ebx', 'esi'], 32)
+0x52aa:	add	byte ptr [eax], al
+0x52ac:	add	esp, 0x10
+0x52af:	pop	ebx
+0x52b0:	pop	esi
+0x52b1:	pop	edi
+0x52b2:	ret	
+
+LoadConst_Gadget(esi, 0x14)(000083c4105b5e5fc3, 0x52aa, 0x52b2, ['edi', 'ebx', 'esi'], 32)
+0x52aa:	add	byte ptr [eax], al
+0x52ac:	add	esp, 0x10
+0x52af:	pop	ebx
+0x52b0:	pop	esi
+0x52b1:	pop	edi
+0x52b2:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0083c4105b5e5fc3, 0x52ab, 0x52b2, ['edi'], 8)
+0x52ab:	add	byte ptr [ebx + 0x5e5b10c4], al
+0x52b1:	pop	edi
+0x52b2:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0083c44c5b5e5f5dc3, 0x5aba, 0x5ac2, ['edi', 'ebp'], 12)
+0x5aba:	add	byte ptr [ebx + 0x5e5b4cc4], al
+0x5ac0:	pop	edi
+0x5ac1:	pop	ebp
+0x5ac2:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0083c44c5b5e5f5dc3, 0x5aba, 0x5ac2, ['edi', 'ebp'], 12)
+0x5aba:	add	byte ptr [ebx + 0x5e5b4cc4], al
+0x5ac0:	pop	edi
+0x5ac1:	pop	ebp
+0x5ac2:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(f80119c083e0b583c0788842095bc3, 0xb2bc, 0xb2ca, ['ebx'], 8)
+0xb2bc:	clc	
+0xb2bd:	add	dword ptr [ecx], ebx
+0xb2bf:	rol	byte ptr [ebx - 0x3f7c4a20], 0x78
+0xb2c6:	mov	byte ptr [edx + 9], al
+0xb2c9:	pop	ebx
+0xb2ca:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(0119c083e0b583c0788842095bc3, 0xb2bd, 0xb2ca, ['ebx'], 8)
+0xb2bd:	add	dword ptr [ecx], ebx
+0xb2bf:	rol	byte ptr [ebx - 0x3f7c4a20], 0x78
+0xb2c6:	mov	byte ptr [edx + 9], al
+0xb2c9:	pop	ebx
+0xb2ca:	ret	
+
+LoadConst_Gadget(edi, 0x0)(1183c41c5b5e5f5dc3, 0x13abe, 0x13ac6, ['edi', 'ebp'], 12)
+0x13abe:	adc	dword ptr [ebx + 0x5e5b1cc4], eax
+0x13ac4:	pop	edi
+0x13ac5:	pop	ebp
+0x13ac6:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(1183c41c5b5e5f5dc3, 0x13abe, 0x13ac6, ['edi', 'ebp'], 12)
+0x13abe:	adc	dword ptr [ebx + 0x5e5b1cc4], eax
+0x13ac4:	pop	edi
+0x13ac5:	pop	ebp
+0x13ac6:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(c083e0b583c0788842095bc3, 0xb2bf, 0xb2ca, ['ebx'], 8)
+0xb2bf:	rol	byte ptr [ebx - 0x3f7c4a20], 0x78
+0xb2c6:	mov	byte ptr [edx + 9], al
+0xb2c9:	pop	ebx
+0xb2ca:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(83e0b583c0788842095bc3, 0xb2c0, 0xb2ca, ['eax', 'ebx'], 8)
+0xb2c0:	and	eax, 0xffffffb5
+0xb2c3:	add	eax, 0x78
+0xb2c6:	mov	byte ptr [edx + 9], al
+0xb2c9:	pop	ebx
+0xb2ca:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(83c0788842095bc3, 0xb2c3, 0xb2ca, ['eax', 'ebx'], 8)
+0xb2c3:	add	eax, 0x78
+0xb2c6:	mov	byte ptr [edx + 9], al
+0xb2c9:	pop	ebx
+0xb2ca:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(2a89d85b5e5f5dc3, 0x519c, 0x51a3, ['ebp', 'ecx'], 8)
+0x519c:	sub	cl, byte ptr [ecx + 0x5f5e5bd8]
+0x51a2:	pop	ebp
+0x51a3:	ret	
+
+LoadConst_Gadget(edi, 0x0)(1183c40c5b5e5f5dc3, 0x72ee, 0x72f6, ['edi', 'ebp'], 12)
+0x72ee:	adc	dword ptr [ebx + 0x5e5b0cc4], eax
+0x72f4:	pop	edi
+0x72f5:	pop	ebp
+0x72f6:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(1183c40c5b5e5f5dc3, 0x72ee, 0x72f6, ['edi', 'ebp'], 12)
+0x72ee:	adc	dword ptr [ebx + 0x5e5b0cc4], eax
+0x72f4:	pop	edi
+0x72f5:	pop	ebp
+0x72f6:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(10b8ffffffff5b5ec3, 0x9aef, 0x9af7, ['ebx', 'esi'], 12)
+0x9aef:	adc	byte ptr [eax - 1], bh
+0x9af5:	pop	ebx
+0x9af6:	pop	esi
+0x9af7:	ret	
+
+LoadConst_Gadget(esi, 0x4)(10b8ffffffff5b5ec3, 0x9aef, 0x9af7, ['ebx', 'esi'], 12)
+0x9aef:	adc	byte ptr [eax - 1], bh
+0x9af5:	pop	ebx
+0x9af6:	pop	esi
+0x9af7:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(b8ffffffff5b5ec3, 0x9af0, 0x9af7, ['eax', 'ebx', 'esi'], 12)
+0x9af0:	mov	eax, 0xffffffff
+0x9af5:	pop	ebx
+0x9af6:	pop	esi
+0x9af7:	ret	
+
+LoadConst_Gadget(esi, 0x4)(b8ffffffff5b5ec3, 0x9af0, 0x9af7, ['eax', 'ebx', 'esi'], 12)
+0x9af0:	mov	eax, 0xffffffff
+0x9af5:	pop	ebx
+0x9af6:	pop	esi
+0x9af7:	ret	
+
+LoadConst_Gadget(ebx, 0x10)(0683c4145b5ec3, 0xb93e, 0xb944, ['ebx', 'esi'], 28)
+0xb93e:	push	es
+0xb93f:	add	esp, 0x14
+0xb942:	pop	ebx
+0xb943:	pop	esi
+0xb944:	ret	
+
+LoadConst_Gadget(esi, 0x14)(0683c4145b5ec3, 0xb93e, 0xb944, ['ebx', 'esi'], 28)
+0xb93e:	push	es
+0xb93f:	add	esp, 0x14
+0xb942:	pop	ebx
+0xb943:	pop	esi
+0xb944:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(1c31c05b5e5f5dc3, 0xbb21, 0xbb28, ['eax', 'ebp'], 8)
+0xbb21:	sbb	al, 0x31
+0xbb23:	rcr	byte ptr [ebx + 0x5e], 0x5f
+0xbb27:	pop	ebp
+0xbb28:	ret	
+
+LoadConst_Gadget(edi, 0x8)(31c05b5e5f5dc3, 0xbb22, 0xbb28, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xbb22:	xor	eax, eax
+0xbb24:	pop	ebx
+0xbb25:	pop	esi
+0xbb26:	pop	edi
+0xbb27:	pop	ebp
+0xbb28:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(31c05b5e5f5dc3, 0xbb22, 0xbb28, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xbb22:	xor	eax, eax
+0xbb24:	pop	ebx
+0xbb25:	pop	esi
+0xbb26:	pop	edi
+0xbb27:	pop	ebp
+0xbb28:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(31c05b5e5f5dc3, 0xbb22, 0xbb28, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xbb22:	xor	eax, eax
+0xbb24:	pop	ebx
+0xbb25:	pop	esi
+0xbb26:	pop	edi
+0xbb27:	pop	ebp
+0xbb28:	ret	
+
+LoadConst_Gadget(esi, 0x4)(31c05b5e5f5dc3, 0xbb22, 0xbb28, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xbb22:	xor	eax, eax
+0xbb24:	pop	ebx
+0xbb25:	pop	esi
+0xbb26:	pop	edi
+0xbb27:	pop	ebp
+0xbb28:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(c05b5e5f5dc3, 0xbb23, 0xbb28, ['ebp'], 8)
+0xbb23:	rcr	byte ptr [ebx + 0x5e], 0x5f
+0xbb27:	pop	ebp
+0xbb28:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5b89e85e5f5dc3, 0x1434e, 0x14354, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x1434e:	pop	ebx
+0x1434f:	mov	eax, ebp
+0x14351:	pop	esi
+0x14352:	pop	edi
+0x14353:	pop	ebp
+0x14354:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(5b89e85e5f5dc3, 0x1434e, 0x14354, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x1434e:	pop	ebx
+0x1434f:	mov	eax, ebp
+0x14351:	pop	esi
+0x14352:	pop	edi
+0x14353:	pop	ebp
+0x14354:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b89e85e5f5dc3, 0x1434e, 0x14354, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x1434e:	pop	ebx
+0x1434f:	mov	eax, ebp
+0x14351:	pop	esi
+0x14352:	pop	edi
+0x14353:	pop	ebp
+0x14354:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b89e85e5f5dc3, 0x1434e, 0x14354, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x1434e:	pop	ebx
+0x1434f:	mov	eax, ebp
+0x14351:	pop	esi
+0x14352:	pop	edi
+0x14353:	pop	ebp
+0x14354:	ret	
+
+LoadConst_Gadget(edi, 0x4)(89e85e5f5dc3, 0x1434f, 0x14354, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x1434f:	mov	eax, ebp
+0x14351:	pop	esi
+0x14352:	pop	edi
+0x14353:	pop	ebp
+0x14354:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(89e85e5f5dc3, 0x1434f, 0x14354, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x1434f:	mov	eax, ebp
+0x14351:	pop	esi
+0x14352:	pop	edi
+0x14353:	pop	ebp
+0x14354:	ret	
+
+LoadConst_Gadget(esi, 0x0)(89e85e5f5dc3, 0x1434f, 0x14354, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x1434f:	mov	eax, ebp
+0x14351:	pop	esi
+0x14352:	pop	edi
+0x14353:	pop	ebp
+0x14354:	ret	
+
+LoadConst_Gadget(edi, 0x0)(61fcc3, 0x3351, 0x3353, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x3351:	popal	
+0x3352:	cld	
+0x3353:	ret	
+
+LoadConst_Gadget(eax, 0x1c)(61fcc3, 0x3351, 0x3353, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x3351:	popal	
+0x3352:	cld	
+0x3353:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(61fcc3, 0x3351, 0x3353, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x3351:	popal	
+0x3352:	cld	
+0x3353:	ret	
+
+LoadConst_Gadget(edx, 0x14)(61fcc3, 0x3351, 0x3353, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x3351:	popal	
+0x3352:	cld	
+0x3353:	ret	
+
+LoadConst_Gadget(ebx, 0x10)(61fcc3, 0x3351, 0x3353, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x3351:	popal	
+0x3352:	cld	
+0x3353:	ret	
+
+LoadConst_Gadget(esi, 0x4)(61fcc3, 0x3351, 0x3353, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x3351:	popal	
+0x3352:	cld	
+0x3353:	ret	
+
+LoadConst_Gadget(ecx, 0x18)(61fcc3, 0x3351, 0x3353, ['edi', 'eax', 'ebp', 'edx', 'ebx', 'esi', 'ecx'], 36)
+0x3351:	popal	
+0x3352:	cld	
+0x3353:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0883c41c5b5e5f5dc3, 0xab56, 0xab5e, ['edi', 'ebp'], 12)
+0xab56:	or	byte ptr [ebx + 0x5e5b1cc4], al
+0xab5c:	pop	edi
+0xab5d:	pop	ebp
+0xab5e:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0883c41c5b5e5f5dc3, 0xab56, 0xab5e, ['edi', 'ebp'], 12)
+0xab56:	or	byte ptr [ebx + 0x5e5b1cc4], al
+0xab5c:	pop	edi
+0xab5d:	pop	ebp
+0xab5e:	ret	
+
+LoadConst_Gadget(edi, 0x4)(0d83c40c5b5e5f5dc3, 0x5382, 0x538a, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x5382:	or	eax, 0x5b0cc483
+0x5387:	pop	esi
+0x5388:	pop	edi
+0x5389:	pop	ebp
+0x538a:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(0d83c40c5b5e5f5dc3, 0x5382, 0x538a, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x5382:	or	eax, 0x5b0cc483
+0x5387:	pop	esi
+0x5388:	pop	edi
+0x5389:	pop	ebp
+0x538a:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0d83c40c5b5e5f5dc3, 0x5382, 0x538a, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x5382:	or	eax, 0x5b0cc483
+0x5387:	pop	esi
+0x5388:	pop	edi
+0x5389:	pop	ebp
+0x538a:	ret	
+
+LoadConst_Gadget(edi, 0x4)(1184d2b80100000074085b5e5fc3, 0x7386, 0x7393, ['edi', 'esi'], 12)
+0x7386:	adc	dword ptr [edx + edx*8 + 0x1b8], eax
+0x738d:	add	byte ptr [eax + ecx + 0x5b], dh
+0x7391:	pop	esi
+0x7392:	pop	edi
+0x7393:	ret	
+
+LoadConst_Gadget(esi, 0x0)(1184d2b80100000074085b5e5fc3, 0x7386, 0x7393, ['edi', 'esi'], 12)
+0x7386:	adc	dword ptr [edx + edx*8 + 0x1b8], eax
+0x738d:	add	byte ptr [eax + ecx + 0x5b], dh
+0x7391:	pop	esi
+0x7392:	pop	edi
+0x7393:	ret	
+
+LoadConst_Gadget(edi, 0x4)(00000074085b5e5fc3, 0x738b, 0x7393, ['edi', 'esi'], 12)
+0x738b:	add	byte ptr [eax], al
+0x738d:	add	byte ptr [eax + ecx + 0x5b], dh
+0x7391:	pop	esi
+0x7392:	pop	edi
+0x7393:	ret	
+
+LoadConst_Gadget(esi, 0x0)(00000074085b5e5fc3, 0x738b, 0x7393, ['edi', 'esi'], 12)
+0x738b:	add	byte ptr [eax], al
+0x738d:	add	byte ptr [eax + ecx + 0x5b], dh
+0x7391:	pop	esi
+0x7392:	pop	edi
+0x7393:	ret	
+
+LoadConst_Gadget(edi, 0x4)(0074085b5e5fc3, 0x738d, 0x7393, ['edi', 'esi'], 12)
+0x738d:	add	byte ptr [eax + ecx + 0x5b], dh
+0x7391:	pop	esi
+0x7392:	pop	edi
+0x7393:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0074085b5e5fc3, 0x738d, 0x7393, ['edi', 'esi'], 12)
+0x738d:	add	byte ptr [eax + ecx + 0x5b], dh
+0x7391:	pop	esi
+0x7392:	pop	edi
+0x7393:	ret	
+
+LoadConst_Gadget(edi, 0x0)(085b5e5fc3, 0x738f, 0x7393, ['edi'], 8)
+0x738f:	or	byte ptr [ebx + 0x5e], bl
+0x7392:	pop	edi
+0x7393:	ret	
+
+LoadConst_Gadget(edi, 0x8)(c74610000000005b5e5fc3, 0xc393, 0xc39d, ['edi', 'ebx', 'esi'], 16)
+0xc393:	mov	dword ptr [esi + 0x10], 0
+0xc39a:	pop	ebx
+0xc39b:	pop	esi
+0xc39c:	pop	edi
+0xc39d:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(c74610000000005b5e5fc3, 0xc393, 0xc39d, ['edi', 'ebx', 'esi'], 16)
+0xc393:	mov	dword ptr [esi + 0x10], 0
+0xc39a:	pop	ebx
+0xc39b:	pop	esi
+0xc39c:	pop	edi
+0xc39d:	ret	
+
+LoadConst_Gadget(esi, 0x4)(c74610000000005b5e5fc3, 0xc393, 0xc39d, ['edi', 'ebx', 'esi'], 16)
+0xc393:	mov	dword ptr [esi + 0x10], 0
+0xc39a:	pop	ebx
+0xc39b:	pop	esi
+0xc39c:	pop	edi
+0xc39d:	ret	
+
+LoadConst_Gadget(edi, 0x0)(4610000000005b5e5fc3, 0xc394, 0xc39d, ['edi', 'esi'], 8)
+0xc394:	inc	esi
+0xc395:	adc	byte ptr [eax], al
+0xc397:	add	byte ptr [eax], al
+0xc399:	add	byte ptr [ebx + 0x5e], bl
+0xc39c:	pop	edi
+0xc39d:	ret	
+
+LoadConst_Gadget(edi, 0x0)(10000000005b5e5fc3, 0xc395, 0xc39d, ['edi'], 8)
+0xc395:	adc	byte ptr [eax], al
+0xc397:	add	byte ptr [eax], al
+0xc399:	add	byte ptr [ebx + 0x5e], bl
+0xc39c:	pop	edi
+0xc39d:	ret	
+
+LoadConst_Gadget(edi, 0x8)(000000005b5e5fc3, 0xc396, 0xc39d, ['edi', 'ebx', 'esi'], 16)
+0xc396:	add	byte ptr [eax], al
+0xc398:	add	byte ptr [eax], al
+0xc39a:	pop	ebx
+0xc39b:	pop	esi
+0xc39c:	pop	edi
+0xc39d:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(000000005b5e5fc3, 0xc396, 0xc39d, ['edi', 'ebx', 'esi'], 16)
+0xc396:	add	byte ptr [eax], al
+0xc398:	add	byte ptr [eax], al
+0xc39a:	pop	ebx
+0xc39b:	pop	esi
+0xc39c:	pop	edi
+0xc39d:	ret	
+
+LoadConst_Gadget(esi, 0x4)(000000005b5e5fc3, 0xc396, 0xc39d, ['edi', 'ebx', 'esi'], 16)
+0xc396:	add	byte ptr [eax], al
+0xc398:	add	byte ptr [eax], al
+0xc39a:	pop	ebx
+0xc39b:	pop	esi
+0xc39c:	pop	edi
+0xc39d:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0000005b5e5fc3, 0xc397, 0xc39d, ['edi'], 8)
+0xc397:	add	byte ptr [eax], al
+0xc399:	add	byte ptr [ebx + 0x5e], bl
+0xc39c:	pop	edi
+0xc39d:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5bb8ffffffff5e5fc3, 0x73a8, 0x73b0, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x73a8:	pop	ebx
+0x73a9:	mov	eax, 0xffffffff
+0x73ae:	pop	esi
+0x73af:	pop	edi
+0x73b0:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5bb8ffffffff5e5fc3, 0x73a8, 0x73b0, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x73a8:	pop	ebx
+0x73a9:	mov	eax, 0xffffffff
+0x73ae:	pop	esi
+0x73af:	pop	edi
+0x73b0:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5bb8ffffffff5e5fc3, 0x73a8, 0x73b0, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x73a8:	pop	ebx
+0x73a9:	mov	eax, 0xffffffff
+0x73ae:	pop	esi
+0x73af:	pop	edi
+0x73b0:	ret	
+
+LoadConst_Gadget(edi, 0x4)(b8ffffffff5e5fc3, 0x73a9, 0x73b0, ['edi', 'eax', 'esi'], 12)
+0x73a9:	mov	eax, 0xffffffff
+0x73ae:	pop	esi
+0x73af:	pop	edi
+0x73b0:	ret	
+
+LoadConst_Gadget(esi, 0x0)(b8ffffffff5e5fc3, 0x73a9, 0x73b0, ['edi', 'eax', 'esi'], 12)
+0x73a9:	mov	eax, 0xffffffff
+0x73ae:	pop	esi
+0x73af:	pop	edi
+0x73b0:	ret	
+
+LoadConst_Gadget(edi, 0x0)(ec0000005b5e5f5dc3, 0x153ab, 0x153b3, ['edi', 'eax', 'ebp'], 12)
+0x153ab:	in	al, dx
+0x153ac:	add	byte ptr [eax], al
+0x153ae:	add	byte ptr [ebx + 0x5e], bl
+0x153b1:	pop	edi
+0x153b2:	pop	ebp
+0x153b3:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(ec0000005b5e5f5dc3, 0x153ab, 0x153b3, ['edi', 'eax', 'ebp'], 12)
+0x153ab:	in	al, dx
+0x153ac:	add	byte ptr [eax], al
+0x153ae:	add	byte ptr [ebx + 0x5e], bl
+0x153b1:	pop	edi
+0x153b2:	pop	ebp
+0x153b3:	ret	
+
+LoadConst_Gadget(edi, 0x8)(803e305b5e5f0f95c0c3, 0x4230, 0x4239, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4230:	cmp	byte ptr [esi], 0x30
+0x4233:	pop	ebx
+0x4234:	pop	esi
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(803e305b5e5f0f95c0c3, 0x4230, 0x4239, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4230:	cmp	byte ptr [esi], 0x30
+0x4233:	pop	ebx
+0x4234:	pop	esi
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(esi, 0x4)(803e305b5e5f0f95c0c3, 0x4230, 0x4239, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4230:	cmp	byte ptr [esi], 0x30
+0x4233:	pop	ebx
+0x4234:	pop	esi
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(ec83c4045b5ec3, 0x143c3, 0x143c9, ['eax', 'ebx', 'esi'], 16)
+0x143c3:	in	al, dx
+0x143c4:	add	esp, 4
+0x143c7:	pop	ebx
+0x143c8:	pop	esi
+0x143c9:	ret	
+
+LoadConst_Gadget(esi, 0x8)(ec83c4045b5ec3, 0x143c3, 0x143c9, ['eax', 'ebx', 'esi'], 16)
+0x143c3:	in	al, dx
+0x143c4:	add	esp, 4
+0x143c7:	pop	ebx
+0x143c8:	pop	esi
+0x143c9:	ret	
+
+LoadConst_Gadget(edi, 0x0)(d883c41c5b5e5f5dc3, 0x4bc5, 0x4bcd, ['edi', 'ebp'], 12)
+0x4bc5:	fadd	dword ptr [ebx + 0x5e5b1cc4]
+0x4bcb:	pop	edi
+0x4bcc:	pop	ebp
+0x4bcd:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(d883c41c5b5e5f5dc3, 0x4bc5, 0x4bcd, ['edi', 'ebp'], 12)
+0x4bc5:	fadd	dword ptr [ebx + 0x5e5b1cc4]
+0x4bcb:	pop	edi
+0x4bcc:	pop	ebp
+0x4bcd:	ret	
+
+LoadConst_Gadget(esi, 0x0)(d2feff83c41083c4045b5ec3, 0x14bc6, 0x14bd1, ['eax', 'edx', 'esi'], 8)
+0x14bc6:	sar	dh, cl
+0x14bc8:	inc	dword ptr [ebx - 0x3b7cef3c]
+0x14bce:	add	al, 0x5b
+0x14bd0:	pop	esi
+0x14bd1:	ret	
+
+LoadConst_Gadget(edi, 0x0)(ff83c4205b5e5fc3, 0xabda, 0xabe1, ['edi'], 8)
+0xabda:	inc	dword ptr [ebx + 0x5e5b20c4]
+0xabe0:	pop	edi
+0xabe1:	ret	
+
+LoadConst_Gadget(edi, 0x0)(205b5e5fc3, 0xabdd, 0xabe1, ['edi'], 8)
+0xabdd:	and	byte ptr [ebx + 0x5e], bl
+0xabe0:	pop	edi
+0xabe1:	ret	
+
+LoadConst_Gadget(edi, 0x0)(305b5e5f0f95c0c3, 0x4232, 0x4239, ['edi', 'eax'], 8)
+0x4232:	xor	byte ptr [ebx + 0x5e], bl
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(edi, 0x0)(008d65f45b5e5f5dc3, 0x7c04, 0x7c0c, ['edi', 'ebp'], 12)
+0x7c04:	add	byte ptr [ebp + 0x5e5bf465], cl
+0x7c0a:	pop	edi
+0x7c0b:	pop	ebp
+0x7c0c:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(008d65f45b5e5f5dc3, 0x7c04, 0x7c0c, ['edi', 'ebp'], 12)
+0x7c04:	add	byte ptr [ebp + 0x5e5bf465], cl
+0x7c0a:	pop	edi
+0x7c0b:	pop	ebp
+0x7c0c:	ret	
+
+LoadConst_Gadget(edi, 0x8)(89f85b5e5f5dc3, 0xaa03, 0xaa09, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xaa03:	mov	eax, edi
+0xaa05:	pop	ebx
+0xaa06:	pop	esi
+0xaa07:	pop	edi
+0xaa08:	pop	ebp
+0xaa09:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(89f85b5e5f5dc3, 0xaa03, 0xaa09, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xaa03:	mov	eax, edi
+0xaa05:	pop	ebx
+0xaa06:	pop	esi
+0xaa07:	pop	edi
+0xaa08:	pop	ebp
+0xaa09:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89f85b5e5f5dc3, 0xaa03, 0xaa09, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xaa03:	mov	eax, edi
+0xaa05:	pop	ebx
+0xaa06:	pop	esi
+0xaa07:	pop	edi
+0xaa08:	pop	ebp
+0xaa09:	ret	
+
+LoadConst_Gadget(esi, 0x4)(89f85b5e5f5dc3, 0xaa03, 0xaa09, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xaa03:	mov	eax, edi
+0xaa05:	pop	ebx
+0xaa06:	pop	esi
+0xaa07:	pop	edi
+0xaa08:	pop	ebp
+0xaa09:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(8d742600893331c05b5ec3, 0xbc34, 0xbc3e, ['eax', 'ebx', 'esi'], 12)
+0xbc34:	lea	esi, dword ptr [esi]
+0xbc38:	mov	dword ptr [ebx], esi
+0xbc3a:	xor	eax, eax
+0xbc3c:	pop	ebx
+0xbc3d:	pop	esi
+0xbc3e:	ret	
+
+LoadConst_Gadget(esi, 0x4)(8d742600893331c05b5ec3, 0xbc34, 0xbc3e, ['eax', 'ebx', 'esi'], 12)
+0xbc34:	lea	esi, dword ptr [esi]
+0xbc38:	mov	dword ptr [ebx], esi
+0xbc3a:	xor	eax, eax
+0xbc3c:	pop	ebx
+0xbc3d:	pop	esi
+0xbc3e:	ret	
+
+LoadConst_Gadget(esi, 0x0)(2600893331c05b5ec3, 0xbc36, 0xbc3e, ['esi'], 8)
+0xbc36:	add	byte ptr es:[ecx + 0x5bc03133], cl
+0xbc3d:	pop	esi
+0xbc3e:	ret	
+
+LoadConst_Gadget(esi, 0x0)(00893331c05b5ec3, 0xbc37, 0xbc3e, ['esi'], 8)
+0xbc37:	add	byte ptr [ecx + 0x5bc03133], cl
+0xbc3d:	pop	esi
+0xbc3e:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(893331c05b5ec3, 0xbc38, 0xbc3e, ['eax', 'ebx', 'esi'], 12)
+0xbc38:	mov	dword ptr [ebx], esi
+0xbc3a:	xor	eax, eax
+0xbc3c:	pop	ebx
+0xbc3d:	pop	esi
+0xbc3e:	ret	
+
+LoadConst_Gadget(esi, 0x4)(893331c05b5ec3, 0xbc38, 0xbc3e, ['eax', 'ebx', 'esi'], 12)
+0xbc38:	mov	dword ptr [ebx], esi
+0xbc3a:	xor	eax, eax
+0xbc3c:	pop	ebx
+0xbc3d:	pop	esi
+0xbc3e:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(90b8010000005b5ec3, 0xbc3f, 0xbc47, ['eax', 'ebx', 'esi'], 12)
+0xbc3f:	nop	
+0xbc40:	mov	eax, 1
+0xbc45:	pop	ebx
+0xbc46:	pop	esi
+0xbc47:	ret	
+
+LoadConst_Gadget(esi, 0x4)(90b8010000005b5ec3, 0xbc3f, 0xbc47, ['eax', 'ebx', 'esi'], 12)
+0xbc3f:	nop	
+0xbc40:	mov	eax, 1
+0xbc45:	pop	ebx
+0xbc46:	pop	esi
+0xbc47:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(b8010000005b5ec3, 0xbc40, 0xbc47, ['eax', 'ebx', 'esi'], 12)
+0xbc40:	mov	eax, 1
+0xbc45:	pop	ebx
+0xbc46:	pop	esi
+0xbc47:	ret	
+
+LoadConst_Gadget(esi, 0x4)(b8010000005b5ec3, 0xbc40, 0xbc47, ['eax', 'ebx', 'esi'], 12)
+0xbc40:	mov	eax, 1
+0xbc45:	pop	ebx
+0xbc46:	pop	esi
+0xbc47:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(010000005b5ec3, 0xbc41, 0xbc47, ['ebx', 'esi'], 12)
+0xbc41:	add	dword ptr [eax], eax
+0xbc43:	add	byte ptr [eax], al
+0xbc45:	pop	ebx
+0xbc46:	pop	esi
+0xbc47:	ret	
+
+LoadConst_Gadget(esi, 0x4)(010000005b5ec3, 0xbc41, 0xbc47, ['ebx', 'esi'], 12)
+0xbc41:	add	dword ptr [eax], eax
+0xbc43:	add	byte ptr [eax], al
+0xbc45:	pop	ebx
+0xbc46:	pop	esi
+0xbc47:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(00005b5ec3, 0xbc43, 0xbc47, ['ebx', 'esi'], 12)
+0xbc43:	add	byte ptr [eax], al
+0xbc45:	pop	ebx
+0xbc46:	pop	esi
+0xbc47:	ret	
+
+LoadConst_Gadget(esi, 0x4)(00005b5ec3, 0xbc43, 0xbc47, ['ebx', 'esi'], 12)
+0xbc43:	add	byte ptr [eax], al
+0xbc45:	pop	ebx
+0xbc46:	pop	esi
+0xbc47:	ret	
+
+LoadConst_Gadget(edx, 0x0)(405a0a0e1441c3, 0x1f447, 0x1f44d, ['eax', 'edx', 'ecx'], 8)
+0x1f447:	inc	eax
+0x1f448:	pop	edx
+0x1f449:	or	cl, byte ptr [esi]
+0x1f44b:	adc	al, 0x41
+0x1f44d:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0a83c42c5b5e5f5dc3, 0x8c7e, 0x8c86, ['edi', 'eax', 'ebp'], 12)
+0x8c7e:	or	al, byte ptr [ebx + 0x5e5b2cc4]
+0x8c84:	pop	edi
+0x8c85:	pop	ebp
+0x8c86:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0a83c42c5b5e5f5dc3, 0x8c7e, 0x8c86, ['edi', 'eax', 'ebp'], 12)
+0x8c7e:	or	al, byte ptr [ebx + 0x5e5b2cc4]
+0x8c84:	pop	edi
+0x8c85:	pop	ebp
+0x8c86:	ret	
+
+LoadConst_Gadget(edi, 0x4)(2c5b5e5f5dc3, 0x8c81, 0x8c86, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x8c81:	sub	al, 0x5b
+0x8c83:	pop	esi
+0x8c84:	pop	edi
+0x8c85:	pop	ebp
+0x8c86:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(2c5b5e5f5dc3, 0x8c81, 0x8c86, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x8c81:	sub	al, 0x5b
+0x8c83:	pop	esi
+0x8c84:	pop	edi
+0x8c85:	pop	ebp
+0x8c86:	ret	
+
+LoadConst_Gadget(esi, 0x0)(2c5b5e5f5dc3, 0x8c81, 0x8c86, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x8c81:	sub	al, 0x5b
+0x8c83:	pop	esi
+0x8c84:	pop	edi
+0x8c85:	pop	ebp
+0x8c86:	ret	
+
+LoadConst_Gadget(ecx, 0x0)(590189c8891e0fb6510184d2751b5b5ec3, 0xb490, 0xb4a0, ['edx', 'ecx'], 8)
+0xb490:	pop	ecx
+0xb491:	add	dword ptr [ecx + 0xf1e89c8], ecx
+0xb497:	mov	dh, 0x51
+0xb499:	add	dword ptr [edx + edx*8 + 0x5e5b1b75], eax
+0xb4a0:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0081c4bc0000005b5e5f5dc3, 0x5493, 0x549e, ['edi', 'ebp'], 12)
+0x5493:	add	byte ptr [ecx + 0xbcc4], al
+0x5499:	add	byte ptr [ebx + 0x5e], bl
+0x549c:	pop	edi
+0x549d:	pop	ebp
+0x549e:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0081c4bc0000005b5e5f5dc3, 0x5493, 0x549e, ['edi', 'ebp'], 12)
+0x5493:	add	byte ptr [ecx + 0xbcc4], al
+0x5499:	add	byte ptr [ebx + 0x5e], bl
+0x549c:	pop	edi
+0x549d:	pop	ebp
+0x549e:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0000005b5e5f5dc3, 0x5497, 0x549e, ['edi', 'ebp'], 12)
+0x5497:	add	byte ptr [eax], al
+0x5499:	add	byte ptr [ebx + 0x5e], bl
+0x549c:	pop	edi
+0x549d:	pop	ebp
+0x549e:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0000005b5e5f5dc3, 0x5497, 0x549e, ['edi', 'ebp'], 12)
+0x5497:	add	byte ptr [eax], al
+0x5499:	add	byte ptr [ebx + 0x5e], bl
+0x549c:	pop	edi
+0x549d:	pop	ebp
+0x549e:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(d2751b5b5ec3, 0xb49b, 0xb4a0, ['ebx', 'esi'], 12)
+0xb49b:	sal	byte ptr [ebp + 0x1b], cl
+0xb49e:	pop	ebx
+0xb49f:	pop	esi
+0xb4a0:	ret	
+
+LoadConst_Gadget(esi, 0x4)(d2751b5b5ec3, 0xb49b, 0xb4a0, ['ebx', 'esi'], 12)
+0xb49b:	sal	byte ptr [ebp + 0x1b], cl
+0xb49e:	pop	ebx
+0xb49f:	pop	esi
+0xb4a0:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(84d20f95c083c4145b5ec3, 0x521d, 0x5227, ['eax', 'ebx', 'esi'], 32)
+0x521d:	test	dl, dl
+0x521f:	setne	al
+0x5222:	add	esp, 0x14
+0x5225:	pop	ebx
+0x5226:	pop	esi
+0x5227:	ret	
+
+LoadConst_Gadget(esi, 0x18)(84d20f95c083c4145b5ec3, 0x521d, 0x5227, ['eax', 'ebx', 'esi'], 32)
+0x521d:	test	dl, dl
+0x521f:	setne	al
+0x5222:	add	esp, 0x14
+0x5225:	pop	ebx
+0x5226:	pop	esi
+0x5227:	ret	
+
+LoadConst_Gadget(edi, 0x0)(1083c42c5b5e5f5dc3, 0x8cb0, 0x8cb8, ['edi', 'ebp'], 12)
+0x8cb0:	adc	byte ptr [ebx + 0x5e5b2cc4], al
+0x8cb6:	pop	edi
+0x8cb7:	pop	ebp
+0x8cb8:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(1083c42c5b5e5f5dc3, 0x8cb0, 0x8cb8, ['edi', 'ebp'], 12)
+0x8cb0:	adc	byte ptr [ebx + 0x5e5b2cc4], al
+0x8cb6:	pop	edi
+0x8cb7:	pop	ebp
+0x8cb8:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(0f95c083c4145b5ec3, 0x521f, 0x5227, ['eax', 'ebx', 'esi'], 32)
+0x521f:	setne	al
+0x5222:	add	esp, 0x14
+0x5225:	pop	ebx
+0x5226:	pop	esi
+0x5227:	ret	
+
+LoadConst_Gadget(esi, 0x18)(0f95c083c4145b5ec3, 0x521f, 0x5227, ['eax', 'ebx', 'esi'], 32)
+0x521f:	setne	al
+0x5222:	add	esp, 0x14
+0x5225:	pop	ebx
+0x5226:	pop	esi
+0x5227:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0a83c41c5b5e5f5dc3, 0x4cbe, 0x4cc6, ['edi', 'eax', 'ebp'], 12)
+0x4cbe:	or	al, byte ptr [ebx + 0x5e5b1cc4]
+0x4cc4:	pop	edi
+0x4cc5:	pop	ebp
+0x4cc6:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0a83c41c5b5e5f5dc3, 0x4cbe, 0x4cc6, ['edi', 'eax', 'ebp'], 12)
+0x4cbe:	or	al, byte ptr [ebx + 0x5e5b1cc4]
+0x4cc4:	pop	edi
+0x4cc5:	pop	ebp
+0x4cc6:	ret	
+
+LoadConst_Gadget(edi, 0x8)(8d74260031c05b5e5fc3, 0x4224, 0x422d, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4224:	lea	esi, dword ptr [esi]
+0x4228:	xor	eax, eax
+0x422a:	pop	ebx
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(8d74260031c05b5e5fc3, 0x4224, 0x422d, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4224:	lea	esi, dword ptr [esi]
+0x4228:	xor	eax, eax
+0x422a:	pop	ebx
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(esi, 0x4)(8d74260031c05b5e5fc3, 0x4224, 0x422d, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x4224:	lea	esi, dword ptr [esi]
+0x4228:	xor	eax, eax
+0x422a:	pop	ebx
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(edi, 0x0)(d283c41c5b5e5f5dc3, 0x15ce7, 0x15cef, ['edi', 'ebp'], 12)
+0x15ce7:	rol	byte ptr [ebx + 0x5e5b1cc4], cl
+0x15ced:	pop	edi
+0x15cee:	pop	ebp
+0x15cef:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(d283c41c5b5e5f5dc3, 0x15ce7, 0x15cef, ['edi', 'ebp'], 12)
+0x15ce7:	rol	byte ptr [ebx + 0x5e5b1cc4], cl
+0x15ced:	pop	edi
+0x15cee:	pop	ebp
+0x15cef:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0083c45c5b5e5f5dc3, 0x144f4, 0x144fc, ['edi', 'ebp'], 12)
+0x144f4:	add	byte ptr [ebx + 0x5e5b5cc4], al
+0x144fa:	pop	edi
+0x144fb:	pop	ebp
+0x144fc:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0083c45c5b5e5f5dc3, 0x144f4, 0x144fc, ['edi', 'ebp'], 12)
+0x144f4:	add	byte ptr [ebx + 0x5e5b5cc4], al
+0x144fa:	pop	edi
+0x144fb:	pop	ebp
+0x144fc:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5b5e5fc3, 0x422a, 0x422d, ['edi', 'ebx', 'esi'], 16)
+0x422a:	pop	ebx
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b5e5fc3, 0x422a, 0x422d, ['edi', 'ebx', 'esi'], 16)
+0x422a:	pop	ebx
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b5e5fc3, 0x422a, 0x422d, ['edi', 'ebx', 'esi'], 16)
+0x422a:	pop	ebx
+0x422b:	pop	esi
+0x422c:	pop	edi
+0x422d:	ret	
+
+LoadConst_Gadget(edi, 0x0)(5f0a0e1443c3, 0x20d00, 0x20d05, ['edi', 'eax', 'ecx'], 8)
+0x20d00:	pop	edi
+0x20d01:	or	cl, byte ptr [esi]
+0x20d03:	adc	al, 0x43
+0x20d05:	ret	
+
+LoadConst_Gadget(edi, 0x8)(00005b5e5f5dc3, 0x4514, 0x451a, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0x4514:	add	byte ptr [eax], al
+0x4516:	pop	ebx
+0x4517:	pop	esi
+0x4518:	pop	edi
+0x4519:	pop	ebp
+0x451a:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(00005b5e5f5dc3, 0x4514, 0x451a, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0x4514:	add	byte ptr [eax], al
+0x4516:	pop	ebx
+0x4517:	pop	esi
+0x4518:	pop	edi
+0x4519:	pop	ebp
+0x451a:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(00005b5e5f5dc3, 0x4514, 0x451a, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0x4514:	add	byte ptr [eax], al
+0x4516:	pop	ebx
+0x4517:	pop	esi
+0x4518:	pop	edi
+0x4519:	pop	ebp
+0x451a:	ret	
+
+LoadConst_Gadget(esi, 0x4)(00005b5e5f5dc3, 0x4514, 0x451a, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0x4514:	add	byte ptr [eax], al
+0x4516:	pop	ebx
+0x4517:	pop	esi
+0x4518:	pop	edi
+0x4519:	pop	ebp
+0x451a:	ret	
+
+LoadConst_Gadget(edi, 0x0)(005b5e5f5dc3, 0x4515, 0x451a, ['edi', 'ebp'], 12)
+0x4515:	add	byte ptr [ebx + 0x5e], bl
+0x4518:	pop	edi
+0x4519:	pop	ebp
+0x451a:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(005b5e5f5dc3, 0x4515, 0x451a, ['edi', 'ebp'], 12)
+0x4515:	add	byte ptr [ebx + 0x5e], bl
+0x4518:	pop	edi
+0x4519:	pop	ebp
+0x451a:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0a83c43c5b5e5f5dc3, 0x8d20, 0x8d28, ['edi', 'eax', 'ebp'], 12)
+0x8d20:	or	al, byte ptr [ebx + 0x5e5b3cc4]
+0x8d26:	pop	edi
+0x8d27:	pop	ebp
+0x8d28:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0a83c43c5b5e5f5dc3, 0x8d20, 0x8d28, ['edi', 'eax', 'ebp'], 12)
+0x8d20:	or	al, byte ptr [ebx + 0x5e5b3cc4]
+0x8d26:	pop	edi
+0x8d27:	pop	ebp
+0x8d28:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5b89f85e5f5dc3, 0xaa30, 0xaa36, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xaa30:	pop	ebx
+0xaa31:	mov	eax, edi
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(5b89f85e5f5dc3, 0xaa30, 0xaa36, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xaa30:	pop	ebx
+0xaa31:	mov	eax, edi
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b89f85e5f5dc3, 0xaa30, 0xaa36, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xaa30:	pop	ebx
+0xaa31:	mov	eax, edi
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b89f85e5f5dc3, 0xaa30, 0xaa36, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0xaa30:	pop	ebx
+0xaa31:	mov	eax, edi
+0xaa33:	pop	esi
+0xaa34:	pop	edi
+0xaa35:	pop	ebp
+0xaa36:	ret	
+
+LoadConst_Gadget(edi, 0x4)(3c5b5e5f5dc3, 0x8d23, 0x8d28, ['edi', 'ebp', 'esi'], 16)
+0x8d23:	cmp	al, 0x5b
+0x8d25:	pop	esi
+0x8d26:	pop	edi
+0x8d27:	pop	ebp
+0x8d28:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(3c5b5e5f5dc3, 0x8d23, 0x8d28, ['edi', 'ebp', 'esi'], 16)
+0x8d23:	cmp	al, 0x5b
+0x8d25:	pop	esi
+0x8d26:	pop	edi
+0x8d27:	pop	ebp
+0x8d28:	ret	
+
+LoadConst_Gadget(esi, 0x0)(3c5b5e5f5dc3, 0x8d23, 0x8d28, ['edi', 'ebp', 'esi'], 16)
+0x8d23:	cmp	al, 0x5b
+0x8d25:	pop	esi
+0x8d26:	pop	edi
+0x8d27:	pop	ebp
+0x8d28:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(8d74260031c05b5ec3, 0xb524, 0xb52c, ['eax', 'ebx', 'esi'], 12)
+0xb524:	lea	esi, dword ptr [esi]
+0xb528:	xor	eax, eax
+0xb52a:	pop	ebx
+0xb52b:	pop	esi
+0xb52c:	ret	
+
+LoadConst_Gadget(esi, 0x4)(8d74260031c05b5ec3, 0xb524, 0xb52c, ['eax', 'ebx', 'esi'], 12)
+0xb524:	lea	esi, dword ptr [esi]
+0xb528:	xor	eax, eax
+0xb52a:	pop	ebx
+0xb52b:	pop	esi
+0xb52c:	ret	
+
+LoadConst_Gadget(edi, 0x0)(3e305b5e5f0f95c0c3, 0x4231, 0x4239, ['edi', 'eax'], 8)
+0x4231:	xor	byte ptr ds:[ebx + 0x5e], bl
+0x4235:	pop	edi
+0x4236:	setne	al
+0x4239:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(c07405e8ee06000083c4085bc3, 0x1d2a, 0x1d36, ['ebx'], 12)
+0x1d2a:	sal	byte ptr [ebp + eax - 0x18], 0xee
+0x1d2f:	push	es
+0x1d30:	add	byte ptr [eax], al
+0x1d32:	add	esp, 8
+0x1d35:	pop	ebx
+0x1d36:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(f6751f83c4045b5ec3, 0x12a32, 0x12a3a, ['eax', 'ebx', 'esi'], 16)
+0x12a32:	div	byte ptr [ebp + 0x1f]
+0x12a35:	add	esp, 4
+0x12a38:	pop	ebx
+0x12a39:	pop	esi
+0x12a3a:	ret	
+
+LoadConst_Gadget(esi, 0x8)(f6751f83c4045b5ec3, 0x12a32, 0x12a3a, ['eax', 'ebx', 'esi'], 16)
+0x12a32:	div	byte ptr [ebp + 0x1f]
+0x12a35:	add	esp, 4
+0x12a38:	pop	ebx
+0x12a39:	pop	esi
+0x12a3a:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(ee06000083c4085bc3, 0x1d2e, 0x1d36, ['ebx'], 12)
+0x1d2e:	out	dx, al
+0x1d2f:	push	es
+0x1d30:	add	byte ptr [eax], al
+0x1d32:	add	esp, 8
+0x1d35:	pop	ebx
+0x1d36:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(06000083c4085bc3, 0x1d2f, 0x1d36, ['ebx'], 12)
+0x1d2f:	push	es
+0x1d30:	add	byte ptr [eax], al
+0x1d32:	add	esp, 8
+0x1d35:	pop	ebx
+0x1d36:	ret	
+
+LoadConst_Gadget(ebx, 0x8)(000083c4085bc3, 0x1d30, 0x1d36, ['ebx'], 16)
+0x1d30:	add	byte ptr [eax], al
+0x1d32:	add	esp, 8
+0x1d35:	pop	ebx
+0x1d36:	ret	
+
+LoadConst_Gadget(ebx, 0x8)(83c4085bc3, 0x1d32, 0x1d36, ['ebx'], 16)
+0x1d32:	add	esp, 8
+0x1d35:	pop	ebx
+0x1d36:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5bc3, 0x1d35, 0x1d36, ['ebx'], 8)
+0x1d35:	pop	ebx
+0x1d36:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(5d0a0e1446c3, 0x1cd38, 0x1cd3d, ['eax', 'ebp', 'ecx'], 8)
+0x1cd38:	pop	ebp
+0x1cd39:	or	cl, byte ptr [esi]
+0x1cd3b:	adc	al, 0x46
+0x1cd3d:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0883c40c5b5e5f5dc3, 0xad46, 0xad4e, ['edi', 'ebp'], 12)
+0xad46:	or	byte ptr [ebx + 0x5e5b0cc4], al
+0xad4c:	pop	edi
+0xad4d:	pop	ebp
+0xad4e:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0883c40c5b5e5f5dc3, 0xad46, 0xad4e, ['edi', 'ebp'], 12)
+0xad46:	or	byte ptr [ebx + 0x5e5b0cc4], al
+0xad4c:	pop	edi
+0xad4d:	pop	ebp
+0xad4e:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(8b1c24c3, 0x3d60, 0x3d63, ['ebx'], 4)
+0x3d60:	mov	ebx, dword ptr [esp]
+0x3d63:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(906690669066908b1c24c3, 0x3d69, 0x3d73, ['ebx'], 4)
+0x3d69:	nop	
+0x3d6a:	nop	
+0x3d6c:	nop	
+0x3d6e:	nop	
+0x3d70:	mov	ebx, dword ptr [esp]
+0x3d73:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(90669066908b1c24c3, 0x3d6b, 0x3d73, ['ebx'], 4)
+0x3d6b:	nop	
+0x3d6c:	nop	
+0x3d6e:	nop	
+0x3d70:	mov	ebx, dword ptr [esp]
+0x3d73:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(9066908b1c24c3, 0x3d6d, 0x3d73, ['ebx'], 4)
+0x3d6d:	nop	
+0x3d6e:	nop	
+0x3d70:	mov	ebx, dword ptr [esp]
+0x3d73:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(908b1c24c3, 0x3d6f, 0x3d73, ['ebx'], 4)
+0x3d6f:	nop	
+0x3d70:	mov	ebx, dword ptr [esp]
+0x3d73:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0083c40c5b5e5f5dc3, 0x4d88, 0x4d90, ['edi', 'ebp'], 12)
+0x4d88:	add	byte ptr [ebx + 0x5e5b0cc4], al
+0x4d8e:	pop	edi
+0x4d8f:	pop	ebp
+0x4d90:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0083c40c5b5e5f5dc3, 0x4d88, 0x4d90, ['edi', 'ebp'], 12)
+0x4d88:	add	byte ptr [ebx + 0x5e5b0cc4], al
+0x4d8e:	pop	edi
+0x4d8f:	pop	ebp
+0x4d90:	ret	
+
+LoadConst_Gadget(edi, 0x14)(83c40c5b5e5f5dc3, 0x4d89, 0x4d90, ['edi', 'ebp', 'ebx', 'esi'], 32)
+0x4d89:	add	esp, 0xc
+0x4d8c:	pop	ebx
+0x4d8d:	pop	esi
+0x4d8e:	pop	edi
+0x4d8f:	pop	ebp
+0x4d90:	ret	
+
+LoadConst_Gadget(ebp, 0x18)(83c40c5b5e5f5dc3, 0x4d89, 0x4d90, ['edi', 'ebp', 'ebx', 'esi'], 32)
+0x4d89:	add	esp, 0xc
+0x4d8c:	pop	ebx
+0x4d8d:	pop	esi
+0x4d8e:	pop	edi
+0x4d8f:	pop	ebp
+0x4d90:	ret	
+
+LoadConst_Gadget(ebx, 0xc)(83c40c5b5e5f5dc3, 0x4d89, 0x4d90, ['edi', 'ebp', 'ebx', 'esi'], 32)
+0x4d89:	add	esp, 0xc
+0x4d8c:	pop	ebx
+0x4d8d:	pop	esi
+0x4d8e:	pop	edi
+0x4d8f:	pop	ebp
+0x4d90:	ret	
+
+LoadConst_Gadget(esi, 0x10)(83c40c5b5e5f5dc3, 0x4d89, 0x4d90, ['edi', 'ebp', 'ebx', 'esi'], 32)
+0x4d89:	add	esp, 0xc
+0x4d8c:	pop	ebx
+0x4d8d:	pop	esi
+0x4d8e:	pop	edi
+0x4d8f:	pop	ebp
+0x4d90:	ret	
+
+LoadConst_Gadget(edi, 0x4)(0c5b5e5f5dc3, 0x4d8b, 0x4d90, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x4d8b:	or	al, 0x5b
+0x4d8d:	pop	esi
+0x4d8e:	pop	edi
+0x4d8f:	pop	ebp
+0x4d90:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(0c5b5e5f5dc3, 0x4d8b, 0x4d90, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x4d8b:	or	al, 0x5b
+0x4d8d:	pop	esi
+0x4d8e:	pop	edi
+0x4d8f:	pop	ebp
+0x4d90:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0c5b5e5f5dc3, 0x4d8b, 0x4d90, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x4d8b:	or	al, 0x5b
+0x4d8d:	pop	esi
+0x4d8e:	pop	edi
+0x4d8f:	pop	ebp
+0x4d90:	ret	
+
+LoadConst_Gadget(edi, 0x4)(0c5bb8010000005e5f5dc3, 0x13d8e, 0x13d98, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x13d8e:	or	al, 0x5b
+0x13d90:	mov	eax, 1
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(0c5bb8010000005e5f5dc3, 0x13d8e, 0x13d98, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x13d8e:	or	al, 0x5b
+0x13d90:	mov	eax, 1
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0c5bb8010000005e5f5dc3, 0x13d8e, 0x13d98, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x13d8e:	or	al, 0x5b
+0x13d90:	mov	eax, 1
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5bb8010000005e5f5dc3, 0x13d8f, 0x13d98, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x13d8f:	pop	ebx
+0x13d90:	mov	eax, 1
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(5bb8010000005e5f5dc3, 0x13d8f, 0x13d98, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x13d8f:	pop	ebx
+0x13d90:	mov	eax, 1
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5bb8010000005e5f5dc3, 0x13d8f, 0x13d98, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x13d8f:	pop	ebx
+0x13d90:	mov	eax, 1
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5bb8010000005e5f5dc3, 0x13d8f, 0x13d98, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x13d8f:	pop	ebx
+0x13d90:	mov	eax, 1
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(edi, 0x4)(b8010000005e5f5dc3, 0x13d90, 0x13d98, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x13d90:	mov	eax, 1
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(b8010000005e5f5dc3, 0x13d90, 0x13d98, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x13d90:	mov	eax, 1
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(esi, 0x0)(b8010000005e5f5dc3, 0x13d90, 0x13d98, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x13d90:	mov	eax, 1
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(edi, 0x4)(010000005e5f5dc3, 0x13d91, 0x13d98, ['edi', 'ebp', 'esi'], 16)
+0x13d91:	add	dword ptr [eax], eax
+0x13d93:	add	byte ptr [eax], al
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(010000005e5f5dc3, 0x13d91, 0x13d98, ['edi', 'ebp', 'esi'], 16)
+0x13d91:	add	dword ptr [eax], eax
+0x13d93:	add	byte ptr [eax], al
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(esi, 0x0)(010000005e5f5dc3, 0x13d91, 0x13d98, ['edi', 'ebp', 'esi'], 16)
+0x13d91:	add	dword ptr [eax], eax
+0x13d93:	add	byte ptr [eax], al
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0d83c4445b5ec3, 0x10592, 0x10598, ['eax', 'esi'], 8)
+0x10592:	or	eax, 0x5b44c483
+0x10597:	pop	esi
+0x10598:	ret	
+
+LoadConst_Gadget(edi, 0x4)(00005e5f5dc3, 0x13d93, 0x13d98, ['edi', 'ebp', 'esi'], 16)
+0x13d93:	add	byte ptr [eax], al
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(00005e5f5dc3, 0x13d93, 0x13d98, ['edi', 'ebp', 'esi'], 16)
+0x13d93:	add	byte ptr [eax], al
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(esi, 0x0)(00005e5f5dc3, 0x13d93, 0x13d98, ['edi', 'ebp', 'esi'], 16)
+0x13d93:	add	byte ptr [eax], al
+0x13d95:	pop	esi
+0x13d96:	pop	edi
+0x13d97:	pop	ebp
+0x13d98:	ret	
+
+LoadConst_Gadget(edi, 0x0)(08a8ffff83c4105b5e5fc3, 0x7594, 0x759e, ['edi'], 8)
+0x7594:	or	byte ptr [eax - 0x3b7c0001], ch
+0x759a:	adc	byte ptr [ebx + 0x5e], bl
+0x759d:	pop	edi
+0x759e:	ret	
+
+LoadConst_Gadget(edi, 0x0)(a8ffff83c4105b5e5fc3, 0x7595, 0x759e, ['edi'], 8)
+0x7595:	test	al, 0xff
+0x7597:	inc	dword ptr [ebx + 0x5e5b10c4]
+0x759d:	pop	edi
+0x759e:	ret	
+
+LoadConst_Gadget(ebx, 0x1c)(83c41c5b5e5f5dc3, 0x45b6, 0x45bd, ['edi', 'ebp', 'ebx', 'esi'], 48)
+0x45b6:	add	esp, 0x1c
+0x45b9:	pop	ebx
+0x45ba:	pop	esi
+0x45bb:	pop	edi
+0x45bc:	pop	ebp
+0x45bd:	ret	
+
+LoadConst_Gadget(edi, 0x4)(1c5b5e5f5dc3, 0x45b8, 0x45bd, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x45b8:	sbb	al, 0x5b
+0x45ba:	pop	esi
+0x45bb:	pop	edi
+0x45bc:	pop	ebp
+0x45bd:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(1c5b5e5f5dc3, 0x45b8, 0x45bd, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x45b8:	sbb	al, 0x5b
+0x45ba:	pop	esi
+0x45bb:	pop	edi
+0x45bc:	pop	ebp
+0x45bd:	ret	
+
+LoadConst_Gadget(esi, 0x0)(1c5b5e5f5dc3, 0x45b8, 0x45bd, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x45b8:	sbb	al, 0x5b
+0x45ba:	pop	esi
+0x45bb:	pop	edi
+0x45bc:	pop	ebp
+0x45bd:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(d3e231f289135b5ec3, 0xfdc1, 0xfdc9, ['edx', 'ebx', 'esi'], 12)
+0xfdc1:	shl	edx, cl
+0xfdc3:	xor	edx, esi
+0xfdc5:	mov	dword ptr [ebx], edx
+0xfdc7:	pop	ebx
+0xfdc8:	pop	esi
+0xfdc9:	ret	
+
+LoadConst_Gadget(esi, 0x4)(d3e231f289135b5ec3, 0xfdc1, 0xfdc9, ['edx', 'ebx', 'esi'], 12)
+0xfdc1:	shl	edx, cl
+0xfdc3:	xor	edx, esi
+0xfdc5:	mov	dword ptr [ebx], edx
+0xfdc7:	pop	ebx
+0xfdc8:	pop	esi
+0xfdc9:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(31f289135b5ec3, 0xfdc3, 0xfdc9, ['edx', 'ebx', 'esi'], 12)
+0xfdc3:	xor	edx, esi
+0xfdc5:	mov	dword ptr [ebx], edx
+0xfdc7:	pop	ebx
+0xfdc8:	pop	esi
+0xfdc9:	ret	
+
+LoadConst_Gadget(esi, 0x4)(31f289135b5ec3, 0xfdc3, 0xfdc9, ['edx', 'ebx', 'esi'], 12)
+0xfdc3:	xor	edx, esi
+0xfdc5:	mov	dword ptr [ebx], edx
+0xfdc7:	pop	ebx
+0xfdc8:	pop	esi
+0xfdc9:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89135b5ec3, 0xfdc5, 0xfdc9, ['ebx', 'esi'], 12)
+0xfdc5:	mov	dword ptr [ebx], edx
+0xfdc7:	pop	ebx
+0xfdc8:	pop	esi
+0xfdc9:	ret	
+
+LoadConst_Gadget(esi, 0x4)(89135b5ec3, 0xfdc5, 0xfdc9, ['ebx', 'esi'], 12)
+0xfdc5:	mov	dword ptr [ebx], edx
+0xfdc7:	pop	ebx
+0xfdc8:	pop	esi
+0xfdc9:	ret	
+
+LoadConst_Gadget(edi, 0x0)(da83c4145b5e5f5dc3, 0x14dd9, 0x14de1, ['edi', 'ebp'], 12)
+0x14dd9:	fiadd	dword ptr [ebx + 0x5e5b14c4]
+0x14ddf:	pop	edi
+0x14de0:	pop	ebp
+0x14de1:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(da83c4145b5e5f5dc3, 0x14dd9, 0x14de1, ['edi', 'ebp'], 12)
+0x14dd9:	fiadd	dword ptr [ebx + 0x5e5b14c4]
+0x14ddf:	pop	edi
+0x14de0:	pop	ebp
+0x14de1:	ret	
+
+LoadConst_Gadget(edi, 0x1c)(83c4145b5e5f5dc3, 0x14dda, 0x14de1, ['edi', 'ebp', 'ebx', 'esi'], 40)
+0x14dda:	add	esp, 0x14
+0x14ddd:	pop	ebx
+0x14dde:	pop	esi
+0x14ddf:	pop	edi
+0x14de0:	pop	ebp
+0x14de1:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(83c4145b5e5f5dc3, 0x14dda, 0x14de1, ['edi', 'ebp', 'ebx', 'esi'], 40)
+0x14dda:	add	esp, 0x14
+0x14ddd:	pop	ebx
+0x14dde:	pop	esi
+0x14ddf:	pop	edi
+0x14de0:	pop	ebp
+0x14de1:	ret	
+
+LoadConst_Gadget(esi, 0x18)(83c4145b5e5f5dc3, 0x14dda, 0x14de1, ['edi', 'ebp', 'ebx', 'esi'], 40)
+0x14dda:	add	esp, 0x14
+0x14ddd:	pop	ebx
+0x14dde:	pop	esi
+0x14ddf:	pop	edi
+0x14de0:	pop	ebp
+0x14de1:	ret	
+
+LoadConst_Gadget(edi, 0x4)(145b5e5f5dc3, 0x14ddc, 0x14de1, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x14ddc:	adc	al, 0x5b
+0x14dde:	pop	esi
+0x14ddf:	pop	edi
+0x14de0:	pop	ebp
+0x14de1:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(145b5e5f5dc3, 0x14ddc, 0x14de1, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x14ddc:	adc	al, 0x5b
+0x14dde:	pop	esi
+0x14ddf:	pop	edi
+0x14de0:	pop	ebp
+0x14de1:	ret	
+
+LoadConst_Gadget(esi, 0x0)(145b5e5f5dc3, 0x14ddc, 0x14de1, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x14ddc:	adc	al, 0x5b
+0x14dde:	pop	esi
+0x14ddf:	pop	edi
+0x14de0:	pop	ebp
+0x14de1:	ret	
+
+LoadConst_Gadget(edi, 0x4)(c0740f83c40c5b5e5f5dc3, 0x9dee, 0x9df8, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x9dee:	sal	byte ptr [edi + ecx - 0x7d], 0xc4
+0x9df3:	or	al, 0x5b
+0x9df5:	pop	esi
+0x9df6:	pop	edi
+0x9df7:	pop	ebp
+0x9df8:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(c0740f83c40c5b5e5f5dc3, 0x9dee, 0x9df8, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x9dee:	sal	byte ptr [edi + ecx - 0x7d], 0xc4
+0x9df3:	or	al, 0x5b
+0x9df5:	pop	esi
+0x9df6:	pop	edi
+0x9df7:	pop	ebp
+0x9df8:	ret	
+
+LoadConst_Gadget(esi, 0x0)(c0740f83c40c5b5e5f5dc3, 0x9dee, 0x9df8, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x9dee:	sal	byte ptr [edi + ecx - 0x7d], 0xc4
+0x9df3:	or	al, 0x5b
+0x9df5:	pop	esi
+0x9df6:	pop	edi
+0x9df7:	pop	ebp
+0x9df8:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0081c4ec0000005b5e5f5dc3, 0x153a8, 0x153b3, ['edi', 'ebp'], 12)
+0x153a8:	add	byte ptr [ecx + 0xecc4], al
+0x153ae:	add	byte ptr [ebx + 0x5e], bl
+0x153b1:	pop	edi
+0x153b2:	pop	ebp
+0x153b3:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0081c4ec0000005b5e5f5dc3, 0x153a8, 0x153b3, ['edi', 'ebp'], 12)
+0x153a8:	add	byte ptr [ecx + 0xecc4], al
+0x153ae:	add	byte ptr [ebx + 0x5e], bl
+0x153b1:	pop	edi
+0x153b2:	pop	ebp
+0x153b3:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0083c43c5b5e5f5dc3, 0xb5f4, 0xb5fc, ['edi', 'ebp'], 12)
+0xb5f4:	add	byte ptr [ebx + 0x5e5b3cc4], al
+0xb5fa:	pop	edi
+0xb5fb:	pop	ebp
+0xb5fc:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0083c43c5b5e5f5dc3, 0xb5f4, 0xb5fc, ['edi', 'ebp'], 12)
+0xb5f4:	add	byte ptr [ebx + 0x5e5b3cc4], al
+0xb5fa:	pop	edi
+0xb5fb:	pop	ebp
+0xb5fc:	ret	
+
+LoadConst_Gadget(edi, 0x0)(2083c42c5b5e5f5dc3, 0x125f7, 0x125ff, ['edi', 'ebp'], 12)
+0x125f7:	and	byte ptr [ebx + 0x5e5b2cc4], al
+0x125fd:	pop	edi
+0x125fe:	pop	ebp
+0x125ff:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(2083c42c5b5e5f5dc3, 0x125f7, 0x125ff, ['edi', 'ebp'], 12)
+0x125f7:	and	byte ptr [ebx + 0x5e5b2cc4], al
+0x125fd:	pop	edi
+0x125fe:	pop	ebp
+0x125ff:	ret	
+
+LoadConst_Gadget(esi, 0x0)(dcffff83c41083c4045b5ec3, 0x45f8, 0x4603, ['eax', 'esi'], 8)
+0x45f8:	fdiv	st(7), st(0)
+0x45fa:	inc	dword ptr [ebx - 0x3b7cef3c]
+0x4600:	add	al, 0x5b
+0x4602:	pop	esi
+0x4603:	ret	
+
+LoadConst_Gadget(esi, 0x0)(ff83c41083c4045b5ec3, 0x45fa, 0x4603, ['eax', 'esi'], 8)
+0x45fa:	inc	dword ptr [ebx - 0x3b7cef3c]
+0x4600:	add	al, 0x5b
+0x4602:	pop	esi
+0x4603:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(83c41083c4045b5ec3, 0x45fb, 0x4603, ['ebx', 'esi'], 32)
+0x45fb:	add	esp, 0x10
+0x45fe:	add	esp, 4
+0x4601:	pop	ebx
+0x4602:	pop	esi
+0x4603:	ret	
+
+LoadConst_Gadget(esi, 0x18)(83c41083c4045b5ec3, 0x45fb, 0x4603, ['ebx', 'esi'], 32)
+0x45fb:	add	esp, 0x10
+0x45fe:	add	esp, 4
+0x4601:	pop	ebx
+0x4602:	pop	esi
+0x4603:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(83c4045b5ec3, 0x45fe, 0x4603, ['ebx', 'esi'], 16)
+0x45fe:	add	esp, 4
+0x4601:	pop	ebx
+0x4602:	pop	esi
+0x4603:	ret	
+
+LoadConst_Gadget(esi, 0x8)(83c4045b5ec3, 0x45fe, 0x4603, ['ebx', 'esi'], 16)
+0x45fe:	add	esp, 4
+0x4601:	pop	ebx
+0x4602:	pop	esi
+0x4603:	ret	
+
+LoadConst_Gadget(esi, 0x0)(045b5ec3, 0x4600, 0x4603, ['eax', 'esi'], 8)
+0x4600:	add	al, 0x5b
+0x4602:	pop	esi
+0x4603:	ret	
+
+LoadConst_Gadget(edi, 0x4)(135bb8010000005e5fc3, 0x765c, 0x7665, ['edi', 'ebx', 'esi'], 12)
+0x765c:	adc	ebx, dword ptr [ebx - 0x48]
+0x765f:	add	dword ptr [eax], eax
+0x7661:	add	byte ptr [eax], al
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(esi, 0x0)(135bb8010000005e5fc3, 0x765c, 0x7665, ['edi', 'ebx', 'esi'], 12)
+0x765c:	adc	ebx, dword ptr [ebx - 0x48]
+0x765f:	add	dword ptr [eax], eax
+0x7661:	add	byte ptr [eax], al
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(edx, 0x0)(5a0e306c0a0e1443c3, 0x1c65d, 0x1c665, ['eax', 'edx'], 4)
+0x1c65d:	pop	edx
+0x1c65e:	push	cs
+0x1c65f:	xor	byte ptr [edx + ecx + 0xe], ch
+0x1c663:	adc	al, 0x43
+0x1c665:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(89502889482c83c4045b5ec3, 0xfe35, 0xfe40, ['ebx', 'esi'], 16)
+0xfe35:	mov	dword ptr [eax + 0x28], edx
+0xfe38:	mov	dword ptr [eax + 0x2c], ecx
+0xfe3b:	add	esp, 4
+0xfe3e:	pop	ebx
+0xfe3f:	pop	esi
+0xfe40:	ret	
+
+LoadConst_Gadget(esi, 0x8)(89502889482c83c4045b5ec3, 0xfe35, 0xfe40, ['ebx', 'esi'], 16)
+0xfe35:	mov	dword ptr [eax + 0x28], edx
+0xfe38:	mov	dword ptr [eax + 0x2c], ecx
+0xfe3b:	add	esp, 4
+0xfe3e:	pop	ebx
+0xfe3f:	pop	esi
+0xfe40:	ret	
+
+LoadConst_Gadget(esi, 0x0)(2889482c83c4045b5ec3, 0xfe37, 0xfe40, ['eax', 'esi'], 8)
+0xfe37:	sub	byte ptr [ecx - 0x3b7cd3b8], cl
+0xfe3d:	add	al, 0x5b
+0xfe3f:	pop	esi
+0xfe40:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(89482c83c4045b5ec3, 0xfe38, 0xfe40, ['ebx', 'esi'], 16)
+0xfe38:	mov	dword ptr [eax + 0x2c], ecx
+0xfe3b:	add	esp, 4
+0xfe3e:	pop	ebx
+0xfe3f:	pop	esi
+0xfe40:	ret	
+
+LoadConst_Gadget(esi, 0x8)(89482c83c4045b5ec3, 0xfe38, 0xfe40, ['ebx', 'esi'], 16)
+0xfe38:	mov	dword ptr [eax + 0x2c], ecx
+0xfe3b:	add	esp, 4
+0xfe3e:	pop	ebx
+0xfe3f:	pop	esi
+0xfe40:	ret	
+
+LoadConst_Gadget(edi, 0x0)(3083c40c5b5e5f5dc3, 0x1463f, 0x14647, ['edi', 'ebp'], 12)
+0x1463f:	xor	byte ptr [ebx + 0x5e5b0cc4], al
+0x14645:	pop	edi
+0x14646:	pop	ebp
+0x14647:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(3083c40c5b5e5f5dc3, 0x1463f, 0x14647, ['edi', 'ebp'], 12)
+0x1463f:	xor	byte ptr [ebx + 0x5e5b0cc4], al
+0x14645:	pop	edi
+0x14646:	pop	ebp
+0x14647:	ret	
+
+LoadConst_Gadget(edi, 0x4)(c0395f0c74045b5e5fc3, 0xbe42, 0xbe4b, ['edi', 'eax', 'esi'], 12)
+0xbe42:	sar	byte ptr [ecx], 0x5f
+0xbe45:	or	al, 0x74
+0xbe47:	add	al, 0x5b
+0xbe49:	pop	esi
+0xbe4a:	pop	edi
+0xbe4b:	ret	
+
+LoadConst_Gadget(esi, 0x0)(c0395f0c74045b5e5fc3, 0xbe42, 0xbe4b, ['edi', 'eax', 'esi'], 12)
+0xbe42:	sar	byte ptr [ecx], 0x5f
+0xbe45:	or	al, 0x74
+0xbe47:	add	al, 0x5b
+0xbe49:	pop	esi
+0xbe4a:	pop	edi
+0xbe4b:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5f0c74045b5e5fc3, 0xbe44, 0xbe4b, ['edi', 'eax', 'esi'], 16)
+0xbe44:	pop	edi
+0xbe45:	or	al, 0x74
+0xbe47:	add	al, 0x5b
+0xbe49:	pop	esi
+0xbe4a:	pop	edi
+0xbe4b:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5f0c74045b5e5fc3, 0xbe44, 0xbe4b, ['edi', 'eax', 'esi'], 16)
+0xbe44:	pop	edi
+0xbe45:	or	al, 0x74
+0xbe47:	add	al, 0x5b
+0xbe49:	pop	esi
+0xbe4a:	pop	edi
+0xbe4b:	ret	
+
+LoadConst_Gadget(edi, 0x4)(0c74045b5e5fc3, 0xbe45, 0xbe4b, ['edi', 'eax', 'esi'], 12)
+0xbe45:	or	al, 0x74
+0xbe47:	add	al, 0x5b
+0xbe49:	pop	esi
+0xbe4a:	pop	edi
+0xbe4b:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0c74045b5e5fc3, 0xbe45, 0xbe4b, ['edi', 'eax', 'esi'], 12)
+0xbe45:	or	al, 0x74
+0xbe47:	add	al, 0x5b
+0xbe49:	pop	esi
+0xbe4a:	pop	edi
+0xbe4b:	ret	
+
+LoadConst_Gadget(edi, 0x4)(045b5e5fc3, 0xbe47, 0xbe4b, ['edi', 'eax', 'esi'], 12)
+0xbe47:	add	al, 0x5b
+0xbe49:	pop	esi
+0xbe4a:	pop	edi
+0xbe4b:	ret	
+
+LoadConst_Gadget(esi, 0x0)(045b5e5fc3, 0xbe47, 0xbe4b, ['edi', 'eax', 'esi'], 12)
+0xbe47:	add	al, 0x5b
+0xbe49:	pop	esi
+0xbe4a:	pop	edi
+0xbe4b:	ret	
+
+LoadConst_Gadget(edi, 0x8)(3957105b5e5f0f94c0c3, 0xbe4c, 0xbe55, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbe4c:	cmp	dword ptr [edi + 0x10], edx
+0xbe4f:	pop	ebx
+0xbe50:	pop	esi
+0xbe51:	pop	edi
+0xbe52:	sete	al
+0xbe55:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(3957105b5e5f0f94c0c3, 0xbe4c, 0xbe55, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbe4c:	cmp	dword ptr [edi + 0x10], edx
+0xbe4f:	pop	ebx
+0xbe50:	pop	esi
+0xbe51:	pop	edi
+0xbe52:	sete	al
+0xbe55:	ret	
+
+LoadConst_Gadget(esi, 0x4)(3957105b5e5f0f94c0c3, 0xbe4c, 0xbe55, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbe4c:	cmp	dword ptr [edi + 0x10], edx
+0xbe4f:	pop	ebx
+0xbe50:	pop	esi
+0xbe51:	pop	edi
+0xbe52:	sete	al
+0xbe55:	ret	
+
+LoadConst_Gadget(edi, 0x0)(105b5e5f0f94c0c3, 0xbe4e, 0xbe55, ['edi', 'eax'], 8)
+0xbe4e:	adc	byte ptr [ebx + 0x5e], bl
+0xbe51:	pop	edi
+0xbe52:	sete	al
+0xbe55:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5b5e5f0f94c0c3, 0xbe4f, 0xbe55, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbe4f:	pop	ebx
+0xbe50:	pop	esi
+0xbe51:	pop	edi
+0xbe52:	sete	al
+0xbe55:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b5e5f0f94c0c3, 0xbe4f, 0xbe55, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbe4f:	pop	ebx
+0xbe50:	pop	esi
+0xbe51:	pop	edi
+0xbe52:	sete	al
+0xbe55:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b5e5f0f94c0c3, 0xbe4f, 0xbe55, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbe4f:	pop	ebx
+0xbe50:	pop	esi
+0xbe51:	pop	edi
+0xbe52:	sete	al
+0xbe55:	ret	
+
+LoadConst_Gadget(edi, 0x4)(5e5f0f94c0c3, 0xbe50, 0xbe55, ['edi', 'eax', 'esi'], 12)
+0xbe50:	pop	esi
+0xbe51:	pop	edi
+0xbe52:	sete	al
+0xbe55:	ret	
+
+LoadConst_Gadget(esi, 0x0)(5e5f0f94c0c3, 0xbe50, 0xbe55, ['edi', 'eax', 'esi'], 12)
+0xbe50:	pop	esi
+0xbe51:	pop	edi
+0xbe52:	sete	al
+0xbe55:	ret	
+
+LoadConst_Gadget(edi, 0x0)(5f0f94c0c3, 0xbe51, 0xbe55, ['edi', 'eax'], 8)
+0xbe51:	pop	edi
+0xbe52:	sete	al
+0xbe55:	ret	
+
+LoadConst_Gadget(edi, 0x8)(197e135bb8010000005e5fc3, 0x765a, 0x7665, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x765a:	sbb	dword ptr [esi + 0x13], edi
+0x765d:	pop	ebx
+0x765e:	mov	eax, 1
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(197e135bb8010000005e5fc3, 0x765a, 0x7665, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x765a:	sbb	dword ptr [esi + 0x13], edi
+0x765d:	pop	ebx
+0x765e:	mov	eax, 1
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(esi, 0x4)(197e135bb8010000005e5fc3, 0x765a, 0x7665, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x765a:	sbb	dword ptr [esi + 0x13], edi
+0x765d:	pop	ebx
+0x765e:	mov	eax, 1
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(edx, 0x0)(405a0e306c0a0e1443c3, 0x1c65c, 0x1c665, ['eax', 'edx'], 4)
+0x1c65c:	inc	eax
+0x1c65d:	pop	edx
+0x1c65e:	push	cs
+0x1c65f:	xor	byte ptr [edx + ecx + 0xe], ch
+0x1c663:	adc	al, 0x43
+0x1c665:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5bb8010000005e5fc3, 0x765d, 0x7665, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x765d:	pop	ebx
+0x765e:	mov	eax, 1
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5bb8010000005e5fc3, 0x765d, 0x7665, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x765d:	pop	ebx
+0x765e:	mov	eax, 1
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5bb8010000005e5fc3, 0x765d, 0x7665, ['edi', 'eax', 'ebx', 'esi'], 16)
+0x765d:	pop	ebx
+0x765e:	mov	eax, 1
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(edi, 0x4)(b8010000005e5fc3, 0x765e, 0x7665, ['edi', 'eax', 'esi'], 12)
+0x765e:	mov	eax, 1
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(esi, 0x0)(b8010000005e5fc3, 0x765e, 0x7665, ['edi', 'eax', 'esi'], 12)
+0x765e:	mov	eax, 1
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(edi, 0x4)(010000005e5fc3, 0x765f, 0x7665, ['edi', 'esi'], 12)
+0x765f:	add	dword ptr [eax], eax
+0x7661:	add	byte ptr [eax], al
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(esi, 0x0)(010000005e5fc3, 0x765f, 0x7665, ['edi', 'esi'], 12)
+0x765f:	add	dword ptr [eax], eax
+0x7661:	add	byte ptr [eax], al
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(edi, 0x4)(00005e5fc3, 0x7661, 0x7665, ['edi', 'esi'], 12)
+0x7661:	add	byte ptr [eax], al
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(esi, 0x0)(00005e5fc3, 0x7661, 0x7665, ['edi', 'esi'], 12)
+0x7661:	add	byte ptr [eax], al
+0x7663:	pop	esi
+0x7664:	pop	edi
+0x7665:	ret	
+
+LoadConst_Gadget(edi, 0x4)(1085c0754b5b5e5fc3, 0xae6a, 0xae72, ['edi', 'esi'], 12)
+0xae6a:	adc	byte ptr [ebp + 0x5b4b75c0], al
+0xae70:	pop	esi
+0xae71:	pop	edi
+0xae72:	ret	
+
+LoadConst_Gadget(esi, 0x0)(1085c0754b5b5e5fc3, 0xae6a, 0xae72, ['edi', 'esi'], 12)
+0xae6a:	adc	byte ptr [ebp + 0x5b4b75c0], al
+0xae70:	pop	esi
+0xae71:	pop	edi
+0xae72:	ret	
+
+LoadConst_Gadget(edi, 0x4)(c0754b5b5e5fc3, 0xae6c, 0xae72, ['edi', 'esi'], 12)
+0xae6c:	sal	byte ptr [ebp + 0x4b], 0x5b
+0xae70:	pop	esi
+0xae71:	pop	edi
+0xae72:	ret	
+
+LoadConst_Gadget(esi, 0x0)(c0754b5b5e5fc3, 0xae6c, 0xae72, ['edi', 'esi'], 12)
+0xae6c:	sal	byte ptr [ebp + 0x4b], 0x5b
+0xae70:	pop	esi
+0xae71:	pop	edi
+0xae72:	ret	
+
+LoadConst_Gadget(edi, 0x8)(4b5b5e5fc3, 0xae6e, 0xae72, ['edi', 'ebx', 'esi'], 16)
+0xae6e:	dec	ebx
+0xae6f:	pop	ebx
+0xae70:	pop	esi
+0xae71:	pop	edi
+0xae72:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(4b5b5e5fc3, 0xae6e, 0xae72, ['edi', 'ebx', 'esi'], 16)
+0xae6e:	dec	ebx
+0xae6f:	pop	ebx
+0xae70:	pop	esi
+0xae71:	pop	edi
+0xae72:	ret	
+
+LoadConst_Gadget(esi, 0x4)(4b5b5e5fc3, 0xae6e, 0xae72, ['edi', 'ebx', 'esi'], 16)
+0xae6e:	dec	ebx
+0xae6f:	pop	ebx
+0xae70:	pop	esi
+0xae71:	pop	edi
+0xae72:	ret	
+
+LoadConst_Gadget(esi, 0x0)(5e0a0e1441c3, 0x1be6f, 0x1be74, ['eax', 'esi', 'ecx'], 8)
+0x1be6f:	pop	esi
+0x1be70:	or	cl, byte ptr [esi]
+0x1be72:	adc	al, 0x41
+0x1be74:	ret	
+
+LoadConst_Gadget(edi, 0x8)(f7730c5bb8ffffffff5e5fc3, 0x7671, 0x767c, ['edi', 'eax', 'edx', 'ebx', 'esi'], 16)
+0x7671:	div	dword ptr [ebx + 0xc]
+0x7674:	pop	ebx
+0x7675:	mov	eax, 0xffffffff
+0x767a:	pop	esi
+0x767b:	pop	edi
+0x767c:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(f7730c5bb8ffffffff5e5fc3, 0x7671, 0x767c, ['edi', 'eax', 'edx', 'ebx', 'esi'], 16)
+0x7671:	div	dword ptr [ebx + 0xc]
+0x7674:	pop	ebx
+0x7675:	mov	eax, 0xffffffff
+0x767a:	pop	esi
+0x767b:	pop	edi
+0x767c:	ret	
+
+LoadConst_Gadget(esi, 0x4)(f7730c5bb8ffffffff5e5fc3, 0x7671, 0x767c, ['edi', 'eax', 'edx', 'ebx', 'esi'], 16)
+0x7671:	div	dword ptr [ebx + 0xc]
+0x7674:	pop	ebx
+0x7675:	mov	eax, 0xffffffff
+0x767a:	pop	esi
+0x767b:	pop	edi
+0x767c:	ret	
+
+LoadConst_Gadget(edi, 0x4)(0c5bb8ffffffff5e5fc3, 0x7673, 0x767c, ['edi', 'eax', 'esi'], 12)
+0x7673:	or	al, 0x5b
+0x7675:	mov	eax, 0xffffffff
+0x767a:	pop	esi
+0x767b:	pop	edi
+0x767c:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0c5bb8ffffffff5e5fc3, 0x7673, 0x767c, ['edi', 'eax', 'esi'], 12)
+0x7673:	or	al, 0x5b
+0x7675:	mov	eax, 0xffffffff
+0x767a:	pop	esi
+0x767b:	pop	edi
+0x767c:	ret	
+
+LoadConst_Gadget(edi, 0x0)(2000005b5e5f5dc3, 0x5e77, 0x5e7e, ['edi', 'ebp'], 12)
+0x5e77:	and	byte ptr [eax], al
+0x5e79:	add	byte ptr [ebx + 0x5e], bl
+0x5e7c:	pop	edi
+0x5e7d:	pop	ebp
+0x5e7e:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(2000005b5e5f5dc3, 0x5e77, 0x5e7e, ['edi', 'ebp'], 12)
+0x5e77:	and	byte ptr [eax], al
+0x5e79:	add	byte ptr [ebx + 0x5e], bl
+0x5e7c:	pop	edi
+0x5e7d:	pop	ebp
+0x5e7e:	ret	
+
+LoadConst_Gadget(edi, 0x0)(3083c42c5b5e5f5dc3, 0x12514, 0x1251c, ['edi', 'ebp'], 12)
+0x12514:	xor	byte ptr [ebx + 0x5e5b2cc4], al
+0x1251a:	pop	edi
+0x1251b:	pop	ebp
+0x1251c:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(3083c42c5b5e5f5dc3, 0x12514, 0x1251c, ['edi', 'ebp'], 12)
+0x12514:	xor	byte ptr [ebx + 0x5e5b2cc4], al
+0x1251a:	pop	edi
+0x1251b:	pop	ebp
+0x1251c:	ret	
+
+LoadConst_Gadget(edi, 0x4)(c05bf7d85e5f5dc3, 0x14680, 0x14687, ['edi', 'ebp', 'esi'], 16)
+0x14680:	rcr	byte ptr [ebx - 9], 0xd8
+0x14684:	pop	esi
+0x14685:	pop	edi
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(c05bf7d85e5f5dc3, 0x14680, 0x14687, ['edi', 'ebp', 'esi'], 16)
+0x14680:	rcr	byte ptr [ebx - 9], 0xd8
+0x14684:	pop	esi
+0x14685:	pop	edi
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(esi, 0x0)(c05bf7d85e5f5dc3, 0x14680, 0x14687, ['edi', 'ebp', 'esi'], 16)
+0x14680:	rcr	byte ptr [ebx - 9], 0xd8
+0x14684:	pop	esi
+0x14685:	pop	edi
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5bf7d85e5f5dc3, 0x14681, 0x14687, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x14681:	pop	ebx
+0x14682:	neg	eax
+0x14684:	pop	esi
+0x14685:	pop	edi
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(5bf7d85e5f5dc3, 0x14681, 0x14687, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x14681:	pop	ebx
+0x14682:	neg	eax
+0x14684:	pop	esi
+0x14685:	pop	edi
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5bf7d85e5f5dc3, 0x14681, 0x14687, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x14681:	pop	ebx
+0x14682:	neg	eax
+0x14684:	pop	esi
+0x14685:	pop	edi
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5bf7d85e5f5dc3, 0x14681, 0x14687, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x14681:	pop	ebx
+0x14682:	neg	eax
+0x14684:	pop	esi
+0x14685:	pop	edi
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(edi, 0x4)(f7d85e5f5dc3, 0x14682, 0x14687, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x14682:	neg	eax
+0x14684:	pop	esi
+0x14685:	pop	edi
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(f7d85e5f5dc3, 0x14682, 0x14687, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x14682:	neg	eax
+0x14684:	pop	esi
+0x14685:	pop	edi
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(esi, 0x0)(f7d85e5f5dc3, 0x14682, 0x14687, ['edi', 'eax', 'ebp', 'esi'], 16)
+0x14682:	neg	eax
+0x14684:	pop	esi
+0x14685:	pop	edi
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(d85e5f5dc3, 0x14683, 0x14687, ['ebp'], 8)
+0x14683:	fcomp	dword ptr [esi + 0x5f]
+0x14686:	pop	ebp
+0x14687:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(1ce866c1feff83c4185bc3, 0x15e94, 0x15e9e, ['eax', 'ebx', 'esi'], 32)
+0x15e94:	sbb	al, 0xe8
+0x15e96:	sar	si, -1
+0x15e9a:	add	esp, 0x18
+0x15e9d:	pop	ebx
+0x15e9e:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(66c1feff83c4185bc3, 0x15e96, 0x15e9e, ['ebx', 'esi'], 32)
+0x15e96:	sar	si, -1
+0x15e9a:	add	esp, 0x18
+0x15e9d:	pop	ebx
+0x15e9e:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(c1feff83c4185bc3, 0x15e97, 0x15e9e, ['ebx', 'esi'], 32)
+0x15e97:	sar	esi, -1
+0x15e9a:	add	esp, 0x18
+0x15e9d:	pop	ebx
+0x15e9e:	ret	
+
+LoadConst_Gadget(edx, 0x0)(8b1424c3, 0x3e9c, 0x3e9f, ['edx'], 4)
+0x3e9c:	mov	edx, dword ptr [esp]
+0x3e9f:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0089f00f85f200000081c4a00200005b5e5fc3, 0x6e9d, 0x6eaf, ['edi'], 8)
+0x6e9d:	add	byte ptr [ecx - 0xd7af010], cl
+0x6ea3:	add	byte ptr [eax], al
+0x6ea5:	add	byte ptr [ecx + 0x2a0c4], al
+0x6eab:	add	byte ptr [ebx + 0x5e], bl
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(edi, 0x8)(893b5b5e5fc3, 0xfea0, 0xfea5, ['edi', 'ebx', 'esi'], 16)
+0xfea0:	mov	dword ptr [ebx], edi
+0xfea2:	pop	ebx
+0xfea3:	pop	esi
+0xfea4:	pop	edi
+0xfea5:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(893b5b5e5fc3, 0xfea0, 0xfea5, ['edi', 'ebx', 'esi'], 16)
+0xfea0:	mov	dword ptr [ebx], edi
+0xfea2:	pop	ebx
+0xfea3:	pop	esi
+0xfea4:	pop	edi
+0xfea5:	ret	
+
+LoadConst_Gadget(esi, 0x4)(893b5b5e5fc3, 0xfea0, 0xfea5, ['edi', 'ebx', 'esi'], 16)
+0xfea0:	mov	dword ptr [ebx], edi
+0xfea2:	pop	ebx
+0xfea3:	pop	esi
+0xfea4:	pop	edi
+0xfea5:	ret	
+
+LoadConst_Gadget(edi, 0x0)(3b5b5e5fc3, 0xfea1, 0xfea5, ['edi'], 8)
+0xfea1:	cmp	ebx, dword ptr [ebx + 0x5e]
+0xfea4:	pop	edi
+0xfea5:	ret	
+
+LoadConst_Gadget(edi, 0x0)(00000081c4a00200005b5e5fc3, 0x6ea3, 0x6eaf, ['edi'], 8)
+0x6ea3:	add	byte ptr [eax], al
+0x6ea5:	add	byte ptr [ecx + 0x2a0c4], al
+0x6eab:	add	byte ptr [ebx + 0x5e], bl
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0081c4a00200005b5e5fc3, 0x6ea5, 0x6eaf, ['edi'], 8)
+0x6ea5:	add	byte ptr [ecx + 0x2a0c4], al
+0x6eab:	add	byte ptr [ebx + 0x5e], bl
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(edi, 0x4)(a00200005b5e5fc3, 0x6ea8, 0x6eaf, ['edi', 'eax', 'esi'], 12)
+0x6ea8:	mov	al, byte ptr [0x5b000002]
+0x6ead:	pop	esi
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(esi, 0x0)(a00200005b5e5fc3, 0x6ea8, 0x6eaf, ['edi', 'eax', 'esi'], 12)
+0x6ea8:	mov	al, byte ptr [0x5b000002]
+0x6ead:	pop	esi
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0200005b5e5fc3, 0x6ea9, 0x6eaf, ['edi', 'eax'], 8)
+0x6ea9:	add	al, byte ptr [eax]
+0x6eab:	add	byte ptr [ebx + 0x5e], bl
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(edi, 0x8)(00005b5e5fc3, 0x6eaa, 0x6eaf, ['edi', 'ebx', 'esi'], 16)
+0x6eaa:	add	byte ptr [eax], al
+0x6eac:	pop	ebx
+0x6ead:	pop	esi
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(00005b5e5fc3, 0x6eaa, 0x6eaf, ['edi', 'ebx', 'esi'], 16)
+0x6eaa:	add	byte ptr [eax], al
+0x6eac:	pop	ebx
+0x6ead:	pop	esi
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(esi, 0x4)(00005b5e5fc3, 0x6eaa, 0x6eaf, ['edi', 'ebx', 'esi'], 16)
+0x6eaa:	add	byte ptr [eax], al
+0x6eac:	pop	ebx
+0x6ead:	pop	esi
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(edi, 0x0)(005b5e5fc3, 0x6eab, 0x6eaf, ['edi'], 8)
+0x6eab:	add	byte ptr [ebx + 0x5e], bl
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(0000000083c4045b5ec3, 0x46c1, 0x46ca, ['ebx', 'esi'], 16)
+0x46c1:	add	byte ptr [eax], al
+0x46c3:	add	byte ptr [eax], al
+0x46c5:	add	esp, 4
+0x46c8:	pop	ebx
+0x46c9:	pop	esi
+0x46ca:	ret	
+
+LoadConst_Gadget(esi, 0x8)(0000000083c4045b5ec3, 0x46c1, 0x46ca, ['ebx', 'esi'], 16)
+0x46c1:	add	byte ptr [eax], al
+0x46c3:	add	byte ptr [eax], al
+0x46c5:	add	esp, 4
+0x46c8:	pop	ebx
+0x46c9:	pop	esi
+0x46ca:	ret	
+
+LoadConst_Gadget(ebx, 0x4)(000083c4045b5ec3, 0x46c3, 0x46ca, ['ebx', 'esi'], 16)
+0x46c3:	add	byte ptr [eax], al
+0x46c5:	add	esp, 4
+0x46c8:	pop	ebx
+0x46c9:	pop	esi
+0x46ca:	ret	
+
+LoadConst_Gadget(esi, 0x8)(000083c4045b5ec3, 0x46c3, 0x46ca, ['ebx', 'esi'], 16)
+0x46c3:	add	byte ptr [eax], al
+0x46c5:	add	esp, 4
+0x46c8:	pop	ebx
+0x46c9:	pop	esi
+0x46ca:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(83c4185bc3, 0x3ec5, 0x3ec9, ['ebx'], 32)
+0x3ec5:	add	esp, 0x18
+0x3ec8:	pop	ebx
+0x3ec9:	ret	
+
+LoadConst_Gadget(ebx, 0x8)(33d1000083c4085bc3, 0x15ecf, 0x15ed7, ['edx', 'ebx'], 16)
+0x15ecf:	xor	edx, ecx
+0x15ed1:	add	byte ptr [eax], al
+0x15ed3:	add	esp, 8
+0x15ed6:	pop	ebx
+0x15ed7:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(31c05b5ec3, 0x3ee8, 0x3eec, ['eax', 'ebx', 'esi'], 12)
+0x3ee8:	xor	eax, eax
+0x3eea:	pop	ebx
+0x3eeb:	pop	esi
+0x3eec:	ret	
+
+LoadConst_Gadget(esi, 0x4)(31c05b5ec3, 0x3ee8, 0x3eec, ['eax', 'ebx', 'esi'], 12)
+0x3ee8:	xor	eax, eax
+0x3eea:	pop	ebx
+0x3eeb:	pop	esi
+0x3eec:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0081c4ac0000005b5e5f5dc3, 0xcee9, 0xcef4, ['edi', 'ebp'], 12)
+0xcee9:	add	byte ptr [ecx + 0xacc4], al
+0xceef:	add	byte ptr [ebx + 0x5e], bl
+0xcef2:	pop	edi
+0xcef3:	pop	ebp
+0xcef4:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0081c4ac0000005b5e5f5dc3, 0xcee9, 0xcef4, ['edi', 'ebp'], 12)
+0xcee9:	add	byte ptr [ecx + 0xacc4], al
+0xceef:	add	byte ptr [ebx + 0x5e], bl
+0xcef2:	pop	edi
+0xcef3:	pop	ebp
+0xcef4:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b5ec3, 0x3eea, 0x3eec, ['ebx', 'esi'], 12)
+0x3eea:	pop	ebx
+0x3eeb:	pop	esi
+0x3eec:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b5ec3, 0x3eea, 0x3eec, ['ebx', 'esi'], 12)
+0x3eea:	pop	ebx
+0x3eeb:	pop	esi
+0x3eec:	ret	
+
+LoadConst_Gadget(esi, 0x0)(5ec3, 0x3eeb, 0x3eec, ['esi'], 8)
+0x3eeb:	pop	esi
+0x3eec:	ret	
+
+LoadConst_Gadget(edi, 0x0)(ac0000005b5e5f5dc3, 0xceec, 0xcef4, ['edi', 'eax', 'ebp', 'esi'], 12)
+0xceec:	lodsb	al, byte ptr [esi]
+0xceed:	add	byte ptr [eax], al
+0xceef:	add	byte ptr [ebx + 0x5e], bl
+0xcef2:	pop	edi
+0xcef3:	pop	ebp
+0xcef4:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(ac0000005b5e5f5dc3, 0xceec, 0xcef4, ['edi', 'eax', 'ebp', 'esi'], 12)
+0xceec:	lodsb	al, byte ptr [esi]
+0xceed:	add	byte ptr [eax], al
+0xceef:	add	byte ptr [ebx + 0x5e], bl
+0xcef2:	pop	edi
+0xcef3:	pop	ebp
+0xcef4:	ret	
+
+LoadConst_Gadget(edi, 0x4)(00000074055b5e5fc3, 0x4ef6, 0x4efe, ['edi', 'esi'], 12)
+0x4ef6:	add	byte ptr [eax], al
+0x4ef8:	add	byte ptr [ebp + eax + 0x5b], dh
+0x4efc:	pop	esi
+0x4efd:	pop	edi
+0x4efe:	ret	
+
+LoadConst_Gadget(esi, 0x0)(00000074055b5e5fc3, 0x4ef6, 0x4efe, ['edi', 'esi'], 12)
+0x4ef6:	add	byte ptr [eax], al
+0x4ef8:	add	byte ptr [ebp + eax + 0x5b], dh
+0x4efc:	pop	esi
+0x4efd:	pop	edi
+0x4efe:	ret	
+
+LoadConst_Gadget(edi, 0x4)(0074055b5e5fc3, 0x4ef8, 0x4efe, ['edi', 'esi'], 12)
+0x4ef8:	add	byte ptr [ebp + eax + 0x5b], dh
+0x4efc:	pop	esi
+0x4efd:	pop	edi
+0x4efe:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0074055b5e5fc3, 0x4ef8, 0x4efe, ['edi', 'esi'], 12)
+0x4ef8:	add	byte ptr [ebp + eax + 0x5b], dh
+0x4efc:	pop	esi
+0x4efd:	pop	edi
+0x4efe:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(33430c5b5e09c20f94c0c3, 0x3ef9, 0x3f03, ['eax', 'edx', 'ebx', 'esi'], 12)
+0x3ef9:	xor	eax, dword ptr [ebx + 0xc]
+0x3efc:	pop	ebx
+0x3efd:	pop	esi
+0x3efe:	or	edx, eax
+0x3f00:	sete	al
+0x3f03:	ret	
+
+LoadConst_Gadget(esi, 0x4)(33430c5b5e09c20f94c0c3, 0x3ef9, 0x3f03, ['eax', 'edx', 'ebx', 'esi'], 12)
+0x3ef9:	xor	eax, dword ptr [ebx + 0xc]
+0x3efc:	pop	ebx
+0x3efd:	pop	esi
+0x3efe:	or	edx, eax
+0x3f00:	sete	al
+0x3f03:	ret	
+
+LoadConst_Gadget(esi, 0x0)(430c5b5e09c20f94c0c3, 0x3efa, 0x3f03, ['eax', 'edx', 'ebx', 'esi'], 8)
+0x3efa:	inc	ebx
+0x3efb:	or	al, 0x5b
+0x3efd:	pop	esi
+0x3efe:	or	edx, eax
+0x3f00:	sete	al
+0x3f03:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0c5b5e09c20f94c0c3, 0x3efb, 0x3f03, ['eax', 'edx', 'esi'], 8)
+0x3efb:	or	al, 0x5b
+0x3efd:	pop	esi
+0x3efe:	or	edx, eax
+0x3f00:	sete	al
+0x3f03:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b5e09c20f94c0c3, 0x3efc, 0x3f03, ['eax', 'edx', 'ebx', 'esi'], 12)
+0x3efc:	pop	ebx
+0x3efd:	pop	esi
+0x3efe:	or	edx, eax
+0x3f00:	sete	al
+0x3f03:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b5e09c20f94c0c3, 0x3efc, 0x3f03, ['eax', 'edx', 'ebx', 'esi'], 12)
+0x3efc:	pop	ebx
+0x3efd:	pop	esi
+0x3efe:	or	edx, eax
+0x3f00:	sete	al
+0x3f03:	ret	
+
+LoadConst_Gadget(esi, 0x0)(5e09c20f94c0c3, 0x3efd, 0x3f03, ['eax', 'edx', 'esi'], 8)
+0x3efd:	pop	esi
+0x3efe:	or	edx, eax
+0x3f00:	sete	al
+0x3f03:	ret	
+
+LoadConst_Gadget(edi, 0x0)(887effff83c4105b5e5fc3, 0x9f14, 0x9f1e, ['edi'], 8)
+0x9f14:	mov	byte ptr [esi - 1], bh
+0x9f17:	inc	dword ptr [ebx + 0x5e5b10c4]
+0x9f1d:	pop	edi
+0x9f1e:	ret	
+
+LoadConst_Gadget(edi, 0x0)(1083c40c5b5e5f5dc3, 0x53da, 0x53e2, ['edi', 'ebp'], 12)
+0x53da:	adc	byte ptr [ebx + 0x5e5b0cc4], al
+0x53e0:	pop	edi
+0x53e1:	pop	ebp
+0x53e2:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(1083c40c5b5e5f5dc3, 0x53da, 0x53e2, ['edi', 'ebp'], 12)
+0x53da:	adc	byte ptr [ebx + 0x5e5b0cc4], al
+0x53e0:	pop	edi
+0x53e1:	pop	ebp
+0x53e2:	ret	
+
+LoadConst_Gadget(edi, 0x0)(1200005b5e5f5dc3, 0x6728, 0x672f, ['edi', 'eax', 'ebp'], 12)
+0x6728:	adc	al, byte ptr [eax]
+0x672a:	add	byte ptr [ebx + 0x5e], bl
+0x672d:	pop	edi
+0x672e:	pop	ebp
+0x672f:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(1200005b5e5f5dc3, 0x6728, 0x672f, ['edi', 'eax', 'ebp'], 12)
+0x6728:	adc	al, byte ptr [eax]
+0x672a:	add	byte ptr [ebx + 0x5e], bl
+0x672d:	pop	edi
+0x672e:	pop	ebp
+0x672f:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0b81c49c0000005b5e5f5dc3, 0x573f, 0x574a, ['edi', 'eax', 'ebp'], 12)
+0x573f:	or	eax, dword ptr [ecx + 0x9cc4]
+0x5745:	add	byte ptr [ebx + 0x5e], bl
+0x5748:	pop	edi
+0x5749:	pop	ebp
+0x574a:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0b81c49c0000005b5e5f5dc3, 0x573f, 0x574a, ['edi', 'eax', 'ebp'], 12)
+0x573f:	or	eax, dword ptr [ecx + 0x9cc4]
+0x5745:	add	byte ptr [ebx + 0x5e], bl
+0x5748:	pop	edi
+0x5749:	pop	ebp
+0x574a:	ret	
+
+LoadConst_Gadget(edi, 0x8)(89f85b5e5fc3, 0xaf40, 0xaf45, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xaf40:	mov	eax, edi
+0xaf42:	pop	ebx
+0xaf43:	pop	esi
+0xaf44:	pop	edi
+0xaf45:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89f85b5e5fc3, 0xaf40, 0xaf45, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xaf40:	mov	eax, edi
+0xaf42:	pop	ebx
+0xaf43:	pop	esi
+0xaf44:	pop	edi
+0xaf45:	ret	
+
+LoadConst_Gadget(esi, 0x4)(89f85b5e5fc3, 0xaf40, 0xaf45, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xaf40:	mov	eax, edi
+0xaf42:	pop	ebx
+0xaf43:	pop	esi
+0xaf44:	pop	edi
+0xaf45:	ret	
+
+LoadConst_Gadget(edi, 0x8)(f85b5e5fc3, 0xaf41, 0xaf45, ['edi', 'ebx', 'esi'], 16)
+0xaf41:	clc	
+0xaf42:	pop	ebx
+0xaf43:	pop	esi
+0xaf44:	pop	edi
+0xaf45:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(f85b5e5fc3, 0xaf41, 0xaf45, ['edi', 'ebx', 'esi'], 16)
+0xaf41:	clc	
+0xaf42:	pop	ebx
+0xaf43:	pop	esi
+0xaf44:	pop	edi
+0xaf45:	ret	
+
+LoadConst_Gadget(esi, 0x4)(f85b5e5fc3, 0xaf41, 0xaf45, ['edi', 'ebx', 'esi'], 16)
+0xaf41:	clc	
+0xaf42:	pop	ebx
+0xaf43:	pop	esi
+0xaf44:	pop	edi
+0xaf45:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(9c0000005b5e5f5dc3, 0x5742, 0x574a, ['edi', 'ebp'], 8)
+0x5742:	pushfd	
+0x5743:	add	byte ptr [eax], al
+0x5745:	add	byte ptr [ebx + 0x5e], bl
+0x5748:	pop	edi
+0x5749:	pop	ebp
+0x574a:	ret	
+
+LoadConst_Gadget(edi, 0x0)(ff83c43c5b5e5f5dc3, 0xbf49, 0xbf51, ['edi', 'ebp'], 12)
+0xbf49:	inc	dword ptr [ebx + 0x5e5b3cc4]
+0xbf4f:	pop	edi
+0xbf50:	pop	ebp
+0xbf51:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(ff83c43c5b5e5f5dc3, 0xbf49, 0xbf51, ['edi', 'ebp'], 12)
+0xbf49:	inc	dword ptr [ebx + 0x5e5b3cc4]
+0xbf4f:	pop	edi
+0xbf50:	pop	ebp
+0xbf51:	ret	
+
+LoadConst_Gadget(edi, 0x4)(0089d789f85b5e5fc3, 0xaf4f, 0xaf57, ['edi', 'esi'], 12)
+0xaf4f:	add	byte ptr [ecx + 0x5bf889d7], cl
+0xaf55:	pop	esi
+0xaf56:	pop	edi
+0xaf57:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0089d789f85b5e5fc3, 0xaf4f, 0xaf57, ['edi', 'esi'], 12)
+0xaf4f:	add	byte ptr [ecx + 0x5bf889d7], cl
+0xaf55:	pop	esi
+0xaf56:	pop	edi
+0xaf57:	ret	
+
+LoadConst_Gadget(edi, 0x8)(89d789f85b5e5fc3, 0xaf50, 0xaf57, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xaf50:	mov	edi, edx
+0xaf52:	mov	eax, edi
+0xaf54:	pop	ebx
+0xaf55:	pop	esi
+0xaf56:	pop	edi
+0xaf57:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89d789f85b5e5fc3, 0xaf50, 0xaf57, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xaf50:	mov	edi, edx
+0xaf52:	mov	eax, edi
+0xaf54:	pop	ebx
+0xaf55:	pop	esi
+0xaf56:	pop	edi
+0xaf57:	ret	
+
+LoadConst_Gadget(esi, 0x4)(89d789f85b5e5fc3, 0xaf50, 0xaf57, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xaf50:	mov	edi, edx
+0xaf52:	mov	eax, edi
+0xaf54:	pop	ebx
+0xaf55:	pop	esi
+0xaf56:	pop	edi
+0xaf57:	ret	
+
+LoadConst_Gadget(edi, 0x8)(d789f85b5e5fc3, 0xaf51, 0xaf57, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xaf51:	xlatb	
+0xaf52:	mov	eax, edi
+0xaf54:	pop	ebx
+0xaf55:	pop	esi
+0xaf56:	pop	edi
+0xaf57:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(d789f85b5e5fc3, 0xaf51, 0xaf57, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xaf51:	xlatb	
+0xaf52:	mov	eax, edi
+0xaf54:	pop	ebx
+0xaf55:	pop	esi
+0xaf56:	pop	edi
+0xaf57:	ret	
+
+LoadConst_Gadget(esi, 0x4)(d789f85b5e5fc3, 0xaf51, 0xaf57, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xaf51:	xlatb	
+0xaf52:	mov	eax, edi
+0xaf54:	pop	ebx
+0xaf55:	pop	esi
+0xaf56:	pop	edi
+0xaf57:	ret	
+
+LoadConst_Gadget(ebx, 0x14)(000000750683c4145b5ec3, 0xb93a, 0xb944, ['ebx', 'esi'], 32)
+0xb93a:	add	byte ptr [eax], al
+0xb93c:	add	byte ptr [ebp + 6], dh
+0xb93f:	add	esp, 0x14
+0xb942:	pop	ebx
+0xb943:	pop	esi
+0xb944:	ret	
+
+LoadConst_Gadget(esi, 0x18)(000000750683c4145b5ec3, 0xb93a, 0xb944, ['ebx', 'esi'], 32)
+0xb93a:	add	byte ptr [eax], al
+0xb93c:	add	byte ptr [ebp + 6], dh
+0xb93f:	add	esp, 0x14
+0xb942:	pop	ebx
+0xb943:	pop	esi
+0xb944:	ret	
+
+LoadConst_Gadget(edi, 0x0)(0081c49c0000005b5e5f5dc3, 0x14763, 0x1476e, ['edi', 'ebp'], 12)
+0x14763:	add	byte ptr [ecx + 0x9cc4], al
+0x14769:	add	byte ptr [ebx + 0x5e], bl
+0x1476c:	pop	edi
+0x1476d:	pop	ebp
+0x1476e:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(0081c49c0000005b5e5f5dc3, 0x14763, 0x1476e, ['edi', 'ebp'], 12)
+0x14763:	add	byte ptr [ecx + 0x9cc4], al
+0x14769:	add	byte ptr [ebx + 0x5e], bl
+0x1476c:	pop	edi
+0x1476d:	pop	ebp
+0x1476e:	ret	
+
+LoadConst_Gadget(esi, 0x0)(1284d2b80100000074095b5ec3, 0x4f75, 0x4f81, ['eax', 'esi'], 8)
+0x4f75:	adc	al, byte ptr [edx + edx*8 + 0x1b8]
+0x4f7c:	add	byte ptr [ecx + ecx + 0x5b], dh
+0x4f80:	pop	esi
+0x4f81:	ret	
+
+LoadConst_Gadget(esi, 0x0)(00000074095b5ec3, 0x4f7a, 0x4f81, ['esi'], 8)
+0x4f7a:	add	byte ptr [eax], al
+0x4f7c:	add	byte ptr [ecx + ecx + 0x5b], dh
+0x4f80:	pop	esi
+0x4f81:	ret	
+
+LoadConst_Gadget(esi, 0x0)(0074095b5ec3, 0x4f7c, 0x4f81, ['esi'], 8)
+0x4f7c:	add	byte ptr [ecx + ecx + 0x5b], dh
+0x4f80:	pop	esi
+0x4f81:	ret	
+
+LoadConst_Gadget(edi, 0x0)(2283c40c5b5e5f5dc3, 0x13f89, 0x13f91, ['edi', 'eax', 'ebp'], 12)
+0x13f89:	and	al, byte ptr [ebx + 0x5e5b0cc4]
+0x13f8f:	pop	edi
+0x13f90:	pop	ebp
+0x13f91:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(2283c40c5b5e5f5dc3, 0x13f89, 0x13f91, ['edi', 'eax', 'ebp'], 12)
+0x13f89:	and	al, byte ptr [ebx + 0x5e5b0cc4]
+0x13f8f:	pop	edi
+0x13f90:	pop	ebp
+0x13f91:	ret	
+
+LoadConst_Gadget(edi, 0x4)(e45b31c05e5fc3, 0xbf9b, 0xbfa1, ['edi', 'eax', 'esi'], 12)
+0xbf9b:	in	al, 0x5b
+0xbf9d:	xor	eax, eax
+0xbf9f:	pop	esi
+0xbfa0:	pop	edi
+0xbfa1:	ret	
+
+LoadConst_Gadget(esi, 0x0)(e45b31c05e5fc3, 0xbf9b, 0xbfa1, ['edi', 'eax', 'esi'], 12)
+0xbf9b:	in	al, 0x5b
+0xbf9d:	xor	eax, eax
+0xbf9f:	pop	esi
+0xbfa0:	pop	edi
+0xbfa1:	ret	
+
+LoadConst_Gadget(edi, 0x8)(000089f05b5e5fc3, 0xbfa6, 0xbfad, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfa6:	add	byte ptr [eax], al
+0xbfa8:	mov	eax, esi
+0xbfaa:	pop	ebx
+0xbfab:	pop	esi
+0xbfac:	pop	edi
+0xbfad:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(000089f05b5e5fc3, 0xbfa6, 0xbfad, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfa6:	add	byte ptr [eax], al
+0xbfa8:	mov	eax, esi
+0xbfaa:	pop	ebx
+0xbfab:	pop	esi
+0xbfac:	pop	edi
+0xbfad:	ret	
+
+LoadConst_Gadget(esi, 0x4)(000089f05b5e5fc3, 0xbfa6, 0xbfad, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfa6:	add	byte ptr [eax], al
+0xbfa8:	mov	eax, esi
+0xbfaa:	pop	ebx
+0xbfab:	pop	esi
+0xbfac:	pop	edi
+0xbfad:	ret	
+
+LoadConst_Gadget(edi, 0x8)(89f05b5e5fc3, 0xbfa8, 0xbfad, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfa8:	mov	eax, esi
+0xbfaa:	pop	ebx
+0xbfab:	pop	esi
+0xbfac:	pop	edi
+0xbfad:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(89f05b5e5fc3, 0xbfa8, 0xbfad, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfa8:	mov	eax, esi
+0xbfaa:	pop	ebx
+0xbfab:	pop	esi
+0xbfac:	pop	edi
+0xbfad:	ret	
+
+LoadConst_Gadget(esi, 0x4)(89f05b5e5fc3, 0xbfa8, 0xbfad, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfa8:	mov	eax, esi
+0xbfaa:	pop	ebx
+0xbfab:	pop	esi
+0xbfac:	pop	edi
+0xbfad:	ret	
+
+LoadConst_Gadget(edi, 0x8)(ff83c420893b5b5e5fc3, 0xfe9c, 0xfea5, ['edi', 'ebx', 'esi'], 16)
+0xfe9c:	inc	dword ptr [ebx + 0x3b8920c4]
+0xfea2:	pop	ebx
+0xfea3:	pop	esi
+0xfea4:	pop	edi
+0xfea5:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(ff83c420893b5b5e5fc3, 0xfe9c, 0xfea5, ['edi', 'ebx', 'esi'], 16)
+0xfe9c:	inc	dword ptr [ebx + 0x3b8920c4]
+0xfea2:	pop	ebx
+0xfea3:	pop	esi
+0xfea4:	pop	edi
+0xfea5:	ret	
+
+LoadConst_Gadget(esi, 0x4)(ff83c420893b5b5e5fc3, 0xfe9c, 0xfea5, ['edi', 'ebx', 'esi'], 16)
+0xfe9c:	inc	dword ptr [ebx + 0x3b8920c4]
+0xfea2:	pop	ebx
+0xfea3:	pop	esi
+0xfea4:	pop	edi
+0xfea5:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b5e8d04c2c3, 0xba76, 0xba7b, ['eax', 'ebx', 'esi'], 12)
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b5e8d04c2c3, 0xba76, 0xba7b, ['eax', 'ebx', 'esi'], 12)
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+LoadConst_Gadget(edi, 0x8)(908b035b5e5fc3, 0xbfaf, 0xbfb5, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfaf:	nop	
+0xbfb0:	mov	eax, dword ptr [ebx]
+0xbfb2:	pop	ebx
+0xbfb3:	pop	esi
+0xbfb4:	pop	edi
+0xbfb5:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(908b035b5e5fc3, 0xbfaf, 0xbfb5, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfaf:	nop	
+0xbfb0:	mov	eax, dword ptr [ebx]
+0xbfb2:	pop	ebx
+0xbfb3:	pop	esi
+0xbfb4:	pop	edi
+0xbfb5:	ret	
+
+LoadConst_Gadget(esi, 0x4)(908b035b5e5fc3, 0xbfaf, 0xbfb5, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfaf:	nop	
+0xbfb0:	mov	eax, dword ptr [ebx]
+0xbfb2:	pop	ebx
+0xbfb3:	pop	esi
+0xbfb4:	pop	edi
+0xbfb5:	ret	
+
+LoadConst_Gadget(edi, 0x8)(8b035b5e5fc3, 0xbfb0, 0xbfb5, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfb0:	mov	eax, dword ptr [ebx]
+0xbfb2:	pop	ebx
+0xbfb3:	pop	esi
+0xbfb4:	pop	edi
+0xbfb5:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(8b035b5e5fc3, 0xbfb0, 0xbfb5, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfb0:	mov	eax, dword ptr [ebx]
+0xbfb2:	pop	ebx
+0xbfb3:	pop	esi
+0xbfb4:	pop	edi
+0xbfb5:	ret	
+
+LoadConst_Gadget(esi, 0x4)(8b035b5e5fc3, 0xbfb0, 0xbfb5, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfb0:	mov	eax, dword ptr [ebx]
+0xbfb2:	pop	ebx
+0xbfb3:	pop	esi
+0xbfb4:	pop	edi
+0xbfb5:	ret	
+
+LoadConst_Gadget(edi, 0x0)(035b5e5fc3, 0xbfb1, 0xbfb5, ['edi', 'ebx'], 8)
+0xbfb1:	add	ebx, dword ptr [ebx + 0x5e]
+0xbfb4:	pop	edi
+0xbfb5:	ret	
+
+LoadConst_Gadget(edi, 0x0)(85f200000081c4a00200005b5e5fc3, 0x6ea1, 0x6eaf, ['edi'], 8)
+0x6ea1:	test	edx, esi
+0x6ea3:	add	byte ptr [eax], al
+0x6ea5:	add	byte ptr [ecx + 0x2a0c4], al
+0x6eab:	add	byte ptr [ebx + 0x5e], bl
+0x6eae:	pop	edi
+0x6eaf:	ret	
+
+LoadConst_Gadget(edi, 0x8)(b8ffffffff5b5e5f5dc3, 0x7313, 0x731c, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x7313:	mov	eax, 0xffffffff
+0x7318:	pop	ebx
+0x7319:	pop	esi
+0x731a:	pop	edi
+0x731b:	pop	ebp
+0x731c:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(b8ffffffff5b5e5f5dc3, 0x7313, 0x731c, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x7313:	mov	eax, 0xffffffff
+0x7318:	pop	ebx
+0x7319:	pop	esi
+0x731a:	pop	edi
+0x731b:	pop	ebp
+0x731c:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(b8ffffffff5b5e5f5dc3, 0x7313, 0x731c, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x7313:	mov	eax, 0xffffffff
+0x7318:	pop	ebx
+0x7319:	pop	esi
+0x731a:	pop	edi
+0x731b:	pop	ebp
+0x731c:	ret	
+
+LoadConst_Gadget(esi, 0x4)(b8ffffffff5b5e5f5dc3, 0x7313, 0x731c, ['edi', 'eax', 'ebp', 'ebx', 'esi'], 20)
+0x7313:	mov	eax, 0xffffffff
+0x7318:	pop	ebx
+0x7319:	pop	esi
+0x731a:	pop	edi
+0x731b:	pop	ebp
+0x731c:	ret	
+
+LoadConst_Gadget(edi, 0x0)(3a83c4185b5e5f5dc3, 0x3fe0, 0x3fe8, ['edi', 'ebp'], 12)
+0x3fe0:	cmp	al, byte ptr [ebx + 0x5e5b18c4]
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(3a83c4185b5e5f5dc3, 0x3fe0, 0x3fe8, ['edi', 'ebp'], 12)
+0x3fe0:	cmp	al, byte ptr [ebx + 0x5e5b18c4]
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(ebx, 0x18)(83c4185b5e5f5dc3, 0x3fe1, 0x3fe8, ['edi', 'ebp', 'ebx', 'esi'], 44)
+0x3fe1:	add	esp, 0x18
+0x3fe4:	pop	ebx
+0x3fe5:	pop	esi
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(esi, 0x1c)(83c4185b5e5f5dc3, 0x3fe1, 0x3fe8, ['edi', 'ebp', 'ebx', 'esi'], 44)
+0x3fe1:	add	esp, 0x18
+0x3fe4:	pop	ebx
+0x3fe5:	pop	esi
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(edi, 0x0)(185b5e5f5dc3, 0x3fe3, 0x3fe8, ['edi', 'ebp'], 12)
+0x3fe3:	sbb	byte ptr [ebx + 0x5e], bl
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(185b5e5f5dc3, 0x3fe3, 0x3fe8, ['edi', 'ebp'], 12)
+0x3fe3:	sbb	byte ptr [ebx + 0x5e], bl
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(edi, 0x8)(5b5e5f5dc3, 0x3fe4, 0x3fe8, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0x3fe4:	pop	ebx
+0x3fe5:	pop	esi
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(ebp, 0xc)(5b5e5f5dc3, 0x3fe4, 0x3fe8, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0x3fe4:	pop	ebx
+0x3fe5:	pop	esi
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(5b5e5f5dc3, 0x3fe4, 0x3fe8, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0x3fe4:	pop	ebx
+0x3fe5:	pop	esi
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(esi, 0x4)(5b5e5f5dc3, 0x3fe4, 0x3fe8, ['edi', 'ebp', 'ebx', 'esi'], 20)
+0x3fe4:	pop	ebx
+0x3fe5:	pop	esi
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(edi, 0x4)(5e5f5dc3, 0x3fe5, 0x3fe8, ['edi', 'ebp', 'esi'], 16)
+0x3fe5:	pop	esi
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(ebp, 0x8)(5e5f5dc3, 0x3fe5, 0x3fe8, ['edi', 'ebp', 'esi'], 16)
+0x3fe5:	pop	esi
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(esi, 0x0)(5e5f5dc3, 0x3fe5, 0x3fe8, ['edi', 'ebp', 'esi'], 16)
+0x3fe5:	pop	esi
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(edi, 0x0)(5f5dc3, 0x3fe6, 0x3fe8, ['edi', 'ebp'], 12)
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(ebp, 0x4)(5f5dc3, 0x3fe6, 0x3fe8, ['edi', 'ebp'], 12)
+0x3fe6:	pop	edi
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(ebp, 0x0)(5dc3, 0x3fe7, 0x3fe8, ['ebp'], 8)
+0x3fe7:	pop	ebp
+0x3fe8:	ret	
+
+LoadConst_Gadget(ebx, 0x8)(83c40831c05bc3, 0xbffa, 0xc000, ['eax', 'ebx'], 16)
+0xbffa:	add	esp, 8
+0xbffd:	xor	eax, eax
+0xbfff:	pop	ebx
+0xc000:	ret	
+
+LoadConst_Gadget(ebx, 0x0)(31c05bc3, 0xbffd, 0xc000, ['eax', 'ebx'], 8)
+0xbffd:	xor	eax, eax
+0xbfff:	pop	ebx
+0xc000:	ret	
+
+ReadMemOp_Gadget(eax |= [ebp + 0xa])(470b450ac3, 0x1c034, 0x1c038, ['edi', 'eax'], 4)
+0x1c034:	inc	edi
+0x1c035:	or	eax, dword ptr [ebp + 0xa]
+0x1c038:	ret	
+
+ReadMemOp_Gadget(eax |= [ebp + 0xa])(0b450ac3, 0x1c035, 0x1c038, ['eax'], 4)
+0x1c035:	or	eax, dword ptr [ebp + 0xa]
+0x1c038:	ret	
+
+ReadMemOp_Gadget(ecx |= [edi + 0xa])(0b4f0ac3, 0x1d520, 0x1d523, ['ecx'], 4)
+0x1d520:	or	ecx, dword ptr [edi + 0xa]
+0x1d523:	ret	
+
+ReadMemOp_Gadget(eax |= [ebx + 0x5e5b1cc4])(0b83c41c5b5e5f5dc3, 0x140af, 0x140b7, ['edi', 'eax', 'ebp'], 12)
+0x140af:	or	eax, dword ptr [ebx + 0x5e5b1cc4]
+0x140b5:	pop	edi
+0x140b6:	pop	ebp
+0x140b7:	ret	
+
+ReadMemOp_Gadget(eax |= [ebx + 0xa])(470b430ac3, 0x1e8bd, 0x1e8c1, ['edi', 'eax'], 4)
+0x1e8bd:	inc	edi
+0x1e8be:	or	eax, dword ptr [ebx + 0xa]
+0x1e8c1:	ret	
+
+ReadMemOp_Gadget(ebx += [ecx + 0xa])(02410e0c8303590ac3, 0x1b961, 0x1b969, ['eax', 'ebx'], 4)
+0x1b961:	add	al, byte ptr [ecx + 0xe]
+0x1b964:	or	al, 0x83
+0x1b966:	add	ebx, dword ptr [ecx + 0xa]
+0x1b969:	ret	
+
+ReadMemOp_Gadget(ebx += [ecx + 0xa])(0c8303590ac3, 0x1b964, 0x1b969, ['eax', 'ebx'], 4)
+0x1b964:	or	al, 0x83
+0x1b966:	add	ebx, dword ptr [ecx + 0xa]
+0x1b969:	ret	
+
+ReadMemOp_Gadget(ebx += [ecx + 0xa])(03590ac3, 0x1b966, 0x1b969, ['ebx'], 4)
+0x1b966:	add	ebx, dword ptr [ecx + 0xa]
+0x1b969:	ret	
+
+ReadMemOp_Gadget(eax += [eax + 0x0])(0300005b5e5f5dc3, 0x9203, 0x920a, ['edi', 'eax', 'ebp'], 12)
+0x9203:	add	eax, dword ptr [eax]
+0x9205:	add	byte ptr [ebx + 0x5e], bl
+0x9208:	pop	edi
+0x9209:	pop	ebp
+0x920a:	ret	
+
+ReadMemOp_Gadget(edi += [esi + 0xa])(02410e0c83037e0ac3, 0x1c025, 0x1c02d, ['edi', 'eax'], 4)
+0x1c025:	add	al, byte ptr [ecx + 0xe]
+0x1c028:	or	al, 0x83
+0x1c02a:	add	edi, dword ptr [esi + 0xa]
+0x1c02d:	ret	
+
+ReadMemOp_Gadget(ecx |= [ebx + 0x4c48316])(0b8b1683c4045b5e8d04c2c3, 0xba70, 0xba7b, ['eax', 'ebx', 'esi', 'ecx'], 12)
+0xba70:	or	ecx, dword ptr [ebx + 0x4c48316]
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+ReadMemOp_Gadget(ebp |= [edx + 0xa])(0b6a0ac3, 0x1e3da, 0x1e3dd, ['ebp'], 4)
+0x1e3da:	or	ebp, dword ptr [edx + 0xa]
+0x1e3dd:	ret	
+
+ReadMemOp_Gadget(edi += [esi + 0xa])(037e0ac3, 0x1c02a, 0x1c02d, ['edi'], 4)
+0x1c02a:	add	edi, dword ptr [esi + 0xa]
+0x1c02d:	ret	
+
+ReadMemOp_Gadget(ecx |= [ebp + 0xe])(04490b4d0e1441c3, 0x20b08, 0x20b0f, ['eax', 'ecx'], 4)
+0x20b08:	add	al, 0x49
+0x20b0a:	or	ecx, dword ptr [ebp + 0xe]
+0x20b0d:	adc	al, 0x41
+0x20b0f:	ret	
+
+ReadMemOp_Gadget(ecx |= [ebp + 0xe])(0b4d0e1441c3, 0x20b0a, 0x20b0f, ['eax', 'ecx'], 4)
+0x20b0a:	or	ecx, dword ptr [ebp + 0xe]
+0x20b0d:	adc	al, 0x41
+0x20b0f:	ret	
+
+ReadMemOp_Gadget(edx |= [eax + 0xe])(0b500e1441c3, 0x1df2d, 0x1df32, ['eax', 'edx'], 4)
+0x1df2d:	or	edx, dword ptr [eax + 0xe]
+0x1df30:	adc	al, 0x41
+0x1df32:	ret	
+
+ReadMemOp_Gadget(edx |= [ecx + 0xa])(04450b510ac3, 0x1cb48, 0x1cb4d, ['eax', 'edx'], 4)
+0x1cb48:	add	al, 0x45
+0x1cb4a:	or	edx, dword ptr [ecx + 0xa]
+0x1cb4d:	ret	
+
+ReadMemOp_Gadget(edx |= [ecx + 0xa])(450b510ac3, 0x1cb49, 0x1cb4d, ['ebp', 'edx'], 4)
+0x1cb49:	inc	ebp
+0x1cb4a:	or	edx, dword ptr [ecx + 0xa]
+0x1cb4d:	ret	
+
+ReadMemOp_Gadget(edx |= [ecx + 0xa])(0b510ac3, 0x1cb4a, 0x1cb4d, ['edx'], 4)
+0x1cb4a:	or	edx, dword ptr [ecx + 0xa]
+0x1cb4d:	ret	
+
+ReadMemOp_Gadget(ebp |= [edx + 0xa])(04470b6a0ac3, 0x1e3d8, 0x1e3dd, ['eax', 'ebp'], 4)
+0x1e3d8:	add	al, 0x47
+0x1e3da:	or	ebp, dword ptr [edx + 0xa]
+0x1e3dd:	ret	
+
+ReadMemOp_Gadget(ebp |= [edx + 0xa])(470b6a0ac3, 0x1e3d9, 0x1e3dd, ['edi', 'ebp'], 4)
+0x1e3d9:	inc	edi
+0x1e3da:	or	ebp, dword ptr [edx + 0xa]
+0x1e3dd:	ret	
+
+ReadMemOp_Gadget(eax |= [ebx + 0xa])(460b430ac3, 0x1ba21, 0x1ba25, ['eax', 'esi'], 4)
+0x1ba21:	inc	esi
+0x1ba22:	or	eax, dword ptr [ebx + 0xa]
+0x1ba25:	ret	
+
+ReadMemOp_Gadget(eax |= [ebx + 0xa])(0b430ac3, 0x1ba22, 0x1ba25, ['eax'], 4)
+0x1ba22:	or	eax, dword ptr [ebx + 0xa]
+0x1ba25:	ret	
+
+ReadMemOp_Gadget(eax |= [ebp + 0xa])(4b0b450ac3, 0x1cced, 0x1ccf1, ['eax', 'ebx'], 4)
+0x1cced:	dec	ebx
+0x1ccee:	or	eax, dword ptr [ebp + 0xa]
+0x1ccf1:	ret	
+
+ReadMemOp_Gadget(eax |= [ebp + 0xa])(440b450ac3, 0x1ccfc, 0x1cd00, ['eax'], 5)
+0x1ccfc:	inc	esp
+0x1ccfd:	or	eax, dword ptr [ebp + 0xa]
+0x1cd00:	ret	
+
+ReadMemOp_Gadget(ecx |= [esi + 0xa])(04470b4e0ac3, 0x1d513, 0x1d518, ['eax', 'ecx'], 4)
+0x1d513:	add	al, 0x47
+0x1d515:	or	ecx, dword ptr [esi + 0xa]
+0x1d518:	ret	
+
+ReadMemOp_Gadget(ecx |= [edi + 0xa])(04490b4f0ac3, 0x1d51e, 0x1d523, ['eax', 'ecx'], 4)
+0x1d51e:	add	al, 0x49
+0x1d520:	or	ecx, dword ptr [edi + 0xa]
+0x1d523:	ret	
+
+ReadMemOp_Gadget(eax += [ebx + 0xe])(03430e10830402570ac3, 0x1f576, 0x1f57f, ['eax'], 4)
+0x1f576:	add	eax, dword ptr [ebx + 0xe]
+0x1f579:	adc	byte ptr [ebx + 0xa570204], al
+0x1f57f:	ret	
+
+ReadMemOp_Gadget(ecx |= [esi + 0xa])(04450b4e0ac3, 0x1e5a8, 0x1e5ad, ['eax', 'ecx'], 4)
+0x1e5a8:	add	al, 0x45
+0x1e5aa:	or	ecx, dword ptr [esi + 0xa]
+0x1e5ad:	ret	
+
+ReadMemOp_Gadget(ecx |= [esi + 0xa])(450b4e0ac3, 0x1e5a9, 0x1e5ad, ['ebp', 'ecx'], 4)
+0x1e5a9:	inc	ebp
+0x1e5aa:	or	ecx, dword ptr [esi + 0xa]
+0x1e5ad:	ret	
+
+ReadMemOp_Gadget(edx |= [edi + 0xe])(460b570e1441c3, 0x1bfad, 0x1bfb3, ['eax', 'edx', 'esi'], 4)
+0x1bfad:	inc	esi
+0x1bfae:	or	edx, dword ptr [edi + 0xe]
+0x1bfb1:	adc	al, 0x41
+0x1bfb3:	ret	
+
+ReadMemOp_Gadget(ecx |= [esi + 0xa])(0b4e0ac3, 0x1d515, 0x1d518, ['ecx'], 4)
+0x1d515:	or	ecx, dword ptr [esi + 0xa]
+0x1d518:	ret	
+
+ReadMemOp_Gadget(ecx |= [eax + 0xe])(0b480e1441c3, 0x1d6aa, 0x1d6af, ['eax', 'ecx'], 4)
+0x1d6aa:	or	ecx, dword ptr [eax + 0xe]
+0x1d6ad:	adc	al, 0x41
+0x1d6af:	ret	
+
+ReadMemOp_Gadget(ecx += [edx + 0x0])(030ac3, 0x1cece, 0x1ced0, ['ecx'], 4)
+0x1cece:	add	ecx, dword ptr [edx]
+0x1ced0:	ret	
+
+ReadMemOp_Gadget(ecx |= [esi + 0xa])(470b4e0ac3, 0x1d514, 0x1d518, ['edi', 'ecx'], 4)
+0x1d514:	inc	edi
+0x1d515:	or	ecx, dword ptr [esi + 0xa]
+0x1d518:	ret	
+
+ReadMemOp_Gadget(edx |= [eax + 0xe])(430b500e1441c3, 0x1df2c, 0x1df32, ['eax', 'edx', 'ebx'], 4)
+0x1df2c:	inc	ebx
+0x1df2d:	or	edx, dword ptr [eax + 0xe]
+0x1df30:	adc	al, 0x41
+0x1df32:	ret	
+
+ReadMemOp_Gadget(eax |= [ecx + 0x9cc4])(0b81c49c0000005b5e5f5dc3, 0x573f, 0x574a, ['edi', 'eax', 'ebp'], 12)
+0x573f:	or	eax, dword ptr [ecx + 0x9cc4]
+0x5745:	add	byte ptr [ebx + 0x5e], bl
+0x5748:	pop	edi
+0x5749:	pop	ebp
+0x574a:	ret	
+
+ReadMemOp_Gadget(eax += [ebx + 0xe])(03430e10830402440ac3, 0x1e7ee, 0x1e7f7, ['eax'], 4)
+0x1e7ee:	add	eax, dword ptr [ebx + 0xe]
+0x1e7f1:	adc	byte ptr [ebx + 0xa440204], al
+0x1e7f7:	ret	
+
+ReadMemOp_Gadget(edx |= [edi + 0xe])(04460b570e1441c3, 0x1bfac, 0x1bfb3, ['eax', 'edx'], 4)
+0x1bfac:	add	al, 0x46
+0x1bfae:	or	edx, dword ptr [edi + 0xe]
+0x1bfb1:	adc	al, 0x41
+0x1bfb3:	ret	
+
+ReadMemOp_Gadget(edx |= [edi + 0xe])(0b570e1441c3, 0x1bfae, 0x1bfb3, ['eax', 'edx'], 4)
+0x1bfae:	or	edx, dword ptr [edi + 0xe]
+0x1bfb1:	adc	al, 0x41
+0x1bfb3:	ret	
+
+ReadMemOp_Gadget(ebx += [ebx + 0x5e])(035b5e5fc3, 0xbfb1, 0xbfb5, ['edi', 'ebx'], 8)
+0xbfb1:	add	ebx, dword ptr [ebx + 0x5e]
+0xbfb4:	pop	edi
+0xbfb5:	ret	
+
+ReadMemOp_Gadget(eax += [edx + 0x0])(030245c3, 0x1e7ca, 0x1e7cd, ['eax', 'ebp'], 4)
+0x1e7ca:	add	eax, dword ptr [edx]
+0x1e7cc:	inc	ebp
+0x1e7cd:	ret	
+
+ReadMemOp_Gadget(eax += [ecx + 0xe])(03410e10830402490ac3, 0x1bfde, 0x1bfe7, ['eax'], 4)
+0x1bfde:	add	eax, dword ptr [ecx + 0xe]
+0x1bfe1:	adc	byte ptr [ebx + 0xa490204], al
+0x1bfe7:	ret	
+
+ReadMemOp_Gadget(eax += [edx + 0x0])(030246c3, 0x1f7ea, 0x1f7ed, ['eax', 'esi'], 4)
+0x1f7ea:	add	eax, dword ptr [edx]
+0x1f7ec:	inc	esi
+0x1f7ed:	ret	
+
+ReadMemOp_Gadget(ecx |= [eax + 0xd])(480b480e1441c3, 0x1d6a9, 0x1d6af, ['eax', 'ecx'], 4)
+0x1d6a9:	dec	eax
+0x1d6aa:	or	ecx, dword ptr [eax + 0xe]
+0x1d6ad:	adc	al, 0x41
+0x1d6af:	ret	
+
+ReadMem_Gadget(eax = [eax + 0x0])(8b0083c4045b5ec3, 0xc065, 0xc06c, ['eax', 'ebx', 'esi'], 16)
+0xc065:	mov	eax, dword ptr [eax]
+0xc067:	add	esp, 4
+0xc06a:	pop	ebx
+0xc06b:	pop	esi
+0xc06c:	ret	
+
+ReadMem_Gadget(edx = [esi + 0x0])(8b1683c4045b5e8d04c2c3, 0xba71, 0xba7b, ['eax', 'edx', 'ebx', 'esi'], 16)
+0xba71:	mov	edx, dword ptr [esi]
+0xba73:	add	esp, 4
+0xba76:	pop	ebx
+0xba77:	pop	esi
+0xba78:	lea	eax, dword ptr [edx + eax*8]
+0xba7b:	ret	
+
+ReadMem_Gadget(eax = [eax + 0x0])(0085c00f44c28b00c3, 0xfd44, 0xfd4c, ['eax'], 4)
+0xfd44:	add	byte ptr [ebp - 0x3dbbf040], al
+0xfd4a:	mov	eax, dword ptr [eax]
+0xfd4c:	ret	
+
+ReadMem_Gadget(eax = [eax + 0xc])(8b400cc3, 0xbd94, 0xbd97, ['eax'], 4)
+0xbd94:	mov	eax, dword ptr [eax + 0xc]
+0xbd97:	ret	
+
+ReadMem_Gadget(eax = [eax + 0x8])(8b4008c3, 0xbd84, 0xbd87, ['eax'], 4)
+0xbd84:	mov	eax, dword ptr [eax + 8]
+0xbd87:	ret	
+
+ReadMem_Gadget(eax = [eax + 0x10])(8b4010c3, 0xbda4, 0xbda7, ['eax'], 4)
+0xbda4:	mov	eax, dword ptr [eax + 0x10]
+0xbda7:	ret	
+
+ReadMem_Gadget(eax = [edx + 0x4])(088d806013000085d20f44d08b4204894a04c3, 0xfde1, 0xfdf3, ['eax'], 4)
+0xfde1:	or	byte ptr [ebp + 0x136080], cl
+0xfde7:	add	byte ptr [ebp - 0x2fbbf02e], al
+0xfded:	mov	eax, dword ptr [edx + 4]
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+ReadMem_Gadget(eax = [edx + 0x4])(806013000085d20f44d08b4204894a04c3, 0xfde3, 0xfdf3, ['eax'], 4)
+0xfde3:	and	byte ptr [eax + 0x13], 0
+0xfde7:	add	byte ptr [ebp - 0x2fbbf02e], al
+0xfded:	mov	eax, dword ptr [edx + 4]
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+ReadMem_Gadget(eax = [edx + 0x4])(13000085d20f44d08b4204894a04c3, 0xfde5, 0xfdf3, ['eax'], 4)
+0xfde5:	adc	eax, dword ptr [eax]
+0xfde7:	add	byte ptr [ebp - 0x2fbbf02e], al
+0xfded:	mov	eax, dword ptr [edx + 4]
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+ReadMem_Gadget(eax = [edx + 0x4])(0085d20f44d08b4204894a04c3, 0xfde7, 0xfdf3, ['eax'], 4)
+0xfde7:	add	byte ptr [ebp - 0x2fbbf02e], al
+0xfded:	mov	eax, dword ptr [edx + 4]
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+ReadMem_Gadget(eax = [edx + 0x4])(8b4204894a04c3, 0xfded, 0xfdf3, ['eax'], 4)
+0xfded:	mov	eax, dword ptr [edx + 4]
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+ReadMem_Gadget(eax = [ebx + 0x0])(908b035b5e5fc3, 0xbfaf, 0xbfb5, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfaf:	nop	
+0xbfb0:	mov	eax, dword ptr [ebx]
+0xbfb2:	pop	ebx
+0xbfb3:	pop	esi
+0xbfb4:	pop	edi
+0xbfb5:	ret	
+
+ReadMem_Gadget(eax = [ebx + 0x0])(8b035b5e5fc3, 0xbfb0, 0xbfb5, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xbfb0:	mov	eax, dword ptr [ebx]
+0xbfb2:	pop	ebx
+0xbfb3:	pop	esi
+0xbfb4:	pop	edi
+0xbfb5:	ret	
+
+ReadMem_Gadget(eax = [eax + 0x0])(8b00c3, 0xfd4a, 0xfd4c, ['eax'], 4)
+0xfd4a:	mov	eax, dword ptr [eax]
+0xfd4c:	ret	
+
+CopyReg_Gadget(eax, edx)(0100000083c40889d05bc3, 0x14023, 0x1402d, ['eax', 'ebx'], 16)
+0x14023:	add	dword ptr [eax], eax
+0x14025:	add	byte ptr [eax], al
+0x14027:	add	esp, 8
+0x1402a:	mov	eax, edx
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+CopyReg_Gadget(eax, edx)(000083c40889d05bc3, 0x14025, 0x1402d, ['eax', 'ebx'], 16)
+0x14025:	add	byte ptr [eax], al
+0x14027:	add	esp, 8
+0x1402a:	mov	eax, edx
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+CopyReg_Gadget(eax, edx)(83c40889d05bc3, 0x14027, 0x1402d, ['eax', 'ebx'], 16)
+0x14027:	add	esp, 8
+0x1402a:	mov	eax, edx
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+CopyReg_Gadget(eax, edx)(89d05bc3, 0x1402a, 0x1402d, ['eax', 'ebx'], 8)
+0x1402a:	mov	eax, edx
+0x1402c:	pop	ebx
+0x1402d:	ret	
+
+CopyReg_Gadget(eax, edx)(ef83c40489d05b5ec3, 0xb068, 0xb070, ['eax', 'ebx', 'esi'], 16)
+0xb068:	out	dx, eax
+0xb069:	add	esp, 4
+0xb06c:	mov	eax, edx
+0xb06e:	pop	ebx
+0xb06f:	pop	esi
+0xb070:	ret	
+
+CopyReg_Gadget(eax, edx)(83c40489d05b5ec3, 0xb069, 0xb070, ['eax', 'ebx', 'esi'], 16)
+0xb069:	add	esp, 4
+0xb06c:	mov	eax, edx
+0xb06e:	pop	ebx
+0xb06f:	pop	esi
+0xb070:	ret	
+
+CopyReg_Gadget(eax, edx)(89d05b5ec3, 0xb06c, 0xb070, ['eax', 'ebx', 'esi'], 12)
+0xb06c:	mov	eax, edx
+0xb06e:	pop	ebx
+0xb06f:	pop	esi
+0xb070:	ret	
+
+CopyReg_Gadget(eax, edx)(89d0c3, 0xba3d, 0xba3f, ['eax'], 4)
+0xba3d:	mov	eax, edx
+0xba3f:	ret	
+
+CopyReg_Gadget(eax, edx)(240889d0c3, 0xba3b, 0xba3f, ['eax'], 4)
+0xba3b:	and	al, 8
+0xba3d:	mov	eax, edx
+0xba3f:	ret	
+
+CopyReg_Gadget(eax, edx)(89d789f85b5e5fc3, 0xaf50, 0xaf57, ['edi', 'eax', 'ebx', 'esi'], 16)
+0xaf50:	mov	edi, edx
+0xaf52:	mov	eax, edi
+0xaf54:	pop	ebx
+0xaf55:	pop	esi
+0xaf56:	pop	edi
+0xaf57:	ret	
+
+WriteMem_Gadget([eax + 0x1248] = edx)(ff0517820100899048120000c3, 0xade8, 0xadf4, [], 4)
+0xade8:	inc	dword ptr [0x18217]
+0xadee:	mov	dword ptr [eax + 0x1248], edx
+0xadf4:	ret	
+
+WriteMem_Gadget([ebx + 0x0] = esi)(8d742600893331c05b5ec3, 0xbc34, 0xbc3e, ['eax', 'ebx', 'esi'], 12)
+0xbc34:	lea	esi, dword ptr [esi]
+0xbc38:	mov	dword ptr [ebx], esi
+0xbc3a:	xor	eax, eax
+0xbc3c:	pop	ebx
+0xbc3d:	pop	esi
+0xbc3e:	ret	
+
+WriteMem_Gadget([ebx + 0x0] = esi)(893331c05b5ec3, 0xbc38, 0xbc3e, ['eax', 'ebx', 'esi'], 12)
+0xbc38:	mov	dword ptr [ebx], esi
+0xbc3a:	xor	eax, eax
+0xbc3c:	pop	ebx
+0xbc3d:	pop	esi
+0xbc3e:	ret	
+
+WriteMem_Gadget([eax + 0x0] = edx)(8910c3, 0xfd6e, 0xfd70, [], 4)
+0xfd6e:	mov	dword ptr [eax], edx
+0xfd70:	ret	
+
+WriteMem_Gadget([ebx + 0x0] = edx)(89135b5ec3, 0xfdc5, 0xfdc9, ['ebx', 'esi'], 12)
+0xfdc5:	mov	dword ptr [ebx], edx
+0xfdc7:	pop	ebx
+0xfdc8:	pop	esi
+0xfdc9:	ret	
+
+WriteMem_Gadget([edx + 0x4] = ecx)(088d806013000085d20f44d08b4204894a04c3, 0xfde1, 0xfdf3, ['eax'], 4)
+0xfde1:	or	byte ptr [ebp + 0x136080], cl
+0xfde7:	add	byte ptr [ebp - 0x2fbbf02e], al
+0xfded:	mov	eax, dword ptr [edx + 4]
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+WriteMem_Gadget([edx + 0x4] = ecx)(806013000085d20f44d08b4204894a04c3, 0xfde3, 0xfdf3, ['eax'], 4)
+0xfde3:	and	byte ptr [eax + 0x13], 0
+0xfde7:	add	byte ptr [ebp - 0x2fbbf02e], al
+0xfded:	mov	eax, dword ptr [edx + 4]
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+WriteMem_Gadget([edx + 0x4] = ecx)(13000085d20f44d08b4204894a04c3, 0xfde5, 0xfdf3, ['eax'], 4)
+0xfde5:	adc	eax, dword ptr [eax]
+0xfde7:	add	byte ptr [ebp - 0x2fbbf02e], al
+0xfded:	mov	eax, dword ptr [edx + 4]
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+WriteMem_Gadget([edx + 0x4] = ecx)(0085d20f44d08b4204894a04c3, 0xfde7, 0xfdf3, ['eax'], 4)
+0xfde7:	add	byte ptr [ebp - 0x2fbbf02e], al
+0xfded:	mov	eax, dword ptr [edx + 4]
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+WriteMem_Gadget([eax + 0x1945f] = edx)(0517820100899048120000c3, 0xade9, 0xadf4, ['eax'], 4)
+0xade9:	add	eax, 0x18217
+0xadee:	mov	dword ptr [eax + 0x1248], edx
+0xadf4:	ret	
+
+WriteMem_Gadget([eax + 0x1248] = edx)(0100899048120000c3, 0xadec, 0xadf4, [], 4)
+0xadec:	add	dword ptr [eax], eax
+0xadee:	mov	dword ptr [eax + 0x1248], edx
+0xadf4:	ret	
+
+WriteMem_Gadget([edx + 0x4] = ecx)(8b4204894a04c3, 0xfded, 0xfdf3, ['eax'], 4)
+0xfded:	mov	eax, dword ptr [edx + 4]
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+WriteMem_Gadget([edx + 0x4] = ecx)(894a04c3, 0xfdf0, 0xfdf3, [], 4)
+0xfdf0:	mov	dword ptr [edx + 4], ecx
+0xfdf3:	ret	
+
+WriteMem_Gadget([eax + 0x28] = edx)(89502889482c83c4045b5ec3, 0xfe35, 0xfe40, ['ebx', 'esi'], 16)
+0xfe35:	mov	dword ptr [eax + 0x28], edx
+0xfe38:	mov	dword ptr [eax + 0x2c], ecx
+0xfe3b:	add	esp, 4
+0xfe3e:	pop	ebx
+0xfe3f:	pop	esi
+0xfe40:	ret	
+
+WriteMem_Gadget([eax + 0x2c] = ecx)(89502889482c83c4045b5ec3, 0xfe35, 0xfe40, ['ebx', 'esi'], 16)
+0xfe35:	mov	dword ptr [eax + 0x28], edx
+0xfe38:	mov	dword ptr [eax + 0x2c], ecx
+0xfe3b:	add	esp, 4
+0xfe3e:	pop	ebx
+0xfe3f:	pop	esi
+0xfe40:	ret	
+
+WriteMem_Gadget([eax + 0x2c] = ecx)(89482c83c4045b5ec3, 0xfe38, 0xfe40, ['ebx', 'esi'], 16)
+0xfe38:	mov	dword ptr [eax + 0x2c], ecx
+0xfe3b:	add	esp, 4
+0xfe3e:	pop	ebx
+0xfe3f:	pop	esi
+0xfe40:	ret	
+
+WriteMem_Gadget([ebx + 0x0] = edi)(83c420893b5b5e5fc3, 0xfe9d, 0xfea5, ['edi', 'ebx', 'esi'], 48)
+0xfe9d:	add	esp, 0x20
+0xfea0:	mov	dword ptr [ebx], edi
+0xfea2:	pop	ebx
+0xfea3:	pop	esi
+0xfea4:	pop	edi
+0xfea5:	ret	
+
+WriteMem_Gadget([ebx + 0x0] = edi)(893b5b5e5fc3, 0xfea0, 0xfea5, ['edi', 'ebx', 'esi'], 16)
+0xfea0:	mov	dword ptr [ebx], edi
+0xfea2:	pop	ebx
+0xfea3:	pop	esi
+0xfea4:	pop	edi
+0xfea5:	ret	
+
+WriteMem_Gadget([eax + 0x1248] = edx)(899048120000c3, 0xadee, 0xadf4, [], 4)
+0xadee:	mov	dword ptr [eax + 0x1248], edx
+0xadf4:	ret	
+
