@@ -73,22 +73,28 @@ def stats(binary):
         return
             
     
-def diff():
-    with open('a.out.verified', 'rb') as file1:
+def diff(binary):
+    try:
+        with open(binary + VERIFIED_EXTENSION, 'rb') as file1:
             typed_gadgets1 = pickle.load(file1)
-            with open('a.out.1.verified', 'rb') as file2:
-                typed_gadgets2 = pickle.load(file2)
-                for t in typed_gadgets1:
-                    l1 = typed_gadgets1[t]
-                    l2 = typed_gadgets2[t]
-                    for l in l1:
-                        if l not in l2:
-                            print '[+]', l
-                            print l.dump()
-                    for l in l2:
-                        if l not in l1:
-                            print '[-]', l
-                            print l.dump()
+            logging.warning("Diffing")
+            typed_gadgets2 = collect(binary)
+            typed_gadgets2 = verify(binary)
+            for t in typed_gadgets1:
+                l1 = typed_gadgets1[t]
+                l2 = typed_gadgets2[t]
+                for l in l1:
+                    if l not in l2:
+                        print '[+]', l
+                        print l.dump()
+                for l in l2:
+                    if l not in l1:
+                        print '[-]', l
+                        print l.dump()
+    except IOError as e:
+        print 'ERROR: %s' % e
+        print 'You need to have something to compute the delta from! Try to collect and verify gadgets first'
+        return
                         
 
 
@@ -110,6 +116,8 @@ def main():
 
     parser.add_argument('--stats', help="statistics about verified gadgets", action="store_true")
 
+    parser.add_argument('--diff', help="compute another gadget verification and diff with the actual version [AND OVVERRIDE CURRENT VERSION]", action="store_true")
+
     args = parser.parse_args()
     logging.warning('Analyzing %s', args.binary)
     if args.collect:
@@ -123,6 +131,9 @@ def main():
 
     if args.stats:
         stats(args.binary)
+
+    if args.diff:
+        diff(args.binary)
     
     
 

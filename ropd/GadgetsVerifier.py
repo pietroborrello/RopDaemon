@@ -32,7 +32,7 @@ class ConcretizationChecker(angr.concretization_strategies.SimConcretizationStra
         self.limit = limit
 
     def _concretize(self, memory, addr):
-        print('ADDR: %s' % addr)
+        print 'ADDR: %s' % addr
 
 
 def make_initial_state(project, stack_length):
@@ -98,6 +98,15 @@ def verifyModReg(g, init_state, final_state):
             return False
     
     return True'''
+
+def computeModReg(g, init_state, final_state):
+    # check preserved regs:
+    modified_regs = set()
+    # maybe less efficient but more readable
+    for reg in [r for r in Registers if r is not Registers.esp]:
+        if final_state.satisfiable(extra_constraints=[final_state.registers.load(reg.name) != init_state.registers.load(reg.name)]):
+            modified_regs.add(reg)
+    return frozenset(modified_regs)
 
 def verifyCopyRegGadget(project, g, init_state, final_state):
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != init_state.registers.load(g.src.name)])
@@ -210,7 +219,7 @@ class GadgetsVerifier(object):
     def verify(self):
         project = angr.Project(self.filename, load_options={'main_opts': {'custom_base_addr': 0}})
         generic_state = make_symbolic_state(project)
-        print('Verifying...')
+        print 'Verifying...'
         gadgets = {}
         verified_num = 0
         for t in self.typed_gadgets:
@@ -245,11 +254,16 @@ class GadgetsVerifier(object):
                 logging.warning('DISCARDED: not a valid gadget\n' + first_g.dump())
                 continue
             final_state = succ[0]
+            modified_regs = None
             if not verifyModReg(first_g, init_state, final_state):
-                logging.warning('DISCARDED: wrong modified regs\n' + first_g.dump())
-                continue
-        
+                logging.warning('recomputing modified regs\n' + first_g.dump())
+                modified_regs = computeModReg(first_g, init_state, final_state)
+                logging.warning('previous: %s, now %s\n', first_g.modified_regs, modified_regs)
+
             for g in gad_list:
+                #maybe mod_regs recomputed
+                if modified_regs is not None:
+                    g.modified_regs = modified_regs
                 # maybe OpEsp_gadget
                 if type(g) is OpEsp_Gadget and verifyOpEspGadget(project, g, init_state, final_state):
                     # add esp to modified regs
@@ -281,5 +295,5 @@ class GadgetsVerifier(object):
         for t in verified_gadgets:
             for g in verified_gadgets[t]:
                 verified_num += 1
-        print('Found %d different verified gadgets' % verified_num)
+        print 'Found %d different verified gadgets' % verified_num
         return verified_gadgets

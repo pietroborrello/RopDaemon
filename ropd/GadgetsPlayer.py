@@ -12,6 +12,7 @@ from itertools import permutations, combinations
 from tqdm import *
 from Gadget import Gadget, Registers, Operations, Types
 from Gadget import *
+import networkx as nx
 import sys
 import logging
 
@@ -30,15 +31,21 @@ class GadgetsPlayer(object):
                 subtotals[t] += 1
         
         per_reg_total_loads = {}
+        for r in Registers:
+            per_reg_total_loads[r] = 0
 
         for g in self.gadgets[Types.LoadConst]:
-            if g.register not in per_reg_total_loads:
-                per_reg_total_loads[g.register] = 0
             per_reg_total_loads[g.register] += 1
 
         for t in subtotals:
-            print t.name, "%.2f" % (subtotals[t]/float(total) * 100) + '%'
+            print '*', t.name, "%.2f" % (subtotals[t]/float(total) * 100) + '%'
             if t == Types.LoadConst:
-                for r in per_reg_total_loads:
-                    print "\t", r.name, "%.2f" % (per_reg_total_loads[r]/float(total) * 100) + '%'
+                for r in Registers:
+                    print "\t*", r.name, "%.2f" % (per_reg_total_loads[r]/float(total) * 100) + '%'
+
+    def compute_load_sequence(self):
+        G = nx.Graph()
+        G.add_nodes_from(gadgets[Types.LoadConst])
+
+
 

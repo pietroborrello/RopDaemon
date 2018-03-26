@@ -23,7 +23,15 @@ class Gadget(object):
         return 'Gadget(%s, %s, %s, %s, %s)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), self.modified_regs, self.stack_fix)
     
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        return type(self) == type(other) and self.__dict__ == other.__dict__
+    
+    def __ne__(self, other):
+        """Overrides the default implementation (unnecessary in Python 3)"""
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        """Overrides the default implementation"""
+        return hash(tuple(sorted(self.__dict__.items())))
     
     def dump(self):
         md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)

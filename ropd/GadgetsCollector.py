@@ -451,10 +451,12 @@ class GadgetsCollector(object):
             if final_values is None or final_values2 is None:
                 continue
             #check modified regs
-            g.modified_regs = []
+            modified_regs = set()
             for r in regs_no_esp:
                 if rv_pairs[r] != final_values[r]:
-                    g.modified_regs.append(r)
+                    modified_regs.add(r)
+            # must be hashable
+            g.modified_regs = frozenset(modified_regs)
             #print g.modified_regs
             #TODO: xchg    eax, esp
             # ret not executed in unicorn
