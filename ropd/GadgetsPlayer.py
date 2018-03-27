@@ -10,8 +10,9 @@ import random
 from struct import pack, unpack
 from itertools import permutations, combinations
 from tqdm import *
-from Gadget import Gadget, Registers, Operations, Types
+from Gadget import Gadget, Operations, Types
 from Gadget import *
+import Arch
 import networkx as nx
 import sys
 import logging
@@ -31,7 +32,7 @@ class GadgetsPlayer(object):
                 subtotals[t] += 1
         
         per_reg_total_loads = {}
-        for r in Registers:
+        for r in Arch.Registers:
             per_reg_total_loads[r] = 0
 
         for g in self.gadgets[Types.LoadConst]:
@@ -40,7 +41,7 @@ class GadgetsPlayer(object):
         for t in subtotals:
             print '*', t.name, "%.2f" % (subtotals[t]/float(total) * 100) + '%'
             if t == Types.LoadConst:
-                for r in Registers:
+                for r in Arch.Registers:
                     print "\t*", r.name, "%.2f" % (per_reg_total_loads[r]/float(total) * 100) + '%'
 
     def compute_load_sequence(self):

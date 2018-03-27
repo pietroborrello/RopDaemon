@@ -7,7 +7,11 @@ __email__ = "pietro.borrello95@gmail.com"
 
 from binascii import unhexlify, hexlify
 from enum import Enum
+import Arch
 import capstone
+
+md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_64)
+md.detail = True
 
 
 class Gadget(object):
@@ -34,8 +38,6 @@ class Gadget(object):
         return hash(tuple(sorted(self.__dict__.items())))
     
     def dump(self):
-        md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
-        md.detail = True
         ris = ''
         for i in md.disasm(self.hex, self.address):
             ris += ("0x%x:\t%s\t%s\n" % (i.address, i.mnemonic, i.op_str))
@@ -59,7 +61,6 @@ type gadget =
                 stack_fix *)
                 '''
 
-Registers = Enum('Registers', 'eax ebx ecx edx esi edi ebp esp')
 Operations = Enum('Operations', 'ADD SUB MUL DIV XOR OR AND')
 Types = Enum(
     'Types', 'LoadConst CopyReg  BinOp ReadMem WriteMem ReadMemOp WriteMemOp Lahf OpEsp')

@@ -10,8 +10,9 @@ import random
 from struct import pack, unpack
 from itertools import permutations, combinations
 from tqdm import *
-from Gadget import Gadget, Registers, Operations, Types
+from Gadget import Gadget, Operations, Types
 from Gadget import *
+import Arch 
 import angr
 import sys
 import claripy
@@ -65,7 +66,7 @@ def make_symbolic_state(project, stack_length=8):
     input_state = make_initial_state(project, stack_length)
     symbolic_state = input_state.copy()
     # overwrite all registers
-    for reg in Registers:
+    for reg in Arch.Registers:
         symbolic_state.registers.store(reg.name, symbolic_state.se.BVS("sreg_" + reg.name, project.arch.bits))
     #overwrite flags
     symbolic_state.registers.store('flags', symbolic_state.se.BVS("sreg_" + "flags", project.arch.bits))
@@ -82,8 +83,8 @@ def verifyStackFix(g, init_state, final_state):
 def verifyModReg(g, init_state, final_state):
     # check preserved regs:
     preserved_regs = []
-    for reg in Registers:
-        if reg is not Registers.esp and reg not in g.modified_regs:
+    for reg in Arch.Registers:
+        if reg is not Arch.Registers_sp and reg not in g.modified_regs:
             preserved_regs.append(reg)
        
     constraints = False
@@ -103,7 +104,7 @@ def computeModReg(g, init_state, final_state):
     # check preserved regs:
     modified_regs = set()
     # maybe less efficient but more readable
-    for reg in [r for r in Registers if r is not Registers.esp]:
+    for reg in [r for r in Arch.Registers if r is not Arch.Registers_sp]:
         if final_state.satisfiable(extra_constraints=[final_state.registers.load(reg.name) != init_state.registers.load(reg.name)]):
             modified_regs.add(reg)
     return frozenset(modified_regs)
@@ -137,7 +138,7 @@ def verifyLoadConstGadget(project, g, init_state, final_state):
 
 def verifyLahfGadget(project, g, init_state, final_state):
     flags = (init_state.regs.flags & FLAGS_MASK) | 2
-    ah = ((final_state.registers.load(Registers.eax.name) >> 8) & FLAGS_MASK) | 2
+    ah = ((final_state.registers.load(Arch.Registers_a.name) >> 8) & FLAGS_MASK) | 2
     return not final_state.satisfiable(extra_constraints=[ ah != flags])
 
 def verifyReadMemGadget(project, g, init_state, final_state):
@@ -218,6 +219,7 @@ class GadgetsVerifier(object):
 
     def verify(self):
         project = angr.Project(self.filename, load_options={'main_opts': {'custom_base_addr': 0}})
+        Arch.init(project.arch.bits)
         generic_state = make_symbolic_state(project)
         print 'Verifying...'
         gadgets = {}
@@ -267,7 +269,7 @@ class GadgetsVerifier(object):
                 # maybe OpEsp_gadget
                 if type(g) is OpEsp_Gadget and verifyOpEspGadget(project, g, init_state, final_state):
                     # add esp to modified regs
-                    #g.modified_regs.append(Registers.esp)
+                    #g.modified_regs.append(Arch.Registers_sp)
                     verified_gadgets[Types.OpEsp].append(g)
                 elif not verifyStackFix(g, init_state, final_state):
                     logging.warning('DISCARDED: wrong stack fix\n'+ str(g) + '\n' + g.dump())

@@ -11,16 +11,15 @@ from struct import pack, unpack
 from itertools import permutations, combinations
 from tqdm import *
 from ropper import RopperService
-from Gadget import Gadget, Registers, Operations, Types
+from Gadget import Gadget, Operations, Types
 from Gadget import *
 import capstone
 from capstone.x86 import *
 from unicorn import *
 from unicorn.x86_const import *
+import Arch
 import logging
 
-md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
-md.detail = True
 
 # memory address where emulation starts
 ADDRESS = 0x1000000
@@ -29,38 +28,15 @@ HOOK_ERR_VAL = 0x1
 MAX_RETN = 0x10
 unsafe_classes = [X86_GRP_JUMP, X86_GRP_CALL, X86_GRP_INT]
 
-
-ARCH_BITS = 32
-PAGE_SIZE = 4 * 1024
-PACK_VALUE = 'I'
-MAX_INT = 0xFFFFFFFF
 FLAGS_MASK = 0xd5
 
 
-regs = {Registers.eax:  UC_X86_REG_EAX, Registers.ebx:  UC_X86_REG_EBX, 
-        Registers.ecx:  UC_X86_REG_ECX, Registers.edx:  UC_X86_REG_EDX, 
-        Registers.esi:  UC_X86_REG_ESI, Registers.edi:  UC_X86_REG_EDI, 
-        Registers.ebp:  UC_X86_REG_EBP, Registers.esp:  UC_X86_REG_ESP}
-
-regs_no_esp = {Registers.eax:  UC_X86_REG_EAX, Registers.ebx:  UC_X86_REG_EBX,
-               Registers.ecx:  UC_X86_REG_ECX, Registers.edx:  UC_X86_REG_EDX,
-               Registers.esi:  UC_X86_REG_ESI, Registers.edi:  UC_X86_REG_EDI,
-               Registers.ebp:  UC_X86_REG_EBP}
-
-FLAGS_REG = UC_X86_REG_EFLAGS
-IP_REG = UC_X86_REG_EIP
-
-def rand():
-    r = random.getrandbits(30)
-    while r == 0:
-        r = random.getrandbits(30)
-    return r
 
 def filter_unsafe(gadgets):
     safe_gadgets = []
     for g in gadgets:
         unsafe = False
-        for i in md.disasm(g.hex, g.address):
+        for i in Arch.md.disasm(g.hex, g.address):
             if any(x in i.groups for x in unsafe_classes):
                 unsafe = True
         if not unsafe:
@@ -72,8 +48,8 @@ def checkLoadConstGadget(init_regs, init_stack, final_state, gadget):
     for r in gadget.modified_regs:
         for off in [i for i, x in enumerate(
             init_stack) if x == final_state[r]]:
-                if off <= gadget.stack_fix - (ARCH_BITS/8):
-                    result.append(LoadConst_Gadget(r, off*(ARCH_BITS/8), gadget))
+                if off <= gadget.stack_fix - (Arch.ARCH_BITS/8):
+                    result.append(LoadConst_Gadget(r, off*(Arch.ARCH_BITS/8), gadget))
     return result
 
 
@@ -89,19 +65,19 @@ def checkCopyRegGadget(init_regs, init_stack, final_state, gadget):
 
 def compute_operation(a, op, b):
     if op == Operations.ADD:
-        return (a + b) & MAX_INT
+        return (a + b) & Arch.MAX_INT
     elif op == Operations.SUB:
-        return (a - b) & MAX_INT
+        return (a - b) & Arch.MAX_INT
     elif op == Operations.MUL:
-        return (a * b) & MAX_INT
+        return (a * b) & Arch.MAX_INT
     elif op == Operations.DIV:
-        return (a // b) & MAX_INT
+        return (a // b) & Arch.MAX_INT
     elif op == Operations.XOR:
-        return (a ^ b) & MAX_INT
+        return (a ^ b) & Arch.MAX_INT
     elif op == Operations.OR:
-        return (a | b) & MAX_INT
+        return (a | b) & Arch.MAX_INT
     elif op == Operations.AND:
-        return (a & b) & MAX_INT
+        return (a & b) & Arch.MAX_INT
 
 
 def is_commutative(op, ):
@@ -127,7 +103,7 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
     #TODO: overapproximating trivial operations (src1 must be != src2, and div must not give 0)
     for op in Operations:
         if is_commutative(op):
-            for src1, src2 in combinations(regs, 2):
+            for src1, src2 in combinations(Arch.regs, 2):
                 op_res = compute_operation(
                     init_regs[src1], op, init_regs[src2])
                 for dest in [r for r in final_state if final_state[r] == op_res and r in gadget.modified_regs]:
@@ -135,13 +111,13 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
         else:
             # if DIV, only valid EAX=EAX/src2, TODO: not op_res == 0 may miss some DIV gadgets
             if op == Operations.DIV:
-                    for src2 in regs:
-                        dest = Registers.eax
-                        src1 = Registers.eax
+                    for src2 in Arch.regs:
+                        dest = Arch.Registers_a
+                        src1 = Arch.Registers_a
                         # check real div of 64bits
-                        div_op_res = ((init_regs[Registers.edx] << 32) + init_regs[src1]) / init_regs[src2]
+                        div_op_res = ((init_regs[Arch.Registers_d] << Arch.ARCH_BITS) + init_regs[src1]) / init_regs[src2]
                         # check if result handled by hook_err
-                        hook_op_res = ((HOOK_ERR_VAL << 32) + init_regs[src1]) / init_regs[src2]
+                        hook_op_res = ((HOOK_ERR_VAL << Arch.ARCH_BITS) + init_regs[src1]) / init_regs[src2]
                         # check if the gadget itself correctly zeroed EDX
                         op_res = compute_operation(init_regs[src1], op, init_regs[src2])
                         if final_state[dest] == div_op_res:
@@ -151,7 +127,7 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
                         elif final_state[dest] == op_res and op_res != 0:
                             result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
             else:
-                for src1, src2 in permutations(regs, 2):
+                for src1, src2 in permutations(Arch.regs, 2):
                     op_res = compute_operation(
                         init_regs[src1], op, init_regs[src2])
                     for dest in [r for r in final_state if final_state[r] == op_res and r in gadget.modified_regs]:
@@ -160,15 +136,15 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
     return result
 
 def hook_err(uc, int_num, user_data):
-    #ip = uc.reg_read(IP_REG)
+    #ip = uc.reg_read(Arch.IP_REG)
     #instr_bytes = str(uc.mem_read(ip, MAX_BYTES_PER_INSTR))
-    #instr = md.disasm(instr_bytes, 0x0, count = 1).next()
+    #instr = Arch.md.disasm(instr_bytes, 0x0, count = 1).next()
     #print 'ERROR: interrupt %x, due to: %s %s' % (int_num, instr.mnemonic, instr.op_str)
     if int_num==0: #div by zero fault
         # probaly since EDX:EAX doesn't fit in 32 bits
         # if was real div_by_zero, after resume it will double fault, and re-handled as int 0x8
         # safely modify EDX, independently from init_value, that will be overwritten by div
-        uc.reg_write(regs[Registers.edx], HOOK_ERR_VAL)
+        uc.reg_write(Arch.regs[Arch.Registers_d], HOOK_ERR_VAL)
         return True
     return False
 
@@ -184,9 +160,9 @@ def hook_mem_invalid(uc, access, address, size, value, user_data):
     mapped_pages_ref[0] = mapped_pages
     #memory access not necessarly aligned to page boundaries, so map two pages to be sure
     try:
-        uc.mem_map((address // PAGE_SIZE) * PAGE_SIZE, 2 * PAGE_SIZE)
+        uc.mem_map((address // Arch.PAGE_SIZE) * Arch.PAGE_SIZE, 2 * Arch.PAGE_SIZE)
     except UcError as e:
-        logging.warning('Invalid memory mapping for %x', ((address // PAGE_SIZE) * PAGE_SIZE))
+        logging.warning('Invalid memory mapping for %x', ((address // Arch.PAGE_SIZE) * Arch.PAGE_SIZE))
     return True
 
 
@@ -199,18 +175,18 @@ def hook_mem_access(uc, access, address, size, value, user_data):
         #print("MEM WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
         address_written[address] = value
     else:   # READ
-        #value = unpack(PACK_VALUE, uc.mem_read(address, ARCH_BITS/8))[0]
+        #value = unpack(Arch.PACK_VALUE, uc.mem_read(address, Arch.ARCH_BITS/8))[0]
         #check if previously written or stack
         if address not in address_written: #initialize if never written
-            value = rand()
+            value = Arch.rand()
             try:
-                uc.mem_write(address, pack(PACK_VALUE, value))
+                uc.mem_write(address, pack(Arch.PACK_VALUE, value))
             except UcError as e:
                 # probably due to REP MOVS
                 return False
         else:
             #TODO: ignored real read size, only full registers
-            value = unpack(PACK_VALUE, uc.mem_read(address, ARCH_BITS/8))[0]
+            value = unpack(Arch.PACK_VALUE, uc.mem_read(address, Arch.ARCH_BITS/8))[0]
         address_read[address] = value
         #print("MEM READ at 0x%x, data size = %u, value = 0x%x" % (address, size, value))
 
@@ -222,13 +198,13 @@ def checkReadMemGadget(
         possible = set()
         for addr in [addr for addr in address_read1 if address_read1[addr] == final_values1[dest]]:
             for addr_reg in rv_pairs1:
-                if addr_reg is not Registers.esp:
-                    offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
+                if addr_reg is not Arch.Registers_sp:
+                    offset = (addr - rv_pairs1[addr_reg]) & Arch.MAX_INT
                     possible.add((dest, addr_reg, offset))
         for addr in [addr for addr in address_read2 if address_read2[addr] == final_values2[dest]]:
             for addr_reg in rv_pairs2:
-                if addr_reg is not Registers.esp:
-                    offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
+                if addr_reg is not Arch.Registers_sp:
+                    offset = (addr - rv_pairs2[addr_reg]) & Arch.MAX_INT
                     if (dest, addr_reg, offset) in possible:
                         result.append(ReadMem_Gadget(dest, addr_reg, offset, gadget))
     return result
@@ -237,17 +213,17 @@ def checkReadMemGadget(
 def checkWriteMemGadget(
         rv_pairs1, address_written1, rv_pairs2, address_written2, gadget):
     result = []
-    for src in regs_no_esp:
+    for src in Arch.regs_no_sp:
         possible = set()
         for addr in [addr for addr in address_written1 if address_written1[addr] == rv_pairs1[src]]:
             for addr_reg in rv_pairs1:
-                if addr_reg is not Registers.esp:
-                    offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
+                if addr_reg is not Arch.Registers_sp:
+                    offset = (addr - rv_pairs1[addr_reg]) & Arch.MAX_INT
                     possible.add((addr_reg, offset, src))
         for addr in [addr for addr in address_written2 if address_written2[addr] == rv_pairs2[src]]:
             for addr_reg in rv_pairs2:
-                if addr_reg is not Registers.esp:
-                    offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
+                if addr_reg is not Arch.Registers_sp:
+                    offset = (addr - rv_pairs2[addr_reg]) & Arch.MAX_INT
                     if (addr_reg, offset, src) in possible:
                         result.append(WriteMem_Gadget(addr_reg, offset, src, gadget))
     return result
@@ -265,14 +241,14 @@ def checkReadMemOpGadget(
                     if op == Operations.DIV and final_values1[dest] == 0:
                         continue
                     for addr_reg in rv_pairs1:
-                        if addr_reg is not Registers.esp:
-                            offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
+                        if addr_reg is not Arch.Registers_sp:
+                            offset = (addr - rv_pairs1[addr_reg]) & Arch.MAX_INT
                             possible.add((dest, addr_reg, offset))
             for addr in address_read2:
                 if compute_operation(address_read2[addr], op, rv_pairs2[dest]) == final_values2[dest]:
                     for addr_reg in rv_pairs2:
-                        if addr_reg is not Registers.esp:
-                            offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
+                        if addr_reg is not Arch.Registers_sp:
+                            offset = (addr - rv_pairs2[addr_reg]) & Arch.MAX_INT
                             if (dest, addr_reg, offset) in possible:
                                 result.append(ReadMemOp_Gadget(dest, op, addr_reg, offset, gadget))
     return result
@@ -281,7 +257,7 @@ def checkReadMemOpGadget(
 def checkWriteMemOpGadget(
         rv_pairs1, address_read1, address_written1, rv_pairs2, address_read2, address_written2, gadget):
     result = []
-    for src in regs_no_esp:
+    for src in Arch.regs_no_sp:
         possible = set()
         for op in Operations:
             for addr in address_written1:
@@ -290,14 +266,14 @@ def checkWriteMemOpGadget(
                     if op == Operations.DIV and address_written1[addr] == 0:
                         continue
                     for addr_reg in rv_pairs1:
-                        if addr_reg is not Registers.esp:
-                            offset = (addr - rv_pairs1[addr_reg]) & MAX_INT
+                        if addr_reg is not Arch.Registers_sp:
+                            offset = (addr - rv_pairs1[addr_reg]) & Arch.MAX_INT
                             possible.add((addr_reg, offset, src))
             for addr in address_written2:
                 if addr in address_read2 and address_written2[addr] == compute_operation(address_read2[addr], op, rv_pairs2[src]):
                     for addr_reg in rv_pairs2:
-                        if addr_reg is not Registers.esp:
-                            offset = (addr - rv_pairs2[addr_reg]) & MAX_INT
+                        if addr_reg is not Arch.Registers_sp:
+                            offset = (addr - rv_pairs2[addr_reg]) & Arch.MAX_INT
                             if (addr_reg, offset, src) in possible:
                                 result.append(WriteMemOp_Gadget(addr_reg, offset, op, src, gadget))
     return result
@@ -307,8 +283,8 @@ def checkWriteMemOpGadget(
 # mask: 0xd5
 # 2nd youngest bit of EFLAGS is set to 1 (reserved bit)
 def checkLahfGadget(flags_init, final_flags, final_state, gadget):
-    if flags_init == final_flags and Registers.eax in gadget.modified_regs:
-        ah = ((final_state[Registers.eax] >> 8) & FLAGS_MASK) | 2
+    if flags_init == final_flags and Arch.Registers_a in gadget.modified_regs:
+        ah = ((final_state[Arch.Registers_a] >> 8) & FLAGS_MASK) | 2
         if ah == (final_flags & FLAGS_MASK) | 2 :
             return [Lahf_Gadget(gadget)]
     return []
@@ -316,50 +292,50 @@ def checkLahfGadget(flags_init, final_flags, final_state, gadget):
 
 def checkOpEspGadget(init_regs1, final_state1, init_regs2, final_state2, gadget):
     # diff := stack_fix +/- register
-    diff1 = final_state1[Registers.esp] - init_regs1[Registers.esp]
-    diff2 = final_state2[Registers.esp] - init_regs2[Registers.esp]
+    diff1 = final_state1[Arch.Registers_sp] - init_regs1[Arch.Registers_sp]
+    diff2 = final_state2[Arch.Registers_sp] - init_regs2[Arch.Registers_sp]
 
-    for r in regs_no_esp:
+    for r in Arch.regs_no_sp:
         stack_fix1 = compute_operation(diff1, Operations.SUB, init_regs1[r])
         stack_fix2 = compute_operation(diff2, Operations.SUB, init_regs2[r])
-        if stack_fix1 == stack_fix2 and stack_fix1 + (ARCH_BITS / 8) > 0 and stack_fix1 + (ARCH_BITS / 8)< 0x1000:
-            gadget.stack_fix = stack_fix1 + (ARCH_BITS / 8)
+        if stack_fix1 == stack_fix2 and stack_fix1 + (Arch.ARCH_BITS / 8) > 0 and stack_fix1 + (Arch.ARCH_BITS / 8)< 0x1000:
+            gadget.stack_fix = stack_fix1 + (Arch.ARCH_BITS / 8)
             return [OpEsp_Gadget(r, Operations.ADD, gadget)]
 
     return []
 
 def emulate(g): #gadget g
     try:
-        mu = Uc(UC_ARCH_X86, UC_MODE_32)
-        esp_init = ADDRESS + 0x112233
+        mu = Uc(UC_ARCH_X86, Arch.UC_MODE)
+        sp_init = ADDRESS + 0x112233
         rv_pairs = {}
-        for r in regs_no_esp:
-            rv_pairs[r] = rand()
-        rv_pairs[Registers.esp] = esp_init
+        for r in Arch.regs_no_sp:
+            rv_pairs[r] = Arch.rand()
+        rv_pairs[Arch.Registers_sp] = sp_init
         rand_stack = []
         address_written = {}
         address_read = {}
         for i in range(8):
-            value = rand()
+            value = Arch.rand()
             rand_stack.append(value)
-            address_written[esp_init + (ARCH_BITS/8)*i] = value
-        flags_init = rand() & FLAGS_MASK
+            address_written[sp_init + (Arch.ARCH_BITS/8)*i] = value
+        flags_init = Arch.rand() & FLAGS_MASK
 
         # map 2MB memory for this emulation
         mu.mem_map(ADDRESS, 2 * 1024 * 1024)
         # write machine code to be emulated to memory
         mu.mem_write(ADDRESS, g.hex)
         # initialize stack
-        mu.reg_write(UC_X86_REG_ESP, esp_init)
+        mu.reg_write(Arch.regs[Arch.Registers_sp], sp_init)
         #init registers with random values
-        for r in regs_no_esp:
-            mu.reg_write(regs[r], rv_pairs[r])
+        for r in Arch.regs_no_sp:
+            mu.reg_write(Arch.regs[r], rv_pairs[r])
             #print r, hex(rv_pairs[r])
-        mu.reg_write(FLAGS_REG, flags_init)
+        mu.reg_write(Arch.FLAGS_REG, flags_init)
         #write stack
         for i in range(len(rand_stack)):
-            mu.mem_write(mu.reg_read(UC_X86_REG_ESP) +
-                            (ARCH_BITS / 8) * i, pack(PACK_VALUE, rand_stack[i]))
+            mu.mem_write(mu.reg_read(Arch.regs[Arch.Registers_sp]) +
+                            (Arch.ARCH_BITS / 8) * i, pack(Arch.PACK_VALUE, rand_stack[i]))
             #print hex(rand_stack[i])
 
         # intercept invalid memory events
@@ -377,16 +353,16 @@ def emulate(g): #gadget g
         mu.emu_start(ADDRESS, ADDRESS + (g.address_end - g.address), timeout=2*UC_SECOND_SCALE)
 
         final_values = {}
-        for r in regs:
-            final_values[r] = mu.reg_read(regs[r])
-        final_flags = mu.reg_read(FLAGS_REG)
+        for r in Arch.regs:
+            final_values[r] = mu.reg_read(Arch.regs[r])
+        final_flags = mu.reg_read(Arch.FLAGS_REG)
         Uc.release_handle(mu)
-        return (rv_pairs, final_values, rand_stack, esp_init, address_written, address_read, flags_init, final_flags)
+        return (rv_pairs, final_values, rand_stack, sp_init, address_written, address_read, flags_init, final_flags)
 
     except UcError as e:
         logging.warning("%s at code %s" , e, str(g.hex).encode('hex'))
 
-        return (rv_pairs, None, rand_stack, esp_init, address_written, address_read, None, None)
+        return (rv_pairs, None, rand_stack, sp_init, address_written, address_read, None, None)
     
 
 class GadgetsCollector(object):
@@ -404,7 +380,7 @@ class GadgetsCollector(object):
         rs = RopperService(options)
         rs.addFile(self._filename)
         #TODO: architecture set only x86
-        rs.setArchitectureFor(name=self._filename, arch='x86')
+        Arch.init(Arch.ARCH_64)
         rs.loadGadgetsFor(name=self._filename)
         ropper_gadgets = rs.getFileFor(name=self._filename).gadgets
         gadgets = []
@@ -413,7 +389,7 @@ class GadgetsCollector(object):
             address_end = g._lines[-1][0] + g.imageBase
             hex_bytes = g._bytes
             #check ret type
-            ret = md.disasm(str(hex_bytes[address_end - address:]), 0x0, count = 1).next()
+            ret = Arch.md.disasm(str(hex_bytes[address_end - address:]), 0x0, count = 1).next()
             if ret.id != X86_INS_RET:
                 continue
             if ret.operands:
@@ -438,21 +414,21 @@ class GadgetsCollector(object):
         for g in tqdm(safe_gadgets):
             ###
             #print g
-            #for i in md.disasm(g.hex, g.address):
+            #for i in Arch.md.disasm(g.hex, g.address):
             #    print("0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
             ###
-            (rv_pairs, final_values, rand_stack, esp_init,
+            (rv_pairs, final_values, rand_stack, sp_init,
              address_written, address_read, flags_init, final_flags) = emulate(g)
 
             #emulate two times for memory operations
-            (rv_pairs2, final_values2, rand_stack2, esp_init2,
+            (rv_pairs2, final_values2, rand_stack2, sp_init2,
              address_written2, address_read2, flags_init2, final_flags2) = emulate(g)
 
             if final_values is None or final_values2 is None:
                 continue
             #check modified regs
             modified_regs = set()
-            for r in regs_no_esp:
+            for r in Arch.regs_no_sp:
                 if rv_pairs[r] != final_values[r]:
                     modified_regs.add(r)
             # must be hashable
@@ -460,8 +436,8 @@ class GadgetsCollector(object):
             #print g.modified_regs
             #TODO: xchg    eax, esp
             # ret not executed in unicorn
-            g.stack_fix = final_values[Registers.esp] - \
-                esp_init + (ARCH_BITS / 8)
+            g.stack_fix = final_values[Arch.Registers_sp] - \
+                sp_init + (Arch.ARCH_BITS / 8)
             #also adjust stack fix as side effect
             typed_gadgets[Types.OpEsp] += checkOpEspGadget(
                 rv_pairs, final_values, rv_pairs2, final_values2, g)
