@@ -1,0 +1,7 @@
+TODO:
+how to deal?
+0x4f75: adc     al, byte ptr [edx + edx*8 + 0x1b8]
+0x4f7c: add     byte ptr [ecx + ecx + 0x5b], dh
+0x4f80: pop     esi
+0x4f81: ret
+set([<Registers32.edx: 4>, <Registers32.ecx: 3>])

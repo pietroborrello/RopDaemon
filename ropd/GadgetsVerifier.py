@@ -8,7 +8,7 @@ __email__ = "pietro.borrello95@gmail.com"
 from binascii import unhexlify, hexlify
 import random
 from struct import pack, unpack
-from itertools import permutations, combinations
+from itertools import permutations, combinations, chain
 from tqdm import *
 from Gadget import Gadget, Operations, Types
 from Gadget import *
@@ -67,13 +67,11 @@ def make_symbolic_state(project, stack_length=8):
     symbolic_state = input_state.copy()
     # overwrite all registers
     for reg in Arch.Registers:
-        symbolic_state.registers.store(reg.name, symbolic_state.se.BVS("sreg_" + reg.name, project.arch.bits))
+        symbolic_state.registers.store(reg.name, symbolic_state.se.BVS("sreg_" + reg.name+ '-', project.arch.bits))
     #overwrite flags
-    symbolic_state.registers.store('flags', symbolic_state.se.BVS("sreg_" + "flags", project.arch.bits))
+    symbolic_state.registers.store('flags', symbolic_state.se.BVS("sreg_" + "flags-", project.arch.bits))
     # restore sp
     symbolic_state.regs.sp = input_state.regs.sp
-    # restore bp
-    symbolic_state.regs.bp = input_state.regs.bp
     return symbolic_state
 
 def verifyStackFix(g, init_state, final_state):
@@ -212,6 +210,22 @@ def verifyOpEspGadget(project, g, init_state, final_state):
     return not final_state.satisfiable(extra_constraints=
         [final_state.regs.sp != compute_operation(init_state.regs.sp + g.stack_fix, g.operation, init_state.registers.load(g.register.name))])
 
+# TODO: naive implementation, but it works quite efficiently
+def compute_mem_accesses(project, g, init_state, final_state):
+    mem = set()
+
+    # TODO: ast must be created from a symbolic state where registers values are named "sreg_REG-"
+    for a in chain(final_state.history.filter_actions(read_from=ANGR_MEM), final_state.history.filter_actions(write_to=ANGR_MEM)):
+        for var in a.addr.ast.variables:
+            if var.startswith("sreg_"):
+                # get the name of the register from symbolic name, previously initialized
+                try:
+                    mem.add(Arch.Registers[var[5:].split("-")[0]])
+                except KeyError:
+                    continue
+    return frozenset(mem)
+
+
 class GadgetsVerifier(object):
     def __init__(self, filename, typed_gadgets):
         self.filename =  filename
@@ -261,11 +275,14 @@ class GadgetsVerifier(object):
                 logging.warning('recomputing modified regs\n' + first_g.dump())
                 modified_regs = computeModReg(first_g, init_state, final_state)
                 logging.warning('previous: %s, now %s\n', first_g.modified_regs, modified_regs)
+            mem = compute_mem_accesses(project, first_g, init_state, final_state)
 
             for g in gad_list:
                 #maybe mod_regs recomputed
                 if modified_regs is not None:
                     g.modified_regs = modified_regs
+                # assign memory accesses analysys
+                g.mem = mem
                 # maybe OpEsp_gadget
                 if type(g) is OpEsp_Gadget and verifyOpEspGadget(project, g, init_state, final_state):
                     # add esp to modified regs
