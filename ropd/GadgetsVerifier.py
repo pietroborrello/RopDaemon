@@ -213,12 +213,11 @@ def verifyOpEspGadget(project, g, init_state, final_state):
 # TODO: naive implementation, but it works quite efficiently
 def compute_mem_accesses(project, g, init_state, final_state):
     mem = set()
-
     # TODO: ast must be created from a symbolic state where registers values are named "sreg_REG-"
     for a in chain(final_state.history.filter_actions(read_from=ANGR_MEM), final_state.history.filter_actions(write_to=ANGR_MEM)):
         for var in a.addr.ast.variables:
             if var.startswith("sreg_"):
-                # get the name of the register from symbolic name, previously initialized
+                # get the name of the register from symbolic name, previously initialized as sreg_REG-
                 try:
                     mem.add(Arch.Registers[var[5:].split("-")[0]])
                 except KeyError:

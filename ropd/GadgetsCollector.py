@@ -48,7 +48,8 @@ def checkLoadConstGadget(init_regs, init_stack, final_state, gadget):
     for r in gadget.modified_regs:
         for off in [i for i, x in enumerate(
             init_stack) if x == final_state[r]]:
-                if off <= gadget.stack_fix - (Arch.ARCH_BITS/8):
+                #don't overlap with ret address: load register inside gadget stack occupation
+                if off < gadget.stack_fix - (Arch.ARCH_BITS/8) and off > 0:
                     result.append(LoadConst_Gadget(r, off*(Arch.ARCH_BITS/8), gadget))
     return result
 
