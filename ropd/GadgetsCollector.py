@@ -379,10 +379,10 @@ class GadgetsCollector(object):
                    'detailed': True}  # if gadgets are printed, use detailed output; default: False
         rs = RopperService(options)
         rs.addFile(self._filename)
-        #TODO: architecture set only x86
-        Arch.init(Arch.ARCH_64)
         rs.loadGadgetsFor(name=self._filename)
         ropper_gadgets = rs.getFileFor(name=self._filename).gadgets
+        # set architecture!!
+        Arch.init(str(rs.getFileFor(name=self._filename).arch))
         gadgets = []
         for g in ropper_gadgets:
             address = g._lines[0][0] + g.imageBase
@@ -397,7 +397,7 @@ class GadgetsCollector(object):
             else:
                 retn = 0
             if retn < MAX_RETN:
-                gadgets.append(Gadget(str(hex_bytes), address = address, address_end = address_end, retn=retn))
+                gadgets.append(Gadget(str(hex_bytes), address = address, address_end = address_end, retn=retn, arch=Arch.ARCH_BITS))
         if do_filter_unsafe:
             return filter_unsafe(gadgets)
         else:

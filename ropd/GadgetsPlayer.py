@@ -21,6 +21,11 @@ class GadgetsPlayer(object):
     def __init__(self, filename, gadgets):
         self.filename =  filename
         self.gadgets = gadgets
+        # assuming all gadget of the same type
+        for t in self.gadgets:
+            if self.gadgets[t]:
+                Arch.init(self.gadgets[t][0].arch)
+
 
     def stats(self):
         total = 0
@@ -37,7 +42,7 @@ class GadgetsPlayer(object):
 
         for g in self.gadgets[Types.LoadConst]:
             per_reg_total_loads[g.register] += 1
-
+        print "Found %d different gadgets" % total
         for t in subtotals:
             print '*', t.name, "%.2f" % (subtotals[t]/float(total) * 100) + '%'
             if t == Types.LoadConst:

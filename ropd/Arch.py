@@ -58,7 +58,7 @@ def init(arch):
     global UC_MODE
     global RAND_BITS
 
-    if arch == ARCH_32:
+    if arch == ARCH_32 or arch == 'x86':
         md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
         md.detail = True
 
@@ -83,7 +83,7 @@ def init(arch):
         IP_REG = UC_X86_REG_EIP
         RAND_BITS = 30
         
-    elif arch == ARCH_64:
+    elif arch == ARCH_64 or arch == 'x86_64':
         md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_64)
         md.detail = True
 
@@ -111,6 +111,8 @@ def init(arch):
         FLAGS_REG = UC_X86_REG_EFLAGS
         IP_REG = UC_X86_REG_RIP
         RAND_BITS = 46
+    else: 
+        raise Exception('Not supported Architecture: ' + str(arch))
 
 def rand():
     r = random.getrandbits(RAND_BITS)
