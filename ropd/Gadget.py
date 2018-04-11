@@ -28,7 +28,10 @@ class Gadget(object):
         self.arch = arch
 
     def __str__(self):
-        return 'Gadget(%s, %s, %s, %s, %s)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), self.modified_regs, self.stack_fix)
+        mod = []
+        for r in self.modified_regs:
+            mod.append(r.name)
+        return '(%s, %s, %s, %s, %s)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
     
     def __eq__(self, other):
         return type(self) == type(other) and self.__dict__ == other.__dict__
@@ -85,10 +88,7 @@ class LoadConst_Gadget(Gadget): # reg = const (at offset from esp)
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch)
 
     def __str__(self):
-        mod = []
-        for r in self.modified_regs:
-            mod.append(r.name)
-        return 'LoadConst_Gadget(%s, %s)(%s, %s, %s, %s, %s)' % (self.register.name, hex(self.offset), str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
+        return 'LoadConst_Gadget(%s, %s)' % (self.register.name, hex(self.offset)) + super(LoadConst_Gadget, self).__str__()
 
 
 class CopyReg_Gadget(Gadget):  # dest = src
@@ -99,11 +99,7 @@ class CopyReg_Gadget(Gadget):  # dest = src
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch)
 
     def __str__(self):
-        mod = []
-        for r in self.modified_regs:
-            mod.append(r.name)
-        return 'CopyReg_Gadget(%s, %s)(%s, %s, %s, %s, %s)' % (self.dest.name, self.src.name, str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
-
+        return 'CopyReg_Gadget(%s, %s)' % (self.dest.name, self.src.name) + super(CopyReg_Gadget, self).__str__()
 
 class BinOp_Gadget(Gadget):  # dest = src1 OP src2
     def __init__(self, dest, src1, op, src2, gadget):
@@ -115,9 +111,6 @@ class BinOp_Gadget(Gadget):  # dest = src1 OP src2
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch)
 
     def __str__(self):
-        mod = []
-        for r in self.modified_regs:
-            mod.append(r.name)
         op = self.op
         if op == Operations.ADD:
             op = '+'
@@ -133,7 +126,7 @@ class BinOp_Gadget(Gadget):  # dest = src1 OP src2
             op = '|'
         elif op == Operations.AND:
             op = '&'
-        return 'BinOp_Gadget(%s, %s, %s, %s)(%s, %s, %s, %s, %s)' % (self.dest.name, self.src1.name, op, self.src2.name, str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
+        return 'BinOp_Gadget(%s, %s, %s, %s)' % (self.dest.name, self.src1.name, op, self.src2.name) + super(BinOp_Gadget, self).__str__()
 
 class ReadMem_Gadget(Gadget):  # dest = [addr_reg + offset]
     def __init__(self, dest, addr_reg, offset, gadget):
@@ -144,10 +137,7 @@ class ReadMem_Gadget(Gadget):  # dest = [addr_reg + offset]
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch)
 
     def __str__(self):
-        mod = []
-        for r in self.modified_regs:
-            mod.append(r.name)
-        return 'ReadMem_Gadget(%s = [%s + %s])(%s, %s, %s, %s, %s)' % (self.dest.name, self.addr_reg.name, hex(self.offset), str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
+        return 'ReadMem_Gadget(%s = [%s + %s])' % (self.dest.name, self.addr_reg.name, hex(self.offset)) + super(ReadMem_Gadget, self).__str__()
 
 
 class WriteMem_Gadget(Gadget):  # [addr_reg + offset] = src
@@ -159,10 +149,7 @@ class WriteMem_Gadget(Gadget):  # [addr_reg + offset] = src
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch)  
 
     def __str__(self):
-        mod = []
-        for r in self.modified_regs:
-            mod.append(r.name)
-        return 'WriteMem_Gadget([%s + %s] = %s)(%s, %s, %s, %s, %s)' % (self.addr_reg.name, hex(self.offset), self.src.name, str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
+        return 'WriteMem_Gadget([%s + %s] = %s)' % (self.addr_reg.name, hex(self.offset), self.src.name) + super(WriteMem_Gadget, self).__str__()
 
 
 class ReadMemOp_Gadget(Gadget):  # dest OP= [addr_reg + offset]
@@ -174,9 +161,6 @@ class ReadMemOp_Gadget(Gadget):  # dest OP= [addr_reg + offset]
         super(ReadMemOp_Gadget, self).__init__(gadget.hex, gadget.address,
                                              gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch)
     def __str__(self):
-        mod = []
-        for r in self.modified_regs:
-            mod.append(r.name)
         op = self.op
         if op == Operations.ADD:
             op = '+'
@@ -192,7 +176,7 @@ class ReadMemOp_Gadget(Gadget):  # dest OP= [addr_reg + offset]
             op = '|'
         elif op == Operations.AND:
             op = '&'
-        return 'ReadMemOp_Gadget(%s %s= [%s + %s])(%s, %s, %s, %s, %s)' % (self.dest.name, op, self.addr_reg.name, hex(self.offset), str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
+        return 'ReadMemOp_Gadget(%s %s= [%s + %s])' % (self.dest.name, op, self.addr_reg.name, hex(self.offset)) + super(ReadMemOp_Gadget, self).__str__()
 
 
 class WriteMemOp_Gadget(Gadget):  # [addr_reg + offset] OP= src
@@ -204,9 +188,6 @@ class WriteMemOp_Gadget(Gadget):  # [addr_reg + offset] OP= src
         super(WriteMemOp_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch)
     def __str__(self):
-        mod = []
-        for r in self.modified_regs:
-            mod.append(r.name)
         op = self.op
         if op == Operations.ADD:
             op = '+'
@@ -222,7 +203,7 @@ class WriteMemOp_Gadget(Gadget):  # [addr_reg + offset] OP= src
             op = '|'
         elif op == Operations.AND:
             op = '&'
-        return 'WriteMemOp_Gadget([%s + %s] %s= %s)(%s, %s, %s, %s, %s)' % (self.addr_reg.name, hex(self.offset), op, self.src.name, str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
+        return 'WriteMemOp_Gadget([%s + %s] %s= %s)' % (self.addr_reg.name, hex(self.offset), op, self.src.name) + super(WriteMemOp_Gadget, self).__str__()
 
 #AH: = SF: ZF: xx: AF: xx: PF: 1: CF
 # xx - unknown
@@ -234,10 +215,7 @@ class Lahf_Gadget(Gadget): #load FLAGS to AH
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch)
 
     def __str__(self):
-        mod = []
-        for r in self.modified_regs:
-            mod.append(r.name)
-        return 'Lahf_Gadget(%s, %s, %s, %s, %s)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
+        return 'Lahf_Gadget' + + super(Lahf_Gadget, self).__str__()
 
 class OpEsp_Gadget(Gadget):  # esp=esp op reg
     def __init__(self, register, operation, gadget):
@@ -247,14 +225,11 @@ class OpEsp_Gadget(Gadget):  # esp=esp op reg
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch)
 
     def __str__(self):
-        mod = []
-        for r in self.modified_regs:
-            mod.append(r.name)
         op = self.operation
         if op == Operations.ADD:
             op = '+'
         elif op == Operations.SUB:
             op = '-'
-        return 'OpEsp_Gadget(%s, %s)(%s, %s, %s, %s, %s)' % (op, self.register.name, str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, self.stack_fix)
+        return 'OpEsp_Gadget(%s, %s)' % (op, self.register.name) + super(OpEsp_Gadget, self).__str__()
 
 
