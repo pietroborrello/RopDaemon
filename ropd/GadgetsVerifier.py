@@ -213,6 +213,8 @@ def verifyOpEspGadget(project, g, init_state, final_state):
 # TODO: naive implementation, but it works quite efficiently
 def compute_mem_accesses(project, g, init_state, final_state):
     mem = set()
+    # Is the memory access performed through a simple dereferentiation? es: mov n, [REG]
+    simple_accesses = True
     # TODO: ast must be created from a symbolic state where registers values are named "sreg_REG-"
     for a in chain(final_state.history.filter_actions(read_from=ANGR_MEM), final_state.history.filter_actions(write_to=ANGR_MEM)):
         # TODO: for now only check regs from which depends
@@ -223,7 +225,11 @@ def compute_mem_accesses(project, g, init_state, final_state):
                     mem.add(Arch.Registers[var[5:].split("-")[0]])
                 except KeyError:
                     continue
-    return frozenset(mem)
+        if a.addr.ast.symbolic and a.addr.ast.depth > 1:
+            simple_accesses = False
+    print simple_accesses
+    print g.dump()
+    return (frozenset(mem), simple_accesses)
 
 
 class GadgetsVerifier(object):

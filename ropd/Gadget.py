@@ -23,6 +23,7 @@ class Gadget(object):
         self.address = address
         self.address_end = address_end
         self.modified_regs = modified_regs
+        # (frozenset(mem), simple_access)
         self.mem = mem
         self.stack_fix = stack_fix
         self.retn = retn
@@ -33,9 +34,10 @@ class Gadget(object):
         for r in self.modified_regs:
             mod.append(r.name)
         mem = []
-        for r in self.mem:
+        for r in self.mem[0]:
             mem.append(r.name)
-        return '(%s, %s, %s, mod_regs = %s, mem = %s, %d)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, mem, self.stack_fix)
+        simple_accesses = self.mem[1]
+        return '(%s, %s, %s, mod_regs = %s, mem = %s %s, %d)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, mem, simple_accesses, self.stack_fix)
     
     def __eq__(self, other):
         return type(self) == type(other) and self.__dict__ == other.__dict__
