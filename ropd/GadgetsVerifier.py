@@ -227,8 +227,6 @@ def compute_mem_accesses(project, g, init_state, final_state):
                     continue
         if a.addr.ast.symbolic and a.addr.ast.depth > 1:
             simple_accesses = False
-    print simple_accesses
-    print g.dump()
     return (frozenset(mem), simple_accesses)
 
 

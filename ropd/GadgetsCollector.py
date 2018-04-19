@@ -121,11 +121,11 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
                         hook_op_res = ((HOOK_ERR_VAL << Arch.ARCH_BITS) + init_regs[src1]) / init_regs[src2]
                         # check if the gadget itself correctly zeroed EDX
                         op_res = compute_operation(init_regs[src1], op, init_regs[src2])
-                        if final_state[dest] == div_op_res:
+                        if final_state[dest] == div_op_res and src2 != Arch.Registers_a:
                             result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
-                        elif final_state[dest] == hook_op_res:
+                        elif final_state[dest] == hook_op_res and src2 != Arch.Registers_a:
                             result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
-                        elif final_state[dest] == op_res and op_res != 0:
+                        elif final_state[dest] == op_res and op_res != 0 and src2 != Arch.Registers_a:
                             result.append(BinOp_Gadget(dest, src1, op, src2, gadget))
             else:
                 for src1, src2 in permutations(Arch.regs, 2):
