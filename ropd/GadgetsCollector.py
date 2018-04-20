@@ -299,7 +299,7 @@ def checkOpEspGadget(init_regs1, final_state1, init_regs2, final_state2, gadget)
         stack_fix1 = compute_operation(diff1, Operations.SUB, init_regs1[r])
         stack_fix2 = compute_operation(diff2, Operations.SUB, init_regs2[r])
         if stack_fix1 == stack_fix2 and stack_fix1 + (Arch.ARCH_BITS / 8) > 0 and stack_fix1 + (Arch.ARCH_BITS / 8)< 0x1000:
-            gadget.stack_fix = stack_fix1 + (Arch.ARCH_BITS / 8)
+            gadget.stack_fix = stack_fix1 + (Arch.ARCH_BITS / 8) + gadget.retn
             return [OpEsp_Gadget(r, Operations.ADD, gadget)]
 
     return []
@@ -437,7 +437,7 @@ class GadgetsCollector(object):
             #TODO: xchg    eax, esp
             # ret not executed in unicorn
             g.stack_fix = final_values[Arch.Registers_sp] - \
-                sp_init + (Arch.ARCH_BITS / 8)
+                sp_init + (Arch.ARCH_BITS / 8) + g.retn
             #also adjust stack fix as side effect
             typed_gadgets[Types.OpEsp] += checkOpEspGadget(
                 rv_pairs, final_values, rv_pairs2, final_values2, g)
