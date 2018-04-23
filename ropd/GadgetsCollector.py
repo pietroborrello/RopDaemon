@@ -468,7 +468,6 @@ class GadgetsCollector(object):
         # tqdm: progressbar wrapper
         
         pool = Pool()
-        #typed_gadgets = pool.imap_unordered(do_analysis, safe_gadgets)
         '''
         for g in tqdm(safe_gadgets):
             typed_gadgets.append(do_analysis(g))
