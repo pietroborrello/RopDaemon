@@ -242,14 +242,11 @@ class GadgetsVerifier(object):
         print 'Verifying...'
         gadgets = {}
         verified_num = 0
-        for t in self.typed_gadgets:
-            for g in self.typed_gadgets[t]:
-                if g.address not in gadgets:
-                    gadgets[g.address] = []
-                gadgets[g.address].append(g)
-        verified_gadgets = {}
-        for t in Types:
-            verified_gadgets[t] = []
+        for g in self.typed_gadgets:
+            if g.address not in gadgets:
+                gadgets[g.address] = []
+            gadgets[g.address].append(g)
+        verified_gadgets = []
         for addr in tqdm(gadgets):
             gad_list = gadgets[addr]
             # verify modified registers and stack fix once for all
@@ -291,32 +288,29 @@ class GadgetsVerifier(object):
                 if type(g) is OpEsp_Gadget and verifyOpEspGadget(project, g, init_state, final_state):
                     # add esp to modified regs
                     #g.modified_regs.append(Arch.Registers_sp)
-                    verified_gadgets[Types.OpEsp].append(g)
+                    verified_gadgets.append(g)
                 elif not verifyStackFix(g, init_state, final_state):
                     logging.warning('DISCARDED: wrong stack fix\n'+ str(g) + '\n' + g.dump())
                 if type(g) is CopyReg_Gadget and verifyCopyRegGadget(project, g, init_state, final_state):
-                    verified_gadgets[Types.CopyReg].append(g)
+                    verified_gadgets.append(g)
                 elif type(g) is LoadConst_Gadget and verifyLoadConstGadget(project, g, init_state, final_state):
-                    verified_gadgets[Types.LoadConst].append(g)
+                    verified_gadgets.append(g)
                 elif type(g) is BinOp_Gadget and verifyBinOpGadget(project, g, init_state, final_state):
-                    verified_gadgets[Types.BinOp].append(g)
+                    verified_gadgets.append(g)
                 elif type(g) is ReadMem_Gadget and verifyReadMemGadget(project, g, init_state, final_state):
-                    verified_gadgets[Types.ReadMem].append(g)
+                    verified_gadgets.append(g)
                 elif type(g) is WriteMem_Gadget and verifyWriteMemGadget(project, g, init_state, final_state):
-                    verified_gadgets[Types.WriteMem].append(g)
+                    verified_gadgets.append(g)
                 elif type(g) is ReadMemOp_Gadget and verifyReadMemOpGadget(project, g, init_state, final_state):
-                    verified_gadgets[Types.ReadMemOp].append(g)
+                    verified_gadgets.append(g)
                 elif type(g) is WriteMemOp_Gadget and verifyWriteMemOpGadget(project, g, init_state, final_state):
-                    verified_gadgets[Types.WriteMemOp].append(g)
+                    verified_gadgets.append(g)
                 elif type(g) is Lahf_Gadget and verifyLahfGadget(project, g, init_state, final_state):
-                    verified_gadgets[Types.Lahf].append(g)
+                    verified_gadgets.append(g)
                 elif type(g) is OpEsp_Gadget:
                     # just checked
                     continue
                 else:
                     logging.warning('DISCARDED:\n' + str(g) + '\n' + g.dump())
-        for t in verified_gadgets:
-            for g in verified_gadgets[t]:
-                verified_num += 1
-        print 'Found %d different verified gadgets' % verified_num
+        print 'Found %d different verified gadgets' % len(verified_gadgets)
         return verified_gadgets

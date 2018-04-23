@@ -9,6 +9,7 @@ from binascii import unhexlify, hexlify
 import random
 from struct import pack, unpack
 from itertools import permutations, combinations
+from multiprocessing import Pool
 from tqdm import *
 from ropper import RopperService
 from Gadget import Gadget, Operations, Types
@@ -406,9 +407,7 @@ class GadgetsCollector(object):
     def analyze(self):
         safe_gadgets = self.collect(do_filter_unsafe=True)
         print 'Analyzing...'
-        typed_gadgets = {}
-        for t in Types:
-            typed_gadgets[t] = []
+        typed_gadgets = []
 
         # tqdm: progressbar wrapper
         for g in tqdm(safe_gadgets):
@@ -439,31 +438,27 @@ class GadgetsCollector(object):
             g.stack_fix = final_values[Arch.Registers_sp] - \
                 sp_init + (Arch.ARCH_BITS / 8) + g.retn
             #also adjust stack fix as side effect
-            typed_gadgets[Types.OpEsp] += checkOpEspGadget(
+            typed_gadgets += checkOpEspGadget(
                 rv_pairs, final_values, rv_pairs2, final_values2, g)
             if g.stack_fix < 4 or g.stack_fix > 0x1000:
                 continue
-            typed_gadgets[Types.LoadConst] += checkLoadConstGadget(
+            typed_gadgets += checkLoadConstGadget(
                 rv_pairs, rand_stack, final_values, g)
-            typed_gadgets[Types.CopyReg] += checkCopyRegGadget(
+            typed_gadgets += checkCopyRegGadget(
                 rv_pairs, rand_stack, final_values, g)
-            typed_gadgets[Types.BinOp] += checkBinOpGadget(
+            typed_gadgets += checkBinOpGadget(
                 rv_pairs, rand_stack, final_values, g)
-            typed_gadgets[Types.Lahf] += checkLahfGadget(
+            typed_gadgets += checkLahfGadget(
                 flags_init, final_flags, final_values, g)
-            typed_gadgets[Types.ReadMem] += checkReadMemGadget(
+            typed_gadgets += checkReadMemGadget(
                 rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
-            typed_gadgets[Types.WriteMem] += checkWriteMemGadget(
+            typed_gadgets += checkWriteMemGadget(
                 rv_pairs, address_written, rv_pairs2, address_written2, g)
-            typed_gadgets[Types.ReadMemOp] += checkReadMemOpGadget(
+            typed_gadgets += checkReadMemOpGadget(
                 rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
-            typed_gadgets[Types.WriteMemOp] += checkWriteMemOpGadget(
+            typed_gadgets += checkWriteMemOpGadget(
                 rv_pairs, address_read, address_written, rv_pairs2, address_read2, address_written2, g)
-        original_num = 0
-        for t in typed_gadgets:
-            for g in typed_gadgets[t]:
-                original_num += 1
-        print 'Found %d different typed gadgets' % original_num
+        print 'Found %d different typed gadgets' % len(typed_gadgets)
         return typed_gadgets
         
    

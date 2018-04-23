@@ -22,32 +22,24 @@ class GadgetsPlayer(object):
         self.filename =  filename
         self.gadgets = gadgets
         # assuming all gadget of the same type
-        for t in self.gadgets:
-            if self.gadgets[t]:
-                Arch.init(self.gadgets[t][0].arch)
+        if len(self.gadgets):
+            Arch.init(self.gadgets[0].arch)
 
 
     def stats(self):
         total = 0
         subtotals = {}
-        for t in self.gadgets:
-            subtotals[t] = 0
-            for g in self.gadgets[t]:
-                total += 1
-                subtotals[t] += 1
-        
-        per_reg_total_loads = {}
-        for r in Arch.Registers:
-            per_reg_total_loads[r] = 0
+        # TODO: define gadget load analysis
+        for g in self.gadgets:
+            t = type(g)
+            if t not in subtotals: subtotals[t] = 0
+            total += 1
+            subtotals[t] += 1
 
-        for g in self.gadgets[Types.LoadConst]:
-            per_reg_total_loads[g.register] += 1
         print "Found %d different gadgets" % total
         for t in subtotals:
-            print '*', t.name, "%.2f" % (subtotals[t]/float(total) * 100) + '%'
-            if t == Types.LoadConst:
-                for r in Arch.Registers:
-                    print "\t*", r.name, "%.2f" % (per_reg_total_loads[r]/float(total) * 100) + '%'
+            print '*', t.__name__, "%.2f" % (subtotals[t]/float(total) * 100) + '%'
+            
 
     def compute_load_sequence(self):
         G = nx.Graph()
