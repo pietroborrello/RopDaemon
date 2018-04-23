@@ -73,7 +73,7 @@ def stats(binary):
     
 def diff(binary):
     try:
-        with open(binary + VERIFIED_EXTENSION + TEST_EXTENSION, 'rb') as file1:
+        with open(binary + VERIFIED_EXTENSION, 'rb') as file1:
             l1 = pickle.load(file1)
             logging.warning("Diffing")
             typed_gadgets2 = collect(binary)
