@@ -2,3 +2,4 @@
 *.collected
 *.verified
 *.log
+*.test

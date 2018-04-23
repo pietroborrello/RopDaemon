@@ -8,7 +8,7 @@ __email__ = "pietro.borrello95@gmail.com"
 from binascii import unhexlify, hexlify
 import random
 from struct import pack, unpack
-from itertools import permutations, combinations
+from itertools import permutations, combinations, chain
 from multiprocessing import Pool
 from tqdm import *
 from ropper import RopperService
@@ -366,6 +366,58 @@ def emulate(g): #gadget g
         return (rv_pairs, None, rand_stack, sp_init, address_written, address_read, None, None)
     
 
+def do_analysis(g):
+    ###
+    #print g
+    #for i in Arch.md.disasm(g.hex, g.address):
+    #    print("0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
+    ###
+    typed_gadgets = []
+
+    (rv_pairs, final_values, rand_stack, sp_init,
+        address_written, address_read, flags_init, final_flags) = emulate(g)
+
+    #emulate two times for memory operations
+    (rv_pairs2, final_values2, rand_stack2, sp_init2,
+        address_written2, address_read2, flags_init2, final_flags2) = emulate(g)
+
+    if final_values is None or final_values2 is None:
+        return []
+    #check modified regs
+    modified_regs = set()
+    for r in Arch.regs_no_sp:
+        if rv_pairs[r] != final_values[r]:
+            modified_regs.add(r)
+    # must be hashable
+    g.modified_regs = frozenset(modified_regs)
+    #print g.modified_regs
+    #TODO: xchg    eax, esp
+    # ret not executed in unicorn
+    g.stack_fix = final_values[Arch.Registers_sp] - \
+        sp_init + (Arch.ARCH_BITS / 8) + g.retn
+    #also adjust stack fix as side effect
+    typed_gadgets += checkOpEspGadget(
+        rv_pairs, final_values, rv_pairs2, final_values2, g)
+    if g.stack_fix < 4 or g.stack_fix > 0x1000:
+        return []
+    typed_gadgets += checkLoadConstGadget(
+        rv_pairs, rand_stack, final_values, g)
+    typed_gadgets += checkCopyRegGadget(
+        rv_pairs, rand_stack, final_values, g)
+    typed_gadgets += checkBinOpGadget(
+        rv_pairs, rand_stack, final_values, g)
+    typed_gadgets += checkLahfGadget(
+        flags_init, final_flags, final_values, g)
+    typed_gadgets += checkReadMemGadget(
+        rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
+    typed_gadgets += checkWriteMemGadget(
+        rv_pairs, address_written, rv_pairs2, address_written2, g)
+    typed_gadgets += checkReadMemOpGadget(
+        rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
+    typed_gadgets += checkWriteMemOpGadget(
+        rv_pairs, address_read, address_written, rv_pairs2, address_read2, address_written2, g)
+    return typed_gadgets
+
 class GadgetsCollector(object):
     def __init__(self, filename):
         self._filename =  filename
@@ -411,53 +463,8 @@ class GadgetsCollector(object):
 
         # tqdm: progressbar wrapper
         for g in tqdm(safe_gadgets):
-            ###
-            #print g
-            #for i in Arch.md.disasm(g.hex, g.address):
-            #    print("0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
-            ###
-            (rv_pairs, final_values, rand_stack, sp_init,
-             address_written, address_read, flags_init, final_flags) = emulate(g)
-
-            #emulate two times for memory operations
-            (rv_pairs2, final_values2, rand_stack2, sp_init2,
-             address_written2, address_read2, flags_init2, final_flags2) = emulate(g)
-
-            if final_values is None or final_values2 is None:
-                continue
-            #check modified regs
-            modified_regs = set()
-            for r in Arch.regs_no_sp:
-                if rv_pairs[r] != final_values[r]:
-                    modified_regs.add(r)
-            # must be hashable
-            g.modified_regs = frozenset(modified_regs)
-            #print g.modified_regs
-            #TODO: xchg    eax, esp
-            # ret not executed in unicorn
-            g.stack_fix = final_values[Arch.Registers_sp] - \
-                sp_init + (Arch.ARCH_BITS / 8) + g.retn
-            #also adjust stack fix as side effect
-            typed_gadgets += checkOpEspGadget(
-                rv_pairs, final_values, rv_pairs2, final_values2, g)
-            if g.stack_fix < 4 or g.stack_fix > 0x1000:
-                continue
-            typed_gadgets += checkLoadConstGadget(
-                rv_pairs, rand_stack, final_values, g)
-            typed_gadgets += checkCopyRegGadget(
-                rv_pairs, rand_stack, final_values, g)
-            typed_gadgets += checkBinOpGadget(
-                rv_pairs, rand_stack, final_values, g)
-            typed_gadgets += checkLahfGadget(
-                flags_init, final_flags, final_values, g)
-            typed_gadgets += checkReadMemGadget(
-                rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
-            typed_gadgets += checkWriteMemGadget(
-                rv_pairs, address_written, rv_pairs2, address_written2, g)
-            typed_gadgets += checkReadMemOpGadget(
-                rv_pairs, final_values, address_read, rv_pairs2, final_values2, address_read2, g)
-            typed_gadgets += checkWriteMemOpGadget(
-                rv_pairs, address_read, address_written, rv_pairs2, address_read2, address_written2, g)
+            typed_gadgets.append(do_analysis(g))
+        typed_gadgets = list(chain.from_iterable(typed_gadgets))
         print 'Found %d different typed gadgets' % len(typed_gadgets)
         return typed_gadgets
         
