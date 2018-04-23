@@ -372,6 +372,10 @@ def do_analysis(g):
     #for i in Arch.md.disasm(g.hex, g.address):
     #    print("0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
     ###
+
+    #init Arch for multiprocessing
+    Arch.init(g.arch)
+
     typed_gadgets = []
 
     (rv_pairs, final_values, rand_stack, sp_init,
@@ -462,9 +466,18 @@ class GadgetsCollector(object):
         typed_gadgets = []
 
         # tqdm: progressbar wrapper
+        
+        pool = Pool()
+        #typed_gadgets = pool.imap_unordered(do_analysis, safe_gadgets)
+        '''
         for g in tqdm(safe_gadgets):
             typed_gadgets.append(do_analysis(g))
-        typed_gadgets = list(chain.from_iterable(typed_gadgets))
+        '''
+        for res in tqdm(pool.imap_unordered(do_analysis, safe_gadgets), total=len(safe_gadgets)):
+            typed_gadgets += res
+        pool.close()
+        pool.join()
+        
         print 'Found %d different typed gadgets' % len(typed_gadgets)
         return typed_gadgets
         
