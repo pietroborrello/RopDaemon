@@ -361,7 +361,7 @@ def emulate(g): #gadget g
         return (rv_pairs, final_values, rand_stack, sp_init, address_written, address_read, flags_init, final_flags)
 
     except UcError as e:
-        logging.warning("%s at code %s" , e, str(g.hex).encode('hex'))
+        logging.warning("Managed error: %s - at code %s" , e, str(g.hex).encode('hex'))
 
         return (rv_pairs, None, rand_stack, sp_init, address_written, address_read, None, None)
     
@@ -428,6 +428,7 @@ class GadgetsCollector(object):
 
     def collect(self, do_filter_unsafe=True):
         print 'Collecting...'
+        logging.info("Starting Collection phase")
         options = {'color': False,     # if gadgets are printed, use colored output: default: False
                    'badbytes': '',   # bad bytes which should not be in addresses or ropchains; default: ''
                    'all': False,      # Show all gadgets, this means to not remove double gadgets; default: False
@@ -463,6 +464,7 @@ class GadgetsCollector(object):
     def analyze(self):
         safe_gadgets = self.collect(do_filter_unsafe=True)
         print 'Analyzing...'
+        logging.info("Starting Analysis phase")
         typed_gadgets = []
 
         # tqdm: progressbar wrapper
@@ -478,6 +480,7 @@ class GadgetsCollector(object):
         pool.join()
         
         print 'Found %d different typed gadgets' % len(typed_gadgets)
+        logging.info('Found %d different typed gadgets', len(typed_gadgets))
         return typed_gadgets
         
    

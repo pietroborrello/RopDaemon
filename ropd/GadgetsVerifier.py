@@ -232,7 +232,7 @@ def do_verify(gad_list):
     verified_gadgets = []
     # verify modified registers and stack fix once for all
     if not gad_list:
-        logging.warning('DISCARDED: empty list')
+        logging.debug('DISCARDED: empty list')
         return []
     first_g = gad_list[0]
     init_state = generic_state.copy()
@@ -242,21 +242,21 @@ def do_verify(gad_list):
         succ = project.factory.successors(init_state).unconstrained_successors
     # gadget may be strange, very strange opcode can be present
     except angr.errors.SimIRSBNoDecodeError as e:
-        logging.warning('DISCARDED: not recognized instructions\n' + first_g.dump())
+        logging.debug('DISCARDED: not recognized instructions\n' + first_g.dump())
         return []
     except Exception as e:
         logging.error(e)
-        logging.warning('DISCARDED: unsupported instructions\n' + first_g.dump())
+        logging.debug('DISCARDED: unsupported instructions\n' + first_g.dump())
         return []
     if len(succ) == 0:
-        logging.warning('DISCARDED: not a valid gadget\n' + first_g.dump())
+        logging.debug('DISCARDED: not a valid gadget\n' + first_g.dump())
         return []
     final_state = succ[0]
     modified_regs = None
     if not verifyModReg(first_g, init_state, final_state):
-        logging.warning('recomputing modified regs\n' + first_g.dump())
+        logging.debug('recomputing modified regs\n' + first_g.dump())
         modified_regs = computeModReg(first_g, init_state, final_state)
-        logging.warning('previous: %s, now %s\n', first_g.modified_regs, modified_regs)
+        logging.debug('previous: %s, now %s\n', first_g.modified_regs, modified_regs)
     mem = compute_mem_accesses(project, first_g, init_state, final_state)
 
     for g in gad_list:
@@ -271,7 +271,7 @@ def do_verify(gad_list):
             #g.modified_regs.append(Arch.Registers_sp)
             verified_gadgets.append(g)
         elif not verifyStackFix(g, init_state, final_state):
-            logging.warning('DISCARDED: wrong stack fix\n'+ str(g) + '\n' + g.dump())
+            logging.debug('DISCARDED: wrong stack fix\n'+ str(g) + '\n' + g.dump())
         if type(g) is CopyReg_Gadget and verifyCopyRegGadget(project, g, init_state, final_state):
             verified_gadgets.append(g)
         elif type(g) is LoadConst_Gadget and verifyLoadConstGadget(project, g, init_state, final_state):
@@ -292,7 +292,7 @@ def do_verify(gad_list):
             # just checked, but avoid logging
             continue
         else:
-            logging.warning('DISCARDED:\n' + str(g) + '\n' + g.dump())
+            logging.debug('DISCARDED:\n' + str(g) + '\n' + g.dump())
     return verified_gadgets
 
 class GadgetsVerifier(object):
@@ -304,6 +304,7 @@ class GadgetsVerifier(object):
         project = angr.Project(self.filename, load_options={'main_opts': {'custom_base_addr': 0}})
         
         print 'Verifying...'
+        logging.info("Starting Verification phase")
         gadgets = {}
         verified_num = 0
         for g in self.typed_gadgets:
@@ -321,4 +322,5 @@ class GadgetsVerifier(object):
         pool.join()
 
         print 'Found %d different verified gadgets' % len(verified_gadgets)
+        logging.info('Found %d different verified gadgets', len(verified_gadgets))
         return verified_gadgets

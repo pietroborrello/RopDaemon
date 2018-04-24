@@ -7,7 +7,13 @@ __email__ = "pietro.borrello95@gmail.com"
 
 
 import logging
-logging.basicConfig(filename='ropd.log',filemode='w', format='%(levelname)s:%(message)s',level=logging.WARNING) #to mask angr infos
+logging.basicConfig(filename='ropd.log',filemode='w', format='%(asctime)s %(levelname)s: %(message)s', datefmt='%H:%M:%S',level=logging.DEBUG) 
+# mask angr infos
+logging.getLogger('angr').setLevel(logging.CRITICAL)
+logging.getLogger('cle').setLevel(logging.CRITICAL)
+logging.getLogger('claripy').setLevel(logging.CRITICAL)
+logging.getLogger('pyvex').setLevel(logging.CRITICAL)
+logging.getLogger('ana').setLevel(logging.CRITICAL)
 
 import argparse
 import ropd
@@ -75,7 +81,7 @@ def diff(binary):
     try:
         with open(binary + VERIFIED_EXTENSION, 'rb') as file1:
             l1 = pickle.load(file1)
-            logging.warning("Diffing")
+            logging.info("Diffing")
             typed_gadgets2 = collect(binary)
             l2 = verify(binary)
             for l in l1:
@@ -114,7 +120,7 @@ def main():
     parser.add_argument('--diff', help="compute another gadget verification and diff with the actual version [AND OVVERRIDE CURRENT VERSION]", action="store_true")
 
     args = parser.parse_args()
-    logging.warning('Analyzing %s', args.binary)
+    logging.info('Starting analysis of %s', args.binary)
     if args.collect:
         typed_gadgets = collect(args.binary)
 
