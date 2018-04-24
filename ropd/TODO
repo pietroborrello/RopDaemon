@@ -5,3 +5,6 @@ how to deal?
 0x4f80: pop     esi
 0x4f81: ret
 set([<Registers32.edx: 4>, <Registers32.ecx: 3>])
+
+TODO ERROR MANAGE
+multiprocessing _handle results TypeError: __init__() takes exactly 2 arguments (1 given)

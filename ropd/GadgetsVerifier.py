@@ -227,73 +227,77 @@ def compute_mem_accesses(project, g, init_state, final_state):
     return (frozenset(mem), simple_accesses)
 
 def do_verify(gad_list):
-    project = ANGR_PROJECT
-    generic_state = ANGR_STATE
-    verified_gadgets = []
-    # verify modified registers and stack fix once for all
-    if not gad_list:
-        logging.debug('DISCARDED: empty list')
-        return []
-    first_g = gad_list[0]
-    init_state = generic_state.copy()
-    init_state.regs.ip = first_g.address
-    # since ends with ret it will have unconstrained successors
     try:
-        succ = project.factory.successors(init_state).unconstrained_successors
-    # gadget may be strange, very strange opcode can be present
-    except angr.errors.SimIRSBNoDecodeError as e:
-        logging.debug('DISCARDED: not recognized instructions\n' + first_g.dump())
-        return []
-    except Exception as e:
-        logging.error(e)
-        logging.debug('DISCARDED: unsupported instructions\n' + first_g.dump())
-        return []
-    if len(succ) == 0:
-        logging.debug('DISCARDED: not a valid gadget\n' + first_g.dump())
-        return []
-    final_state = succ[0]
-    modified_regs = None
-    if not verifyModReg(first_g, init_state, final_state):
-        logging.debug('recomputing modified regs\n' + first_g.dump())
-        modified_regs = computeModReg(first_g, init_state, final_state)
-        logging.debug('previous: %s, now %s\n', first_g.modified_regs, modified_regs)
-    mem = compute_mem_accesses(project, first_g, init_state, final_state)
+        project = ANGR_PROJECT
+        generic_state = ANGR_STATE
+        verified_gadgets = []
+        # verify modified registers and stack fix once for all
+        if not gad_list:
+            logging.debug('DISCARDED: empty list')
+            return []
+        first_g = gad_list[0]
+        init_state = generic_state.copy()
+        init_state.regs.ip = first_g.address
+        # since ends with ret it will have unconstrained successors
+        try:
+            succ = project.factory.successors(init_state).unconstrained_successors
+        # gadget may be strange, very strange opcode can be present
+        except angr.errors.SimIRSBNoDecodeError as e:
+            logging.debug('DISCARDED: not recognized instructions\n' + first_g.dump())
+            return []
+        except Exception as e:
+            logging.error(e)
+            logging.debug('DISCARDED: unsupported instructions\n' + first_g.dump())
+            return []
+        if len(succ) == 0:
+            logging.debug('DISCARDED: not a valid gadget\n' + first_g.dump())
+            return []
+        final_state = succ[0]
+        modified_regs = None
+        if not verifyModReg(first_g, init_state, final_state):
+            logging.debug('recomputing modified regs\n' + first_g.dump())
+            modified_regs = computeModReg(first_g, init_state, final_state)
+            logging.debug('previous: %s, now %s\n', first_g.modified_regs, modified_regs)
+        mem = compute_mem_accesses(project, first_g, init_state, final_state)
 
-    for g in gad_list:
-        #maybe mod_regs recomputed
-        if modified_regs is not None:
-            g.modified_regs = modified_regs
-        # assign memory accesses analysys
-        g.mem = mem
-        # maybe OpEsp_gadget
-        if type(g) is OpEsp_Gadget and verifyOpEspGadget(project, g, init_state, final_state):
-            # add esp to modified regs
-            #g.modified_regs.append(Arch.Registers_sp)
-            verified_gadgets.append(g)
-        elif not verifyStackFix(g, init_state, final_state):
-            logging.debug('DISCARDED: wrong stack fix\n'+ str(g) + '\n' + g.dump())
-        if type(g) is CopyReg_Gadget and verifyCopyRegGadget(project, g, init_state, final_state):
-            verified_gadgets.append(g)
-        elif type(g) is LoadConst_Gadget and verifyLoadConstGadget(project, g, init_state, final_state):
-            verified_gadgets.append(g)
-        elif type(g) is BinOp_Gadget and verifyBinOpGadget(project, g, init_state, final_state):
-            verified_gadgets.append(g)
-        elif type(g) is ReadMem_Gadget and verifyReadMemGadget(project, g, init_state, final_state):
-            verified_gadgets.append(g)
-        elif type(g) is WriteMem_Gadget and verifyWriteMemGadget(project, g, init_state, final_state):
-            verified_gadgets.append(g)
-        elif type(g) is ReadMemOp_Gadget and verifyReadMemOpGadget(project, g, init_state, final_state):
-            verified_gadgets.append(g)
-        elif type(g) is WriteMemOp_Gadget and verifyWriteMemOpGadget(project, g, init_state, final_state):
-            verified_gadgets.append(g)
-        elif type(g) is Lahf_Gadget and verifyLahfGadget(project, g, init_state, final_state):
-            verified_gadgets.append(g)
-        elif type(g) is OpEsp_Gadget:
-            # just checked, but avoid logging
-            continue
-        else:
-            logging.debug('DISCARDED:\n' + str(g) + '\n' + g.dump())
-    return verified_gadgets
+        for g in gad_list:
+            #maybe mod_regs recomputed
+            if modified_regs is not None:
+                g.modified_regs = modified_regs
+            # assign memory accesses analysys
+            g.mem = mem
+            # maybe OpEsp_gadget
+            if type(g) is OpEsp_Gadget and verifyOpEspGadget(project, g, init_state, final_state):
+                # add esp to modified regs
+                #g.modified_regs.append(Arch.Registers_sp)
+                verified_gadgets.append(g)
+            elif not verifyStackFix(g, init_state, final_state):
+                logging.debug('DISCARDED: wrong stack fix\n'+ str(g) + '\n' + g.dump())
+            if type(g) is CopyReg_Gadget and verifyCopyRegGadget(project, g, init_state, final_state):
+                verified_gadgets.append(g)
+            elif type(g) is LoadConst_Gadget and verifyLoadConstGadget(project, g, init_state, final_state):
+                verified_gadgets.append(g)
+            elif type(g) is BinOp_Gadget and verifyBinOpGadget(project, g, init_state, final_state):
+                verified_gadgets.append(g)
+            elif type(g) is ReadMem_Gadget and verifyReadMemGadget(project, g, init_state, final_state):
+                verified_gadgets.append(g)
+            elif type(g) is WriteMem_Gadget and verifyWriteMemGadget(project, g, init_state, final_state):
+                verified_gadgets.append(g)
+            elif type(g) is ReadMemOp_Gadget and verifyReadMemOpGadget(project, g, init_state, final_state):
+                verified_gadgets.append(g)
+            elif type(g) is WriteMemOp_Gadget and verifyWriteMemOpGadget(project, g, init_state, final_state):
+                verified_gadgets.append(g)
+            elif type(g) is Lahf_Gadget and verifyLahfGadget(project, g, init_state, final_state):
+                verified_gadgets.append(g)
+            elif type(g) is OpEsp_Gadget:
+                # just checked, but avoid logging
+                continue
+            else:
+                logging.debug('DISCARDED:\n' + str(g) + '\n' + g.dump())
+        return verified_gadgets
+    except Exception as e:
+        print e
+        return []
 
 class GadgetsVerifier(object):
     def __init__(self, filename, typed_gadgets):
