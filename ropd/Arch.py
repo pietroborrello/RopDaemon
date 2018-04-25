@@ -38,6 +38,8 @@ RAND_BITS = None
 
 Registers32 = Enum('Registers32', 'eax ebx ecx edx esi edi ebp esp')
 Registers64 = Enum('Registers64', 'rax rbx rcx rdx rsi rdi rbp rsp r8 r9 r10 r11 r12 r13 r14 r15')
+UnknownType = Enum('UnknownType', 'unknown')
+MemType = Enum('MemType', 'stack')
 
 def init(arch):
     global md

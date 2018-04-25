@@ -75,6 +75,17 @@ def stats(binary):
         print 'ERROR: %s' % e
         print 'Did you collected and verified gadgets before?'
         return
+
+def play(binary):
+    try:
+        with open(binary + VERIFIED_EXTENSION, 'rb') as collected_file:
+            gadgets = pickle.load(collected_file)
+            gadgets_player = ropd.GadgetsPlayer(binary, gadgets)
+            gadgets_player.play()
+    except IOError as e:
+        print 'ERROR: %s' % e
+        print 'Did you collected and verified gadgets before?'
+        return
             
     
 def diff(binary):
@@ -113,6 +124,8 @@ def main():
 
     parser.add_argument('-v', "--verify", help="formally verify collected gadgets", action="store_true")
 
+    parser.add_argument('-p', "--play", help="perform some analysis on verified gadgets", action="store_true")
+
     parser.add_argument( '-d', '--dump', help="dump gadgets file", action="store_true")
 
     parser.add_argument('--stats', help="statistics about verified gadgets", action="store_true")
@@ -135,6 +148,9 @@ def main():
 
     if args.diff:
         diff(args.binary)
+
+    if args.play:
+        play(args.binary)
     
     
 

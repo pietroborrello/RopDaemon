@@ -221,7 +221,11 @@ def compute_mem_accesses(project, g, init_state, final_state):
                 try:
                     mem.add(Arch.Registers[var[5:].split("-")[0]])
                 except KeyError:
-                    continue
+                    mem.add(Arch.UnknownType.unknown)
+            elif var.startswith("symbolic_stack_"):
+                mem.add(Arch.MemType.stack)
+            else:
+                mem.add(Arch.UnknownType.unknown)
         if a.addr.ast.symbolic and a.addr.ast.depth > 1:
             simple_accesses = False
     return (frozenset(mem), simple_accesses)
