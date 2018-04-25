@@ -28,6 +28,7 @@ MAX_BYTES_PER_INSTR = 0xf
 HOOK_ERR_VAL = 0x1
 MAX_RETN = 0x10
 unsafe_classes = [X86_GRP_JUMP, X86_GRP_CALL, X86_GRP_INT]
+unsafe_ids = [X86_INS_IN, X86_INS_OUT]
 
 FLAGS_MASK = 0xd5
 
@@ -38,7 +39,7 @@ def filter_unsafe(gadgets):
     for g in gadgets:
         unsafe = False
         for i in Arch.md.disasm(g.hex, g.address):
-            if any(x in i.groups for x in unsafe_classes):
+            if any(x in i.groups for x in unsafe_classes) or i.id in unsafe_ids:
                 unsafe = True
         if not unsafe:
             safe_gadgets.append(g)

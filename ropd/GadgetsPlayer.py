@@ -78,5 +78,7 @@ class GadgetsPlayer(object):
                 print g
                 print g.dump()
 
+        #copy_gadgets = 
+
 
 
