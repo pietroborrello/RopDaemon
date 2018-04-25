@@ -316,7 +316,7 @@ def emulate(g): #gadget g
         rand_stack = []
         address_written = {}
         address_read = {}
-        for i in range(8):
+        for i in range(Arch.STACK_CELLS):
             value = Arch.rand()
             rand_stack.append(value)
             address_written[sp_init + (Arch.ARCH_BITS/8)*i] = value

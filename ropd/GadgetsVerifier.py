@@ -222,12 +222,20 @@ def compute_mem_accesses(project, g, init_state, final_state):
                     mem.add(Arch.Registers[var[5:].split("-")[0]])
                 except KeyError:
                     mem.add(Arch.UnknownType.unknown)
-            elif var.startswith("symbolic_stack_"):
+            elif var.startswith("symbolic_stack"):
                 mem.add(Arch.MemType.stack)
             else:
                 mem.add(Arch.UnknownType.unknown)
         if a.addr.ast.symbolic and a.addr.ast.depth > 1:
             simple_accesses = False
+        if a.addr.ast.concrete:
+            # check if can access fixed memory outside the stack
+            constraints = False
+            constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp >= (Arch.STACK_CELLS * (Arch.ARCH_BITS/8)))
+            constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp < 0)
+            if final_state.satisfiable(extra_constraints=[constraints]):
+                mem.add(Arch.UnknownType.unknown)
+                simple_accesses = False
     return (frozenset(mem), simple_accesses)
 
 def do_verify(gad_list):
