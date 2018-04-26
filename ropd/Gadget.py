@@ -50,6 +50,17 @@ class Gadget(object):
         """Overrides the default implementation"""
         return hash(tuple(sorted(self.__dict__.items())))
     
+    def disasm(self):
+        if self.arch == Arch.ARCH_32:
+            md = md32
+        else:
+            md = md64
+        ris = ''
+        for i in md.disasm(self.hex, self.address):
+            ris += ("%s %s; " % (i.mnemonic, i.op_str))
+        return ris.strip('; ')
+
+
     def dump(self):
         if self.arch == Arch.ARCH_32:
             md = md32

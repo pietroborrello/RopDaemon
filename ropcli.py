@@ -7,6 +7,8 @@ __email__ = "pietro.borrello95@gmail.com"
 
 
 import logging
+import json
+from enum import Enum
 logging.basicConfig(filename='ropd.log',filemode='w', format='%(asctime)s %(levelname)s: %(message)s', datefmt='%H:%M:%S',level=logging.DEBUG) 
 # mask angr infos
 logging.getLogger('angr').setLevel(logging.CRITICAL)
@@ -60,6 +62,33 @@ def dump_file(binary):
             for g in typed_gadgets:
                 print g
                 print g.dump()
+    except IOError as e:
+        print 'ERROR: %s' % e
+        print 'Did you collected and verified gadgets before?'
+        return
+
+
+def to_json(obj):
+    if isinstance(obj, ropd.Gadget.Gadget):
+        d = { 'type':obj.__class__.__name__[:obj.__class__.__name__.find('_Gadget')], 
+              'disasm':obj.disasm()}
+        d.update(obj.__dict__)
+        # convert bytearray to str
+        d['hex'] = str(d['hex']).encode('hex')
+        return d
+    if isinstance(obj, frozenset):
+        return list(obj)
+    elif isinstance(obj, Enum):
+        return obj.name
+    return o.__dict__
+
+
+def dump_json(binary):
+    try:
+        with open(binary + VERIFIED_EXTENSION, 'rb') as collected_file:
+            typed_gadgets = pickle.load(collected_file)
+            for g in typed_gadgets:
+                print json.dumps(g, default=to_json, ensure_ascii=False)
     except IOError as e:
         print 'ERROR: %s' % e
         print 'Did you collected and verified gadgets before?'
@@ -126,7 +155,9 @@ def main():
 
     parser.add_argument('-p', "--play", help="perform some analysis on verified gadgets", action="store_true")
 
-    parser.add_argument( '-d', '--dump', help="dump gadgets file", action="store_true")
+    parser.add_argument( '-d', '--dump', help="dump gadgets file to a readable format", action="store_true")
+
+    parser.add_argument( '-j', '--json', help="dump gadgets file to json format", action="store_true")
 
     parser.add_argument('--stats', help="statistics about verified gadgets", action="store_true")
 
@@ -134,6 +165,7 @@ def main():
 
     args = parser.parse_args()
     logging.info('Starting analysis of %s', args.binary)
+
     if args.collect:
         typed_gadgets = collect(args.binary)
 
@@ -142,6 +174,8 @@ def main():
 
     if args.dump:
         dump_file(args.binary)
+    if args.json:
+        dump_json(args.binary)
 
     if args.stats:
         stats(args.binary)
