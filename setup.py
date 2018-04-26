@@ -29,5 +29,10 @@ setup(
             'tqdm',
             'ipdb',
             'angr'
-    ]
+    ],
+    entry_points={
+        'console_scripts': [
+            'ropcli = ropd.ropcli:main'
+        ]
+    },
 )
