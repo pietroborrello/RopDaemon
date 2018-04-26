@@ -18,7 +18,7 @@ import logging
 
 ARCH_32 = 32
 ARCH_64 = 64
-STACK_CELLS = 8
+STACK_CELLS = 16
 md = None
 Registers = None
 Registers_sp = None
