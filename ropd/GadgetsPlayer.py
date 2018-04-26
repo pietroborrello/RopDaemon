@@ -8,7 +8,7 @@ __email__ = "pietro.borrello95@gmail.com"
 from binascii import unhexlify, hexlify
 import random
 from struct import pack, unpack
-from itertools import permutations, combinations
+from itertools import permutations, combinations, groupby
 from tqdm import *
 from Gadget import Gadget, Operations, Types
 from Gadget import *
@@ -78,7 +78,21 @@ class GadgetsPlayer(object):
                 print g
                 print g.dump()
 
-        #copy_gadgets = 
+        copy_gadgets = {(dest,src) : list(group) for ((dest,src),group) in groupby(filter(lambda x: isinstance(x, CopyReg_Gadget),self.gadgets), lambda g: (g.dest, g.src))}
+        copy_gadgets = {(dest,src) : select_best(copy_gadgets[(dest,src)]) for (dest,src) in copy_gadgets}
+        for ((d,s), g) in copy_gadgets.items():
+            if g is not None:
+                print d.name, s.name
+                print g
+                print g.dump()
+
+        loadable_regs = load_gadgets.copy()
+        for g in self.gadgets:
+            dest = g.__dict__.get('dest', 0)
+            if dest is Arch.Registers_a:
+                print g
+                print g.dump()
+
 
 
 

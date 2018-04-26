@@ -13,6 +13,7 @@ logging.getLogger('cle').setLevel(logging.CRITICAL)
 logging.getLogger('claripy').setLevel(logging.CRITICAL)
 logging.getLogger('pyvex').setLevel(logging.CRITICAL)
 logging.getLogger('ana').setLevel(logging.CRITICAL)
+
 from GadgetsCollector import GadgetsCollector
 from GadgetsVerifier import GadgetsVerifier
 from GadgetsPlayer import GadgetsPlayer
