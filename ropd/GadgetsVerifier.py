@@ -129,7 +129,7 @@ def verifyBinOpGadget(project, g, init_state, final_state):
 
 def verifyLoadConstGadget(project, g, init_state, final_state):
     load_content = init_state.memory.load(init_state.regs.sp + g.offset, project.arch.bits / 8, endness=init_state.arch.memory_endness)
-    return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.register.name) != load_content]) 
+    return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != load_content]) 
 
 def verifyLahfGadget(project, g, init_state, final_state):
     flags = (init_state.regs.flags & FLAGS_MASK) | 2

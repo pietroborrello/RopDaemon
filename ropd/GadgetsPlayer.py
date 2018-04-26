@@ -70,7 +70,7 @@ class GadgetsPlayer(object):
             
 
     def compute_load_sequence(self):
-        load_gadgets = {reg : filter(lambda x: isinstance(x, LoadConst_Gadget) and x.register is reg, self.gadgets) for reg in Arch.Registers}
+        load_gadgets = {reg : filter(lambda x: isinstance(x, LoadConst_Gadget) and x.dest is reg, self.gadgets) for reg in Arch.Registers}
         load_gadgets = {reg : select_best(load_gadgets[reg]) for reg in load_gadgets}
         for (r, g) in load_gadgets.items():
             if g is not None:

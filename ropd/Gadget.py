@@ -98,14 +98,14 @@ def hex(s):
 
 
 class LoadConst_Gadget(Gadget): # reg = const (at offset from esp)
-    def __init__(self, register, offset, gadget):
-        self.register = register
+    def __init__(self, dest, offset, gadget):
+        self.dest = dest
         self.offset = offset
         super(LoadConst_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch, gadget.mem)
 
     def __str__(self):
-        return 'LoadConst_Gadget(%s, %s)' % (self.register.name, hex(self.offset)) + super(LoadConst_Gadget, self).__str__()
+        return 'LoadConst_Gadget(%s, %s)' % (self.dest.name, hex(self.offset)) + super(LoadConst_Gadget, self).__str__()
 
 
 class CopyReg_Gadget(Gadget):  # dest = src
