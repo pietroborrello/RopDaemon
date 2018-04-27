@@ -131,6 +131,9 @@ def verifyLoadConstGadget(project, g, init_state, final_state):
     load_content = init_state.memory.load(init_state.regs.sp + g.offset, project.arch.bits / 8, endness=init_state.arch.memory_endness)
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != load_content]) 
 
+def verifySetZeroGadget(project, g, init_state, final_state):
+    return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != 0]) 
+
 def verifyLahfGadget(project, g, init_state, final_state):
     flags = (init_state.regs.flags & FLAGS_MASK) | 2
     ah = ((final_state.registers.load(Arch.Registers_a.name) >> 8) & FLAGS_MASK) | 2
@@ -288,6 +291,8 @@ def do_verify(gad_list):
             if type(g) is CopyReg_Gadget and verifyCopyRegGadget(project, g, init_state, final_state):
                 verified_gadgets.append(g)
             elif type(g) is LoadConst_Gadget and verifyLoadConstGadget(project, g, init_state, final_state):
+                verified_gadgets.append(g)
+            elif type(g) is SetZero_Gadget and verifySetZeroGadget(project, g, init_state, final_state):
                 verified_gadgets.append(g)
             elif type(g) is BinOp_Gadget and verifyBinOpGadget(project, g, init_state, final_state):
                 verified_gadgets.append(g)

@@ -91,13 +91,13 @@ type gadget =
 
 Operations = Enum('Operations', 'ADD SUB MUL DIV XOR OR AND')
 Types = Enum(
-    'Types', 'LoadConst CopyReg  BinOp ReadMem WriteMem ReadMemOp WriteMemOp Lahf OpEsp')
+    'Types', 'LoadConst SetZero IncReg CopyReg  BinOp ReadMem WriteMem ReadMemOp WriteMemOp Lahf OpEsp')
 
 def hex(s):
     return '0x' + format(s, 'x')
 
 
-class LoadConst_Gadget(Gadget): # reg = const (at offset from esp)
+class LoadConst_Gadget(Gadget): # dest = const (at offset from esp)
     def __init__(self, dest, offset, gadget):
         self.dest = dest
         self.offset = offset
@@ -106,6 +106,26 @@ class LoadConst_Gadget(Gadget): # reg = const (at offset from esp)
 
     def __str__(self):
         return 'LoadConst_Gadget(%s, %s)' % (self.dest.name, hex(self.offset)) + super(LoadConst_Gadget, self).__str__()
+
+
+class SetZero_Gadget(Gadget): # dest = 0
+    def __init__(self, dest, gadget):
+        self.dest = dest
+        super(SetZero_Gadget, self).__init__(gadget.hex, gadget.address,
+                                               gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch, gadget.mem)
+
+    def __str__(self):
+        return 'SetZero_Gadget(%s)' % (self.dest.name) + super(SetZero_Gadget, self).__str__()
+
+
+class IncReg_Gadget(Gadget): # dest++
+    def __init__(self, dest, gadget):
+        self.dest = dest
+        super(IncReg_Gadget, self).__init__(gadget.hex, gadget.address,
+                                               gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch, gadget.mem)
+
+    def __str__(self):
+        return 'IncReg_Gadget(%s)' % (self.dest.name) + super(IncReg_Gadget, self).__str__()
 
 
 class CopyReg_Gadget(Gadget):  # dest = src

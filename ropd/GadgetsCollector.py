@@ -55,6 +55,12 @@ def checkLoadConstGadget(init_regs, init_stack, final_state, gadget):
                     result.append(LoadConst_Gadget(r, off*(Arch.ARCH_BITS/8), gadget))
     return result
 
+def checkSetZeroGadget(init_regs, init_stack, final_state, gadget):
+    result = []
+    for r in gadget.modified_regs:
+        if final_state[r] == 0:
+                result.append(SetZero_Gadget(r, gadget))
+    return result
 
 def checkCopyRegGadget(init_regs, init_stack, final_state, gadget):
     result = []
@@ -406,6 +412,8 @@ def do_analysis(g):
     if g.stack_fix < 4 or g.stack_fix > 0x1000:
         return []
     typed_gadgets += checkLoadConstGadget(
+        rv_pairs, rand_stack, final_values, g)
+    typed_gadgets += checkSetZeroGadget(
         rv_pairs, rand_stack, final_values, g)
     typed_gadgets += checkCopyRegGadget(
         rv_pairs, rand_stack, final_values, g)
