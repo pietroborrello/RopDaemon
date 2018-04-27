@@ -62,6 +62,13 @@ def checkSetZeroGadget(init_regs, init_stack, final_state, gadget):
                 result.append(SetZero_Gadget(r, gadget))
     return result
 
+def checkIncRegGadget(init_regs, init_stack, final_state, gadget):
+    result = []
+    for r in gadget.modified_regs:
+        if final_state[r] == compute_operation(init_regs[r], Operations.ADD, 1):
+                result.append(IncReg_Gadget(r, gadget))
+    return result
+
 def checkCopyRegGadget(init_regs, init_stack, final_state, gadget):
     result = []
     for r in gadget.modified_regs:
@@ -414,6 +421,8 @@ def do_analysis(g):
     typed_gadgets += checkLoadConstGadget(
         rv_pairs, rand_stack, final_values, g)
     typed_gadgets += checkSetZeroGadget(
+        rv_pairs, rand_stack, final_values, g)
+    typed_gadgets += checkIncRegGadget(
         rv_pairs, rand_stack, final_values, g)
     typed_gadgets += checkCopyRegGadget(
         rv_pairs, rand_stack, final_values, g)
