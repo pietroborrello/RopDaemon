@@ -87,11 +87,7 @@ class GadgetsPlayer(object):
                 print g.dump()
 
         loadable_regs = load_gadgets.copy()
-        for g in self.gadgets:
-            dest = g.__dict__.get('dest', 0)
-            if dest is Arch.Registers_a:
-                print g
-                print g.dump()
+        
 
 
 

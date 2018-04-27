@@ -235,13 +235,24 @@ def compute_mem_accesses(project, g, init_state, final_state):
         if a.addr.ast.symbolic and a.addr.ast.depth > 1:
             simple_accesses = False
         if a.addr.ast.concrete:
-            # check if can access fixed memory outside the stack
-            constraints = False
-            constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp >= (Arch.STACK_CELLS * (Arch.ARCH_BITS/8)))
-            constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp < 0)
-            if final_state.satisfiable(extra_constraints=[constraints]):
-                mem.add(Arch.UnknownType.unknown)
-                simple_accesses = False
+            if a.action == ANGR_READ:
+                # allow silently reads on the stack in a range [init.sp-Arch.STACK_CELLS, init.sp+Arch.STACK_CELLS], that anyway probably won't be useful
+                constraints = False
+                constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp > (Arch.STACK_CELLS * (Arch.ARCH_BITS/8)))
+                constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp < -(Arch.STACK_CELLS * (Arch.ARCH_BITS/8)))
+                if final_state.satisfiable(extra_constraints=[constraints]):
+                    mem.add(Arch.UnknownType.unknown)
+                    simple_accesses = False
+            elif a.action == ANGR_WRITE:
+                # check if may write fixed memory outside the reserved area for the gadget on the stack
+                constraints = False
+                # outside or on the ret address
+                constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp >= g.stack_fix - (Arch.ARCH_BITS/8))
+                # before init of the gadget
+                constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp < 0)
+                if final_state.satisfiable(extra_constraints=[constraints]):
+                    mem.add(Arch.UnknownType.unknown)
+                    simple_accesses = False
     return (frozenset(mem), simple_accesses)
 
 def do_verify(gad_list):
