@@ -17,6 +17,23 @@ md32 = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
 md32.detail = True
 
 
+def dump_op(op):
+    if op == Operations.ADD:
+        op = '+'
+    elif op == Operations.SUB:
+        op = '-'
+    elif op == Operations.MUL:
+        op = '*'
+    elif op == Operations.DIV:
+        op = '/'
+    elif op == Operations.XOR:
+        op = '^'
+    elif op == Operations.OR:
+        op = '|'
+    elif op == Operations.AND:
+        op = '&'
+    return op
+
 class Gadget(object):
     def __init__(self, hex, address=None, address_end=None, modified_regs=None, stack_fix=None, retn=None, arch=None, mem=None):
         self.hex = hex
@@ -71,6 +88,9 @@ class Gadget(object):
             ris += ("0x%x:\t%s\t%s\n" % (i.address, i.mnemonic, i.op_str))
         return ris
 
+    def param_str(self):
+        raise NotImplemented("Implement this method to dump parameters!")
+
 
 #GADGET TYPES
 '''
@@ -107,6 +127,9 @@ class LoadConst_Gadget(Gadget): # dest = const (at offset from esp)
     def __str__(self):
         return 'LoadConst_Gadget(%s, %s)' % (self.dest.name, hex(self.offset)) + super(LoadConst_Gadget, self).__str__()
 
+    def param_str(self):
+        return self.dest.name
+
 
 class SetZero_Gadget(Gadget): # dest = 0
     def __init__(self, dest, gadget):
@@ -117,6 +140,9 @@ class SetZero_Gadget(Gadget): # dest = 0
     def __str__(self):
         return 'SetZero_Gadget(%s)' % (self.dest.name) + super(SetZero_Gadget, self).__str__()
 
+    def param_str(self):
+        return self.dest.name
+
 
 class IncReg_Gadget(Gadget): # dest++
     def __init__(self, dest, gadget):
@@ -126,6 +152,9 @@ class IncReg_Gadget(Gadget): # dest++
 
     def __str__(self):
         return 'IncReg_Gadget(%s)' % (self.dest.name) + super(IncReg_Gadget, self).__str__()
+    
+    def param_str(self):
+        return self.dest.name
 
 
 class CopyReg_Gadget(Gadget):  # dest = src
@@ -137,6 +166,9 @@ class CopyReg_Gadget(Gadget):  # dest = src
 
     def __str__(self):
         return 'CopyReg_Gadget(%s, %s)' % (self.dest.name, self.src.name) + super(CopyReg_Gadget, self).__str__()
+
+    def param_str(self):
+        return self.dest.name + ' = ' + self.src.name
 
 class BinOp_Gadget(Gadget):  # dest = src1 OP src2
     def __init__(self, dest, src1, op, src2, gadget):
@@ -165,6 +197,9 @@ class BinOp_Gadget(Gadget):  # dest = src1 OP src2
             op = '&'
         return 'BinOp_Gadget(%s, %s, %s, %s)' % (self.dest.name, self.src1.name, op, self.src2.name) + super(BinOp_Gadget, self).__str__()
 
+    def param_str(self):
+        return self.dest.name + ' = ' + self.src1.name + ' ' + dump_op(self.op) + ' ' + self.src2.name
+
 class ReadMem_Gadget(Gadget):  # dest = [addr_reg + offset]
     def __init__(self, dest, addr_reg, offset, gadget):
         self.dest = dest
@@ -175,6 +210,9 @@ class ReadMem_Gadget(Gadget):  # dest = [addr_reg + offset]
 
     def __str__(self):
         return 'ReadMem_Gadget(%s = [%s + %s])' % (self.dest.name, self.addr_reg.name, hex(self.offset)) + super(ReadMem_Gadget, self).__str__()
+
+    def param_str(self):
+        return '%s = [%s + %s]' % (self.dest.name, self.addr_reg.name, hex(self.offset)) 
 
 
 class WriteMem_Gadget(Gadget):  # [addr_reg + offset] = src
@@ -187,6 +225,9 @@ class WriteMem_Gadget(Gadget):  # [addr_reg + offset] = src
 
     def __str__(self):
         return 'WriteMem_Gadget([%s + %s] = %s)' % (self.addr_reg.name, hex(self.offset), self.src.name) + super(WriteMem_Gadget, self).__str__()
+
+    def param_str(self):
+        return '[%s + %s] = %s' % (self.addr_reg.name, hex(self.offset), self.src.name) 
 
 
 class ReadMemOp_Gadget(Gadget):  # dest OP= [addr_reg + offset]
@@ -215,6 +256,9 @@ class ReadMemOp_Gadget(Gadget):  # dest OP= [addr_reg + offset]
             op = '&'
         return 'ReadMemOp_Gadget(%s %s= [%s + %s])' % (self.dest.name, op, self.addr_reg.name, hex(self.offset)) + super(ReadMemOp_Gadget, self).__str__()
 
+    def param_str(self):
+        return '%s %s= [%s + %s]' % (self.dest.name, dump_op(self.op), self.addr_reg.name, hex(self.offset)) 
+
 
 class WriteMemOp_Gadget(Gadget):  # [addr_reg + offset] OP= src
     def __init__(self, addr_reg, offset, op, src, gadget):
@@ -242,6 +286,9 @@ class WriteMemOp_Gadget(Gadget):  # [addr_reg + offset] OP= src
             op = '&'
         return 'WriteMemOp_Gadget([%s + %s] %s= %s)' % (self.addr_reg.name, hex(self.offset), op, self.src.name) + super(WriteMemOp_Gadget, self).__str__()
 
+    def param_str(self):
+        return '[%s + %s] %s= %s' % (self.addr_reg.name, hex(self.offset), dump_op(self.op), self.src.name) 
+
 #AH: = SF: ZF: xx: AF: xx: PF: 1: CF
 # xx - unknown
 # mask: 0xd5
@@ -253,6 +300,9 @@ class Lahf_Gadget(Gadget): #load FLAGS to AH
 
     def __str__(self):
         return 'Lahf_Gadget' + super(Lahf_Gadget, self).__str__()
+
+    def param_str(self):
+        return ''
 
 class OpEsp_Gadget(Gadget):  # esp=esp op reg
     def __init__(self, register, operation, gadget):
@@ -268,5 +318,8 @@ class OpEsp_Gadget(Gadget):  # esp=esp op reg
         elif op == Operations.SUB:
             op = '-'
         return 'OpEsp_Gadget(%s, %s)' % (op, self.register.name) + super(OpEsp_Gadget, self).__str__()
+
+    def param_str(self):
+        return 'SP = SP %s %s' % (dump_op(self.op), self.register.name) 
 
 

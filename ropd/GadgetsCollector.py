@@ -26,7 +26,7 @@ import logging
 ADDRESS = 0x1000000
 MAX_BYTES_PER_INSTR = 0xf
 HOOK_ERR_VAL = 0x1
-MAX_RETN = 0x10
+MAX_RETN = 0x20
 unsafe_classes = [X86_GRP_JUMP, X86_GRP_CALL, X86_GRP_INT]
 unsafe_ids = [X86_INS_IN, X86_INS_OUT]
 

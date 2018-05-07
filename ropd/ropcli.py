@@ -25,10 +25,12 @@ logging.getLogger('ana').setLevel(logging.CRITICAL)
 from GadgetsCollector import GadgetsCollector
 from GadgetsVerifier import GadgetsVerifier
 from GadgetsPlayer import GadgetsPlayer
+from Gadget import Gadget
 
 COLLECTED_EXTENSION = '.collected'
 VERIFIED_EXTENSION = '.verified'
 TEST_EXTENSION = '.test'
+JSON_EXTENSION = '.json'
 
 
 def collect(binary, do_print=False):
@@ -74,9 +76,9 @@ def dump_file(binary):
 
 
 def to_json(obj):
-    if isinstance(obj, Gadget.Gadget):
+    if isinstance(obj, Gadget):
         d = { 'type':obj.__class__.__name__[:obj.__class__.__name__.find('_Gadget')], 
-              'disasm':obj.disasm()}
+              'disasm':obj.disasm(), 'params':obj.param_str()}
         d.update(obj.__dict__)
         # convert bytearray to str
         d['hex'] = str(d['hex']).encode('hex')
@@ -91,13 +93,20 @@ def to_json(obj):
 def dump_json(binary):
     try:
         with open(binary + VERIFIED_EXTENSION, 'rb') as collected_file:
-            typed_gadgets = pickle.load(collected_file)
-            for g in typed_gadgets:
-                print json.dumps(g, default=to_json, ensure_ascii=False)
+            with open(binary + JSON_EXTENSION, 'wb') as json_file:
+                typed_gadgets = pickle.load(collected_file)
+                json_file.write('[')
+                for g in typed_gadgets[:-1]:
+                    json_file.write(json.dumps(g, default=to_json, ensure_ascii=False))
+                    json_file.write(',')
+                g = typed_gadgets[-1]
+                json_file.write(json.dumps(g, default=to_json, ensure_ascii=False))
+                json_file.write(']')
     except IOError as e:
         print 'ERROR: %s' % e
         print 'Did you collected and verified gadgets before?'
         return
+    print 'Json gadgets saved in', binary + JSON_EXTENSION
 
 def stats(binary):
     try:
