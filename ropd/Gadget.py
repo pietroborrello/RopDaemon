@@ -305,14 +305,14 @@ class Lahf_Gadget(Gadget): #load FLAGS to AH
         return ''
 
 class OpEsp_Gadget(Gadget):  # esp=esp op reg
-    def __init__(self, register, operation, gadget):
+    def __init__(self, register, op, gadget):
         self.register = register
-        self.operation = operation
+        self.op = op
         super(OpEsp_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch, gadget.mem)
 
     def __str__(self):
-        op = self.operation
+        op = self.op
         if op == Operations.ADD:
             op = '+'
         elif op == Operations.SUB:
@@ -320,11 +320,6 @@ class OpEsp_Gadget(Gadget):  # esp=esp op reg
         return 'OpEsp_Gadget(%s, %s)' % (op, self.register.name) + super(OpEsp_Gadget, self).__str__()
 
     def param_str(self):
-        op = self.operation
-        if op == Operations.ADD:
-            op = '+'
-        elif op == Operations.SUB:
-            op = '-'
-        return 'SP = SP %s %s' % (dump_op(op), self.register.name) 
+        return 'SP = SP %s %s' % (dump_op(self.op), self.register.name) 
 
 

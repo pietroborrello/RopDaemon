@@ -211,7 +211,7 @@ def verifyWriteMemOpGadget(project, g, init_state, final_state):
 
 def verifyOpEspGadget(project, g, init_state, final_state):
     return not final_state.satisfiable(extra_constraints=
-        [final_state.regs.sp != compute_operation(init_state.regs.sp + g.stack_fix, g.operation, init_state.registers.load(g.register.name))])
+        [final_state.regs.sp != compute_operation(init_state.regs.sp + g.stack_fix, g.op, init_state.registers.load(g.register.name))])
 
 # TODO: naive implementation, but it works quite efficiently
 def compute_mem_accesses(project, g, init_state, final_state):
