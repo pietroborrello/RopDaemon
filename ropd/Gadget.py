@@ -320,6 +320,11 @@ class OpEsp_Gadget(Gadget):  # esp=esp op reg
         return 'OpEsp_Gadget(%s, %s)' % (op, self.register.name) + super(OpEsp_Gadget, self).__str__()
 
     def param_str(self):
-        return 'SP = SP %s %s' % (dump_op(self.op), self.register.name) 
+        op = self.operation
+        if op == Operations.ADD:
+            op = '+'
+        elif op == Operations.SUB:
+            op = '-'
+        return 'SP = SP %s %s' % (dump_op(op), self.register.name) 
 
 
