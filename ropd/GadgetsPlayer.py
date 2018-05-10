@@ -19,7 +19,7 @@ import logging
 
 def select_best(gadget_list):
         """
-        Selects the bets gadget between semantically equivalent gadgets, based on dereferenced addresses, modified regs, and stack fix
+        Selects the best gadget between semantically equivalent gadgets, based on dereferenced addresses, modified regs, and stack fix
         """
         best = None
         min_mod = None
@@ -78,7 +78,7 @@ class GadgetsPlayer(object):
                 print g
                 print g.dump()
 
-        copy_gadgets = {(dest,src) : list(group) for ((dest,src),group) in groupby(filter(lambda x: isinstance(x, CopyReg_Gadget),self.gadgets), lambda g: (g.dest, g.src))}
+        copy_gadgets = {(dest,src) : list(group) for ((dest,src),group) in groupby(sorted(filter(lambda x: isinstance(x, CopyReg_Gadget),self.gadgets), key = lambda g: (g.dest.name, g.src.name)), lambda g: (g.dest, g.src))}
         copy_gadgets = {(dest,src) : select_best(copy_gadgets[(dest,src)]) for (dest,src) in copy_gadgets}
         for ((d,s), g) in copy_gadgets.items():
             if g is not None:

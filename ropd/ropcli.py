@@ -9,6 +9,7 @@ __email__ = "pietro.borrello95@gmail.com"
 import logging
 import json
 from enum import Enum
+from itertools import groupby
 
 import argparse
 import pickle
@@ -66,9 +67,11 @@ def dump_file(binary):
     try:
         with open(binary + VERIFIED_EXTENSION, 'rb') as collected_file:
             typed_gadgets = pickle.load(collected_file)
-            for g in sorted(typed_gadgets, key=lambda g: (len(g.mem[0]), len(g.modified_regs), g.stack_fix)):
-                print g
-                print g.dump()
+            for (_type,group) in groupby(sorted(typed_gadgets, key=lambda g: (g.__class__.__name__)), lambda g: (g.__class__.__name__)):
+                for g in sorted(group, key=lambda g: (len(g.mem[0]), len(g.modified_regs), g.stack_fix)):
+                    print g
+                    print g.dump()
+            
     except IOError as e:
         print 'ERROR: %s' % e
         print 'Did you collected and verified gadgets before?'
