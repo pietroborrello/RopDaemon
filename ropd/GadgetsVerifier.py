@@ -238,8 +238,9 @@ def compute_mem_accesses(project, g, init_state, final_state):
             if a.action == ANGR_READ:
                 # allow silently reads on the stack in a range [init.sp-Arch.STACK_CELLS, init.sp+Arch.STACK_CELLS], that anyway probably won't be useful
                 constraints = False
-                constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp > (Arch.STACK_CELLS * (Arch.ARCH_BITS/8)))
-                constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp < -(Arch.STACK_CELLS * (Arch.ARCH_BITS/8)))
+                constraints = claripy.Or(constraints, (a.addr.ast - init_state.regs.sp) > (Arch.STACK_CELLS * (Arch.ARCH_BITS/8)))
+                # Note: < and > are unsigned by default in claripy
+                constraints = claripy.Or(constraints, claripy.SLT(a.addr.ast - init_state.regs.sp, -(Arch.STACK_CELLS * (Arch.ARCH_BITS/8))))
                 if final_state.satisfiable(extra_constraints=[constraints]):
                     mem.add(Arch.UnknownType.unknown)
                     simple_accesses = False

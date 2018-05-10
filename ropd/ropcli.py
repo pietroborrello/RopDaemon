@@ -66,7 +66,7 @@ def dump_file(binary):
     try:
         with open(binary + VERIFIED_EXTENSION, 'rb') as collected_file:
             typed_gadgets = pickle.load(collected_file)
-            for g in typed_gadgets:
+            for g in sorted(typed_gadgets, key=lambda g: (len(g.mem[0]), len(g.modified_regs), g.stack_fix)):
                 print g
                 print g.dump()
     except IOError as e:

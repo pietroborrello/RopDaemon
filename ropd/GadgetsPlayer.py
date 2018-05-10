@@ -19,7 +19,7 @@ import logging
 
 def select_best(gadget_list):
         """
-        Selects the bets gadget between semantically equivalent gadgets, based on derefernced addresses, modified regs, and stack fix
+        Selects the bets gadget between semantically equivalent gadgets, based on dereferenced addresses, modified regs, and stack fix
         """
         best = None
         min_mod = None
