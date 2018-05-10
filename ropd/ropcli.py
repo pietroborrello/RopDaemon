@@ -99,10 +99,11 @@ def dump_json(binary):
             with open(binary + JSON_EXTENSION, 'wb') as json_file:
                 typed_gadgets = pickle.load(collected_file)
                 json_file.write('[')
-                for g in typed_gadgets[:-1]:
+                ordered_gadgets = list(sorted(typed_gadgets, key=lambda g: (g.__class__.__name__, len(g.mem[0]), len(g.modified_regs), g.stack_fix)))
+                for g in ordered_gadgets[:-1]:
                     json_file.write(json.dumps(g, default=to_json, ensure_ascii=False))
                     json_file.write(',')
-                g = typed_gadgets[-1]
+                g = ordered_gadgets[-1]
                 json_file.write(json.dumps(g, default=to_json, ensure_ascii=False))
                 json_file.write(']')
     except IOError as e:
