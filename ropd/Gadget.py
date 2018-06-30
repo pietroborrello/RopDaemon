@@ -141,7 +141,7 @@ class SetZero_Gadget(Gadget): # dest = 0
         return 'SetZero_Gadget(%s)' % (self.dest.name) + super(SetZero_Gadget, self).__str__()
 
     def param_str(self):
-        return self.dest.name
+        return self.dest.name + ' = 0'
 
 
 class IncReg_Gadget(Gadget): # dest++
@@ -154,7 +154,7 @@ class IncReg_Gadget(Gadget): # dest++
         return 'IncReg_Gadget(%s)' % (self.dest.name) + super(IncReg_Gadget, self).__str__()
     
     def param_str(self):
-        return self.dest.name
+        return self.dest.name + '++'
 
 
 class CopyReg_Gadget(Gadget):  # dest = src
@@ -302,7 +302,7 @@ class Lahf_Gadget(Gadget): #load FLAGS to AH
         return 'Lahf_Gadget' + super(Lahf_Gadget, self).__str__()
 
     def param_str(self):
-        return ''
+        return 'lahf'
 
 class OpEsp_Gadget(Gadget):  # esp=esp op reg
     def __init__(self, register, op, gadget):
