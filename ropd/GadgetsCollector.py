@@ -55,28 +55,28 @@ def checkLoadConstGadget(init_regs, init_stack, final_state, gadget):
                     result.append(LoadConst_Gadget(r, off*(Arch.ARCH_BITS/8), gadget))
     return result
 
-def checkSetZeroGadget(init_regs, init_stack, final_state, gadget):
+def checkClearRegGadget(init_regs, init_stack, final_state, gadget):
     result = []
     for r in gadget.modified_regs:
         if final_state[r] == 0:
-                result.append(SetZero_Gadget(r, gadget))
+                result.append(ClearReg_Gadget(r, gadget))
     return result
 
-def checkIncRegGadget(init_regs, init_stack, final_state, gadget):
+def checkUnOpGadget(init_regs, init_stack, final_state, gadget):
     result = []
     for r in gadget.modified_regs:
         if final_state[r] == compute_operation(init_regs[r], Operations.ADD, 1):
-                result.append(IncReg_Gadget(r, gadget))
+                result.append(UnOp_Gadget(r, gadget))
     return result
 
-def checkCopyRegGadget(init_regs, init_stack, final_state, gadget):
+def checkMovRegGadget(init_regs, init_stack, final_state, gadget):
     result = []
     for r in gadget.modified_regs:
         #inverse lookup by value
         for src in [key for key, value in init_regs.items()
                         if value == final_state[r]]:
             if final_state[src] == init_regs[src]:
-                result.append(CopyReg_Gadget(r, src, gadget))
+                result.append(MovReg_Gadget(r, src, gadget))
     return result
 
 def compute_operation(a, op, b):
@@ -305,7 +305,7 @@ def checkLahfGadget(flags_init, final_flags, final_state, gadget):
     return []
 
 
-def checkOpEspGadget(init_regs1, final_state1, init_regs2, final_state2, gadget):
+def checkStackPtrOpGadget(init_regs1, final_state1, init_regs2, final_state2, gadget):
     # diff := stack_fix +/- register
     diff1 = final_state1[Arch.Registers_sp] - init_regs1[Arch.Registers_sp]
     diff2 = final_state2[Arch.Registers_sp] - init_regs2[Arch.Registers_sp]
@@ -315,7 +315,7 @@ def checkOpEspGadget(init_regs1, final_state1, init_regs2, final_state2, gadget)
         stack_fix2 = compute_operation(diff2, Operations.SUB, init_regs2[r])
         if stack_fix1 == stack_fix2 and stack_fix1 + (Arch.ARCH_BITS / 8) > 0 and stack_fix1 + (Arch.ARCH_BITS / 8)< 0x1000:
             gadget.stack_fix = stack_fix1 + (Arch.ARCH_BITS / 8) + gadget.retn
-            return [OpEsp_Gadget(r, Operations.ADD, gadget)]
+            return [StackPtrOp_Gadget(r, Operations.ADD, gadget)]
 
     return []
 
@@ -414,17 +414,17 @@ def do_analysis(g):
     g.stack_fix = final_values[Arch.Registers_sp] - \
         sp_init + (Arch.ARCH_BITS / 8) + g.retn
     #also adjust stack fix as side effect
-    typed_gadgets += checkOpEspGadget(
+    typed_gadgets += checkStackPtrOpGadget(
         rv_pairs, final_values, rv_pairs2, final_values2, g)
     if g.stack_fix < 4 or g.stack_fix > 0x1000:
         return []
     typed_gadgets += checkLoadConstGadget(
         rv_pairs, rand_stack, final_values, g)
-    typed_gadgets += checkSetZeroGadget(
+    typed_gadgets += checkClearRegGadget(
         rv_pairs, rand_stack, final_values, g)
-    typed_gadgets += checkIncRegGadget(
+    typed_gadgets += checkUnOpGadget(
         rv_pairs, rand_stack, final_values, g)
-    typed_gadgets += checkCopyRegGadget(
+    typed_gadgets += checkMovRegGadget(
         rv_pairs, rand_stack, final_values, g)
     typed_gadgets += checkBinOpGadget(
         rv_pairs, rand_stack, final_values, g)

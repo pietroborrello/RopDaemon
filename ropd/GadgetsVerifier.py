@@ -104,7 +104,7 @@ def computeModReg(g, init_state, final_state):
             modified_regs.add(reg)
     return frozenset(modified_regs)
 
-def verifyCopyRegGadget(project, g, init_state, final_state):
+def verifyMovRegGadget(project, g, init_state, final_state):
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != init_state.registers.load(g.src.name)])
 
 def compute_operation(a, op, b):
@@ -131,10 +131,10 @@ def verifyLoadConstGadget(project, g, init_state, final_state):
     load_content = init_state.memory.load(init_state.regs.sp + g.offset, project.arch.bits / 8, endness=init_state.arch.memory_endness)
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != load_content]) 
 
-def verifySetZeroGadget(project, g, init_state, final_state):
+def verifyClearRegGadget(project, g, init_state, final_state):
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != 0]) 
 
-def verifyIncRegGadget(project, g, init_state, final_state):
+def verifyUnOpGadget(project, g, init_state, final_state):
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != init_state.registers.load(g.dest.name) + 1]) 
 
 def verifyLahfGadget(project, g, init_state, final_state):
@@ -209,7 +209,7 @@ def verifyWriteMemOpGadget(project, g, init_state, final_state):
             return True
     return False
 
-def verifyOpEspGadget(project, g, init_state, final_state):
+def verifyStackPtrOpGadget(project, g, init_state, final_state):
     return not final_state.satisfiable(extra_constraints=
         [final_state.regs.sp != compute_operation(init_state.regs.sp + g.stack_fix, g.op, init_state.registers.load(g.register.name))])
 
@@ -296,20 +296,20 @@ def do_verify(gad_list):
                 g.modified_regs = modified_regs
             # assign memory accesses analysys
             g.mem = mem
-            # maybe OpEsp_gadget
-            if type(g) is OpEsp_Gadget and verifyOpEspGadget(project, g, init_state, final_state):
+            # maybe StackPtrOp_gadget
+            if type(g) is StackPtrOp_Gadget and verifyStackPtrOpGadget(project, g, init_state, final_state):
                 # add esp to modified regs
                 #g.modified_regs.append(Arch.Registers_sp)
                 verified_gadgets.append(g)
             elif not verifyStackFix(g, init_state, final_state):
                 logging.debug('DISCARDED: wrong stack fix\n'+ str(g) + '\n' + g.dump())
-            if type(g) is CopyReg_Gadget and verifyCopyRegGadget(project, g, init_state, final_state):
+            if type(g) is MovReg_Gadget and verifyMovRegGadget(project, g, init_state, final_state):
                 verified_gadgets.append(g)
             elif type(g) is LoadConst_Gadget and verifyLoadConstGadget(project, g, init_state, final_state):
                 verified_gadgets.append(g)
-            elif type(g) is SetZero_Gadget and verifySetZeroGadget(project, g, init_state, final_state):
+            elif type(g) is ClearReg_Gadget and verifyClearRegGadget(project, g, init_state, final_state):
                 verified_gadgets.append(g)
-            elif type(g) is IncReg_Gadget and verifyIncRegGadget(project, g, init_state, final_state):
+            elif type(g) is UnOp_Gadget and verifyUnOpGadget(project, g, init_state, final_state):
                 verified_gadgets.append(g)
             elif type(g) is BinOp_Gadget and verifyBinOpGadget(project, g, init_state, final_state):
                 verified_gadgets.append(g)
@@ -323,7 +323,7 @@ def do_verify(gad_list):
                 verified_gadgets.append(g)
             elif type(g) is Lahf_Gadget and verifyLahfGadget(project, g, init_state, final_state):
                 verified_gadgets.append(g)
-            elif type(g) is OpEsp_Gadget:
+            elif type(g) is StackPtrOp_Gadget:
                 # just checked, but avoid logging
                 continue
             else:

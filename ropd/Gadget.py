@@ -98,20 +98,20 @@ type reg = EAX | EBX | ECX | EDX | ESI | EDI | EBP | ESP
 type op = ADD | SUB | MUL | DIV | XOR | OR | AND
 type gadget =  
             | LoadConst of reg * int (* reg, stack offset *)
-            | CopyReg of reg * reg (* dst reg = src reg *)
+            | MovReg of reg * reg (* dst reg = src reg *)
             | BinOp of reg * reg * op * reg (* dst reg = src1 OP src2 *)
             | ReadMem of reg * reg * int32 (* dst = [addr_reg + offset] *)
             | WriteMem of reg * int32 * reg (* [addr_reg + offset] = src *)
             | ReadMemOp of reg * op * reg * int32 (* dst OP= [addr_reg + offset] *)
             | WriteMemOp of reg * int32 * op * reg (* [addr_reg + offset] OP= src_reg *)
             | Lahf 
-            | OpEsp of op * reg * int (* esp = esp op reg, where op=+/-, sf =
+            | StackPtrOp of op * reg * int (* esp = esp op reg, where op=+/-, sf =
                 stack_fix *)
                 '''
 
 Operations = Enum('Operations', 'ADD SUB MUL DIV XOR OR AND')
 Types = Enum(
-    'Types', 'LoadConst SetZero IncReg CopyReg  BinOp ReadMem WriteMem ReadMemOp WriteMemOp Lahf OpEsp')
+    'Types', 'LoadConst ClearReg UnOp MovReg  BinOp ReadMem WriteMem ReadMemOp WriteMemOp Lahf StackPtrOp')
 
 def hex(s):
     return '0x' + format(s, 'x')
@@ -131,41 +131,41 @@ class LoadConst_Gadget(Gadget): # dest = const (at offset from esp)
         return self.dest.name
 
 
-class SetZero_Gadget(Gadget): # dest = 0
+class ClearReg_Gadget(Gadget): # dest = 0
     def __init__(self, dest, gadget):
         self.dest = dest
-        super(SetZero_Gadget, self).__init__(gadget.hex, gadget.address,
+        super(ClearReg_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch, gadget.mem)
 
     def __str__(self):
-        return 'SetZero_Gadget(%s)' % (self.dest.name) + super(SetZero_Gadget, self).__str__()
+        return 'ClearReg_Gadget(%s)' % (self.dest.name) + super(ClearReg_Gadget, self).__str__()
 
     def param_str(self):
         return self.dest.name + ' = 0'
 
 
-class IncReg_Gadget(Gadget): # dest++
+class UnOp_Gadget(Gadget): # dest++
     def __init__(self, dest, gadget):
         self.dest = dest
-        super(IncReg_Gadget, self).__init__(gadget.hex, gadget.address,
+        super(UnOp_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch, gadget.mem)
 
     def __str__(self):
-        return 'IncReg_Gadget(%s)' % (self.dest.name) + super(IncReg_Gadget, self).__str__()
+        return 'UnOp_Gadget(%s)' % (self.dest.name) + super(UnOp_Gadget, self).__str__()
     
     def param_str(self):
-        return self.dest.name + '++'
+        return self.dest.name + '+= 1'
 
 
-class CopyReg_Gadget(Gadget):  # dest = src
+class MovReg_Gadget(Gadget):  # dest = src
     def __init__(self, dest, src, gadget):
         self.dest = dest
         self.src = src
-        super(CopyReg_Gadget, self).__init__(gadget.hex, gadget.address,
+        super(MovReg_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch, gadget.mem)
 
     def __str__(self):
-        return 'CopyReg_Gadget(%s, %s)' % (self.dest.name, self.src.name) + super(CopyReg_Gadget, self).__str__()
+        return 'MovReg_Gadget(%s, %s)' % (self.dest.name, self.src.name) + super(MovReg_Gadget, self).__str__()
 
     def param_str(self):
         return self.dest.name + ' = ' + self.src.name
@@ -304,11 +304,11 @@ class Lahf_Gadget(Gadget): #load FLAGS to AH
     def param_str(self):
         return 'lahf'
 
-class OpEsp_Gadget(Gadget):  # esp=esp op reg
+class StackPtrOp_Gadget(Gadget):  # esp=esp op reg
     def __init__(self, register, op, gadget):
         self.register = register
         self.op = op
-        super(OpEsp_Gadget, self).__init__(gadget.hex, gadget.address,
+        super(StackPtrOp_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch, gadget.mem)
 
     def __str__(self):
@@ -317,9 +317,20 @@ class OpEsp_Gadget(Gadget):  # esp=esp op reg
             op = '+'
         elif op == Operations.SUB:
             op = '-'
-        return 'OpEsp_Gadget(%s, %s)' % (op, self.register.name) + super(OpEsp_Gadget, self).__str__()
+        return 'StackPtrOp_Gadget(%s, %s)' % (op, self.register.name) + super(StackPtrOp_Gadget, self).__str__()
 
     def param_str(self):
         return 'SP = SP %s %s' % (dump_op(self.op), self.register.name) 
 
+
+class Other_Gadget(Gadget): 
+    def __init__(self, gadget):
+        super(Other_Gadget, self).__init__(gadget.hex, gadget.address,
+                                          gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch, gadget.mem)
+
+    def __str__(self):
+        return 'Other_Gadget' + super(Other_Gadget, self).__str__()
+
+    def param_str(self):
+        return 'syscall'
 
