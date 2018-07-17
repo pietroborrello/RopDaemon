@@ -280,8 +280,11 @@ def do_verify(gad_list):
             logging.debug('DISCARDED: unsupported instructions\n' + first_g.dump())
             return []
         if len(succ) == 0:
-            logging.debug('DISCARDED: not a valid gadget\n' + first_g.dump())
-            return []
+            if type(first_g) is not Other_Gadget: # syscall ending
+                logging.debug('DISCARDED: not a valid gadget\n' + first_g.dump())
+                return []
+            else:
+                succ = project.factory.successors(init_state).successors
         final_state = succ[0]
         modified_regs = None
         if not verifyModReg(first_g, init_state, final_state):
@@ -322,6 +325,8 @@ def do_verify(gad_list):
             elif type(g) is WriteMemOp_Gadget and verifyWriteMemOpGadget(project, g, init_state, final_state):
                 verified_gadgets.append(g)
             elif type(g) is Lahf_Gadget and verifyLahfGadget(project, g, init_state, final_state):
+                verified_gadgets.append(g)
+            elif type(g) is Other_Gadget: # no need to verify
                 verified_gadgets.append(g)
             elif type(g) is StackPtrOp_Gadget:
                 # just checked, but avoid logging

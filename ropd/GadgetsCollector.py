@@ -28,6 +28,7 @@ MAX_BYTES_PER_INSTR = 0xf
 HOOK_ERR_VAL = 0x1
 MAX_RETN = 0x20
 unsafe_classes = [X86_GRP_JUMP, X86_GRP_CALL, X86_GRP_INT]
+sys_unsafe_classes = [X86_GRP_JUMP, X86_GRP_CALL]
 unsafe_ids = [X86_INS_IN, X86_INS_OUT]
 
 FLAGS_MASK = 0xd5
@@ -40,6 +41,18 @@ def filter_unsafe(gadgets):
         unsafe = False
         for i in Arch.md.disasm(g.hex, g.address):
             if any(x in i.groups for x in unsafe_classes) or i.id in unsafe_ids:
+                unsafe = True
+        if not unsafe:
+            safe_gadgets.append(g)
+    return safe_gadgets
+
+
+def sys_filter_unsafe(gadgets):
+    safe_gadgets = []
+    for g in gadgets:
+        unsafe = False
+        for i in Arch.md.disasm(g.hex, g.address):
+            if any(x in i.groups for x in sys_unsafe_classes) or i.id in unsafe_ids:
                 unsafe = True
         if not unsafe:
             safe_gadgets.append(g)
@@ -315,7 +328,10 @@ def checkStackPtrOpGadget(init_regs1, final_state1, init_regs2, final_state2, ga
         stack_fix2 = compute_operation(diff2, Operations.SUB, init_regs2[r])
         if stack_fix1 == stack_fix2 and stack_fix1 + (Arch.ARCH_BITS / 8) > 0 and stack_fix1 + (Arch.ARCH_BITS / 8)< 0x1000:
             gadget.stack_fix = stack_fix1 + (Arch.ARCH_BITS / 8) + gadget.retn
-            return [StackPtrOp_Gadget(r, Operations.ADD, gadget)]
+
+            # avoid interleave of other (syscall) gadgets with stack ptr gadgets
+            if type(gadget) is not Other_Gadget:
+                return [StackPtrOp_Gadget(r, Operations.ADD, gadget)]
 
     return []
 
@@ -418,6 +434,11 @@ def do_analysis(g):
         rv_pairs, final_values, rv_pairs2, final_values2, g)
     if g.stack_fix < 4 or g.stack_fix > 0x1000:
         return []
+
+    # if other (syscall) gadget don't perform type analysis
+    if type(g) is Other_Gadget:
+        return [g]
+
     typed_gadgets += checkLoadConstGadget(
         rv_pairs, rand_stack, final_values, g)
     typed_gadgets += checkClearRegGadget(
@@ -478,9 +499,39 @@ class GadgetsCollector(object):
             return filter_unsafe(gadgets)
         else:
             return gadgets
+
+    def sys_collect(self, do_filter_unsafe=True):
+        # add syscall gadgets
+        options = {'color': False,     # if gadgets are printed, use colored output: default: False
+                   'badbytes': '',   # bad bytes which should not be in addresses or ropchains; default: ''
+                   'all': False,      # Show all gadgets, this means to not remove double gadgets; default: False
+                   'inst_count': 6,   # Number of instructions in a gadget; default: 6
+                   'type': 'sys',     # rop, jop, sys, all; default: all
+                   'detailed': True}  # if gadgets are printed, use detailed output; default: False
+
+        rs = RopperService(options)
+        rs.addFile(self._filename)
+        rs.loadGadgetsFor(name=self._filename)
+        ropper_gadgets = rs.getFileFor(name=self._filename).gadgets
+
+        gadgets = []
+        for g in ropper_gadgets:
+            address = g._lines[0][0] + g.imageBase
+            address_end = g._lines[-1][0] + g.imageBase
+            hex_bytes = g._bytes
+
+            _g = Gadget(str(hex_bytes), address=address,
+                        address_end=address_end, retn=0, modified_regs=[], arch=Arch.ARCH_BITS)
+            gadgets.append(Other_Gadget(_g))
+        if do_filter_unsafe:
+            return sys_filter_unsafe(gadgets)
+        else:
+            return gadgets
     
     def analyze(self):
         safe_gadgets = self.collect(do_filter_unsafe=True)
+        safe_gadgets += self.sys_collect(do_filter_unsafe=True)
+
         print 'Analyzing...'
         logging.info("Starting Analysis phase")
         typed_gadgets = []
