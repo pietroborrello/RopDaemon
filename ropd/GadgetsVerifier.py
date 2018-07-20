@@ -335,7 +335,7 @@ def do_verify(gad_list):
                 logging.debug('DISCARDED:\n' + str(g) + '\n' + g.dump())
         return verified_gadgets
     except Exception as e:
-        print e
+        logging.error(e)
         return []
 
 class GadgetsVerifier(object):
