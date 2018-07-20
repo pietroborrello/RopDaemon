@@ -136,7 +136,7 @@ class ClearReg_Gadget(Gadget): # dest = 0
         self.dest = dest
         super(ClearReg_Gadget, self).__init__(gadget.hex, gadget.address,
                                                gadget.address_end, gadget.modified_regs, gadget.stack_fix, gadget.retn, gadget.arch, gadget.mem)
-
+ 
     def __str__(self):
         return 'ClearReg_Gadget(%s)' % (self.dest.name) + super(ClearReg_Gadget, self).__str__()
 
@@ -154,7 +154,7 @@ class UnOp_Gadget(Gadget): # dest++
         return 'UnOp_Gadget(%s)' % (self.dest.name) + super(UnOp_Gadget, self).__str__()
     
     def param_str(self):
-        return self.dest.name + '+= 1'
+        return self.dest.name + ' += 1'
 
 
 class MovReg_Gadget(Gadget):  # dest = src
