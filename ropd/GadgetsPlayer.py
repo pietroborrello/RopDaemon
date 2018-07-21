@@ -59,15 +59,25 @@ class GadgetsPlayer(object):
         self.all_load_gadgets = []
         self.best_load_gadgets = []
         self.indipendent_load_gadgets = []
+        self.load_kernels = {}
+        self.write_kernel = None
+        self.kernels = []
+        self.writable_address = 0x4000000
         self.register_values = {'rax': 0x3b,
-                                'rdi': 0x4000000, 'rsi': 0x0, 'rdx': 0x0, 'rbx':0x11}
+                                'rdi': self.writable_address, 'rsi': 0x0, 'rdx': 0x0, 'rbx': 0x11}
+        
         # assuming all gadget of the same type
         if len(self.gadgets):
             Arch.init(self.gadgets[0].arch)
+        for reg in Arch.Registers:
+            if reg.name not in self.register_values:
+                self.register_values[reg.name] = None
 
     def play(self):
-        self.compute_load_sequence()
-        self.compute_kernels()
+        self.find_load_gadgets()
+        self.compute_load_kernels()
+        #self.compute_chain()
+        self.compute_write_kernels()
 
 
     def stats(self):
@@ -85,14 +95,13 @@ class GadgetsPlayer(object):
             print '*', t.__name__, "%.2f" % (subtotals[t]/float(total) * 100) + '%'
 
 
-    def compute_kernels(self):
+    def compute_load_kernels(self):
         kernels = {}
         for reg in self.indipendent_load_gadgets:
-            if reg.name in self.register_values:
-                kernels[reg] = ChainKernel([GadgetBox(self.indipendent_load_gadgets[reg], value=self.register_values[reg.name])])
+            kernels[reg] = ChainKernel([GadgetBox(self.indipendent_load_gadgets[reg], value=self.register_values[reg.name])])
         
         missing_regs = [
-            reg for reg in self.register_values if Arch.Registers[reg] not in kernels.keys()]
+            reg for reg in Arch.Registers if reg not in kernels.keys()]
 
         found_one = True
         while found_one:
@@ -100,22 +109,69 @@ class GadgetsPlayer(object):
             for reg in missing_regs:
                 best_guess = (sorted(filter(lambda g: set(g.mem[0]).issubset(
                     set(kernels.keys())), 
-                    self.all_load_gadgets[Arch.Registers[reg]]), key=gadget_quality)+[None])[0]
+                    self.all_load_gadgets[reg]), key=gadget_quality)+[None])[0]
 
                 if best_guess: 
                     if len(best_guess.mem[0])==1:
                         k = kernels[list(best_guess.mem[0])[0]].copy()
-                        k.gadget_boxes[-1].value = 0x4000000
-                        k.add(best_guess, value=self.register_values[reg])
-                        kernels[Arch.Registers[reg]] = k
+                        k.gadget_boxes[-1].value = self.writable_address
+                        k.add(best_guess, value=self.register_values[reg.name])
+                        kernels[reg] = k
 
                         found_one = True
 
             missing_regs = [
-                reg for reg in self.register_values if Arch.Registers[reg] not in kernels.keys()]
-        print '[+] found best guesses'
+                reg for reg in Arch.Registers if reg not in kernels.keys()]
+            
+        print '[+] found best guesses for:'
+        for k in kernels: 
+            print k.name
+
+        self.kernels += kernels.values()
+        self.load_kernels = kernels
+
+
+    def compute_write_kernels(self):
+        best_write_gadget = (sorted(filter(lambda g: isinstance(g, WriteMem_Gadget) and set([g.addr_reg, g.src]).issubset(
+            set(self.load_kernels.keys())),
+            self.gadgets), key=gadget_quality) + [None])[0]
+
+        if best_write_gadget:
+            if len(best_write_gadget.mem[0]) == 1:
+                k1 = self.load_kernels[best_write_gadget.addr_reg].copy()
+                k1.gadget_boxes[-1].value = self.writable_address
+
+                k2 = self.load_kernels[best_write_gadget.src].copy()
+                # hex(pwn.u64('/bin/sh\x00'))
+                k2.gadget_boxes[-1].value = 0x68732f6e69622f
+
+                k = ChainKernel([GadgetBox(
+                    best_write_gadget, value=None)])
+
+                chain = Chain([k1,k2,k])
+                print chain.dump()
+                
+                tmp_values = {best_write_gadget.addr_reg: self.writable_address,
+                              best_write_gadget.src: 0x68732f6e69622f}
+                for reg in Arch.Registers:
+                    tmp_values[reg.name] = None
+
+                if chain.evaluate() != tmp_values:
+                    chain = Chain([k2, k1, k])
+                if chain.evaluate() != tmp_values:
+                    print '[-] Unable to find write memory gadget'
+                    return
+
+                self.write_kernel = ChainKernel(chain.gadget_boxes)
+                #kernels += k
+
+        print self.write_kernel.dump()
+
+
+
+    def compute_chain(self):
         print '[+] computing sequence'
-        kernels_list = kernels.values()
+        kernels_list = self.kernels
 
         while True:
             random.shuffle(kernels_list)
@@ -126,11 +182,7 @@ class GadgetsPlayer(object):
                 break
             
 
-            
-
-
-    
-    def compute_load_sequence(self):
+    def find_load_gadgets(self):
         all_load_gadgets = {reg: sorted(filter(lambda x: isinstance(x, LoadConst_Gadget) and x.dest is reg, self.gadgets), key=gadget_quality ) for reg in Arch.Registers}
 
         best_load_gadgets = {reg : (all_load_gadgets[reg]+[None])[0] for reg in all_load_gadgets}

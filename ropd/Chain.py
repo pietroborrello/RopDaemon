@@ -12,6 +12,8 @@ from ChainKernel import ChainKernel
 
 
 def hex(s):
+    if s is None:
+        return '0x0'
     return '0x' + format(s, 'x')
 
 class Chain(object):
@@ -22,7 +24,7 @@ class Chain(object):
             self.gadget_boxes += kernel.gadget_boxes
 
     def deduplicate(self):
-        set_registers = {}
+        set_registers = {reg.name: None for reg in Arch.Registers}
         _simple_boxes = []
         for box in self.gadget_boxes:
             try:
@@ -55,7 +57,7 @@ class Chain(object):
         return ris
 
     def evaluate(self):
-        set_registers = {}
+        set_registers = {reg.name: None for reg in Arch.Registers }
         for box in self.gadget_boxes:
             for reg in box.gadget.modified_regs:
                 set_registers[reg.name] = None
