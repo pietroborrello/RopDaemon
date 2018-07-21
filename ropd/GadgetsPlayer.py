@@ -12,8 +12,8 @@ from itertools import permutations, combinations, groupby
 from tqdm import *
 from Gadget import Gadget, Operations, Types
 from Gadget import *
-from ChainKernel import ChainKernel
-from Chain import Chain
+from RopChainKernel import RopChainKernel
+from RopChain import RopChain
 from GadgetBox import GadgetBox
 import Arch
 import networkx as nx
@@ -64,9 +64,9 @@ class GadgetsPlayer(object):
         self.kernels = []
         self.chain = None
         self.writable_address = 0x4000000
-        #self.register_values = {'rax': 0x3b,'rdi': self.writable_address, 'rsi': 0x0, 'rdx': 0x0}
+        self.register_values = {'rax': 0x3b,'rdi': self.writable_address, 'rsi': 0x0, 'rdx': 0x0}
 
-        self.register_values = {'eax': 0xb,'ebx': self.writable_address, 'ecx': 0x0, 'edx': 0x0}
+        #self.register_values = {'eax': 0xb,'ebx': self.writable_address, 'ecx': 0x0, 'edx': 0x0}
         
         # assuming all gadget of the same type
         if len(self.gadgets):
@@ -107,7 +107,7 @@ class GadgetsPlayer(object):
     def compute_load_kernels(self):
         kernels = {}
         for reg in self.indipendent_load_gadgets:
-            kernels[reg] = ChainKernel([GadgetBox(self.indipendent_load_gadgets[reg], value=self.register_values[reg.name])])
+            kernels[reg] = RopChainKernel([GadgetBox(self.indipendent_load_gadgets[reg], value=self.register_values[reg.name])])
         
         missing_regs = [
             reg for reg in Arch.Registers if reg not in kernels.keys()]
@@ -129,7 +129,7 @@ class GadgetsPlayer(object):
 
                         found_one = True
                     elif len(best_guess.mem[0])==0:
-                        kernels[reg] = ChainKernel([GadgetBox(
+                        kernels[reg] = RopChainKernel([GadgetBox(
                             best_guess, value=self.register_values[reg.name])])
 
 
@@ -158,26 +158,26 @@ class GadgetsPlayer(object):
 
                 k2 = self.load_kernels[best_write_gadget.src].copy()
                 # hex(pwn.u64('/bin/sh\x00'))
-                k2.gadget_boxes[-1].value = 0x6e69622f#0x68732f6e69622f
+                k2.gadget_boxes[-1].value = 0x68732f6e69622f
 
-                k = ChainKernel([GadgetBox(
+                k = RopChainKernel([GadgetBox(
                     best_write_gadget, value=None)])
 
-                chain = Chain([k1,k2,k])
+                chain = RopChain([k1,k2,k])
                 
                 tmp_values = {best_write_gadget.addr_reg.name: self.writable_address,
-                              best_write_gadget.src.name: 0x6e69622f}#0x68732f6e69622f}
+                              best_write_gadget.src.name: 0x68732f6e69622f}
                 for reg in Arch.Registers:
                     if reg.name not in tmp_values:
                         tmp_values[reg.name] = None
 
                 if chain.evaluate() != tmp_values:
-                    chain = Chain([k2, k1, k])
+                    chain = RopChain([k2, k1, k])
                 if chain.evaluate() != tmp_values:
                     print '[-] Unable to find write memory gadget'
                     return
 
-                self.write_kernel = ChainKernel(chain.gadget_boxes)
+                self.write_kernel = RopChainKernel(chain.gadget_boxes)
 
         self.kernels.append(self.write_kernel)
 
@@ -189,7 +189,7 @@ class GadgetsPlayer(object):
 
         while True:
             random.shuffle(kernels_list)
-            chain = Chain(kernels_list)
+            chain = RopChain(kernels_list)
             chain.deduplicate()
             _register_values = chain.evaluate()
             
@@ -206,8 +206,8 @@ class GadgetsPlayer(object):
             
 
     def find_load_gadgets(self):
-        all_load_gadgets = {reg: sorted(filter(lambda x: isinstance(x, LoadConst_Gadget) and x.dest is reg, self.gadgets), key=gadget_quality ) for reg in Arch.Registers}
 
+        all_load_gadgets = {reg: sorted(filter(lambda x: isinstance(x, LoadConst_Gadget) and x.dest is reg, self.gadgets), key=gadget_quality ) for reg in Arch.Registers}
         best_load_gadgets = {reg : (all_load_gadgets[reg]+[None])[0] for reg in all_load_gadgets}
 
         # print '---- BEST GUESS ----'
@@ -237,7 +237,7 @@ class GadgetsPlayer(object):
 
         copy_gadgets = {(dest,src) : (sorted (copy_gadgets[(dest,src)], key=gadget_quality)+[None])[0] for (dest,src) in copy_gadgets}
         
-        kernels = {reg: ChainKernel()
+        kernels = {reg: RopChainKernel()
                    for reg in indipendent_regs}'''
 
 

@@ -11,7 +11,7 @@ import Arch
 from GadgetBox import GadgetBox
 
 
-class ChainKernel(object):
+class RopChainKernel(object):
     def __init__(self, gadget_boxes = []):
         self.gadget_boxes  = gadget_boxes
 
@@ -22,7 +22,7 @@ class ChainKernel(object):
         return ris
 
     def copy(self):
-        ris = ChainKernel([GadgetBox(box.gadget, value=box.value) for box in self.gadget_boxes])
+        ris = RopChainKernel([GadgetBox(box.gadget, value=box.value) for box in self.gadget_boxes])
         return ris
     
     def add(self, gadget, value=None):

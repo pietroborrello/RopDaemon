@@ -8,7 +8,7 @@ __email__ = "pietro.borrello95@gmail.com"
 from binascii import unhexlify, hexlify
 from enum import Enum
 import Arch
-from ChainKernel import ChainKernel
+from RopChainKernel import RopChainKernel
 from GadgetBox import GadgetBox
 
 
@@ -17,7 +17,7 @@ def hex(s):
         return '0x0'
     return '0x' + format(s, 'x')
 
-class Chain(object):
+class RopChain(object):
     def __init__(self, kernels=[]):
         self.gadget_boxes = []
         self.set_registers = {}

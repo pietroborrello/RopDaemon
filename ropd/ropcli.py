@@ -27,7 +27,7 @@ from GadgetsCollector import GadgetsCollector
 from GadgetsVerifier import GadgetsVerifier
 from GadgetsPlayer import GadgetsPlayer
 from GadgetBox import GadgetBox
-from ChainKernel import ChainKernel
+from RopChainKernel import RopChainKernel
 from Gadget import Gadget
 
 COLLECTED_EXTENSION = '.collected'
