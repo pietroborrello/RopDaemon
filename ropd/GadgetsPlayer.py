@@ -197,7 +197,7 @@ class GadgetsPlayer(object):
             if(reg in self.register_values and _register_values[reg] != self.register_values[reg]):
                 bad = True
         if bad:
-            print 'AAAAAAAAAAAAAH! Dario cosa dici'
+            raise Exception('AAAAAAAAAAAAAH!')
         self.chain = chain
         return
         '''
