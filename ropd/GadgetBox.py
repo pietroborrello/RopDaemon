@@ -10,13 +10,13 @@ from enum import Enum
 import Arch
 
 class GadgetBox(object):
-    def __init__(self, gadgets=[]):
-        self.gadgets = gadgets
+    def __init__(self, gadget, value=None):
+        self.gadget = gadget
+        self.value = value
 
     def dump(self):
-        for g in self.gadgets:
-            print g
-            print g.dump()
+        return 'Using: ' + str(self.value)+ '\n' + self.gadget.dump()
+
 
     def __eq__(self, other):
         return type(self) == type(other) and self.__dict__ == other.__dict__
