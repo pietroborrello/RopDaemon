@@ -48,7 +48,7 @@ def select_best(gadget_list):
 
 def gadget_quality(g):
         return ('unknown' in g.mem[0],
-                len(g.mem[0]), len(g.modified_regs), g.stack_fix)
+                len(g.mem[0]), len(g.modified_regs), g.stack_fix, (g.address_end - g.address))
 
 
 
@@ -62,9 +62,11 @@ class GadgetsPlayer(object):
         self.load_kernels = {}
         self.write_kernel = None
         self.kernels = []
+        self.chain = None
         self.writable_address = 0x4000000
-        self.register_values = {'rax': 0x3b,
-                                'rdi': self.writable_address, 'rsi': 0x0, 'rdx': 0x0, 'rbx': 0x11}
+        #self.register_values = {'rax': 0x3b,'rdi': self.writable_address, 'rsi': 0x0, 'rdx': 0x0}
+
+        self.register_values = {'eax': 0xb,'ebx': self.writable_address, 'ecx': 0x0, 'edx': 0x0}
         
         # assuming all gadget of the same type
         if len(self.gadgets):
@@ -76,8 +78,15 @@ class GadgetsPlayer(object):
     def play(self):
         self.find_load_gadgets()
         self.compute_load_kernels()
-        #self.compute_chain()
         self.compute_write_kernels()
+
+        syscall_gadget = (sorted(filter(lambda g: isinstance(g, Other_Gadget),  self.gadgets), key=gadget_quality) + [None])[0]
+
+        self.compute_chain()
+
+        if self.chain:
+            self.chain.add(syscall_gadget)
+            print self.chain.dump()
 
 
     def stats(self):
@@ -119,6 +128,10 @@ class GadgetsPlayer(object):
                         kernels[reg] = k
 
                         found_one = True
+                    elif len(best_guess.mem[0])==0:
+                        kernels[reg] = ChainKernel([GadgetBox(
+                            best_guess, value=self.register_values[reg.name])])
+
 
             missing_regs = [
                 reg for reg in Arch.Registers if reg not in kernels.keys()]
@@ -127,7 +140,9 @@ class GadgetsPlayer(object):
         for k in kernels: 
             print k.name
 
-        self.kernels += kernels.values()
+        self.kernels += [kernels[reg]
+                         for reg in kernels if self.register_values[reg.name] is not None]
+        kernels.values()
         self.load_kernels = kernels
 
 
@@ -143,18 +158,18 @@ class GadgetsPlayer(object):
 
                 k2 = self.load_kernels[best_write_gadget.src].copy()
                 # hex(pwn.u64('/bin/sh\x00'))
-                k2.gadget_boxes[-1].value = 0x68732f6e69622f
+                k2.gadget_boxes[-1].value = 0x6e69622f#0x68732f6e69622f
 
                 k = ChainKernel([GadgetBox(
                     best_write_gadget, value=None)])
 
                 chain = Chain([k1,k2,k])
-                print chain.dump()
                 
-                tmp_values = {best_write_gadget.addr_reg: self.writable_address,
-                              best_write_gadget.src: 0x68732f6e69622f}
+                tmp_values = {best_write_gadget.addr_reg.name: self.writable_address,
+                              best_write_gadget.src.name: 0x6e69622f}#0x68732f6e69622f}
                 for reg in Arch.Registers:
-                    tmp_values[reg.name] = None
+                    if reg.name not in tmp_values:
+                        tmp_values[reg.name] = None
 
                 if chain.evaluate() != tmp_values:
                     chain = Chain([k2, k1, k])
@@ -163,9 +178,8 @@ class GadgetsPlayer(object):
                     return
 
                 self.write_kernel = ChainKernel(chain.gadget_boxes)
-                #kernels += k
 
-        print self.write_kernel.dump()
+        self.kernels.append(self.write_kernel)
 
 
 
@@ -177,9 +191,19 @@ class GadgetsPlayer(object):
             random.shuffle(kernels_list)
             chain = Chain(kernels_list)
             chain.deduplicate()
-            if(chain.evaluate() == self.register_values):
-                print chain.dump()
-                break
+            _register_values = chain.evaluate()
+            
+            bad = False
+            for reg in _register_values:
+                if(_register_values[reg] != self.register_values[reg] and self.register_values[reg] is not None):
+                    bad = True
+            if bad: 
+                print _register_values
+                continue
+            
+            #print chain.dump()
+            self.chain = chain
+            break
             
 
     def find_load_gadgets(self):

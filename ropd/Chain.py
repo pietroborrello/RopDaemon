@@ -9,6 +9,7 @@ from binascii import unhexlify, hexlify
 from enum import Enum
 import Arch
 from ChainKernel import ChainKernel
+from GadgetBox import GadgetBox
 
 
 def hex(s):
@@ -67,8 +68,6 @@ class Chain(object):
                 pass
         return set_registers
             
-
-
     def add(self, gadget, value=None):
         self.gadget_boxes.append(GadgetBox(gadget, value=value))
 
