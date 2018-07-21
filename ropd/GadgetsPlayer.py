@@ -167,13 +167,10 @@ class GadgetsPlayer(object):
                 
                 tmp_values = {best_write_gadget.addr_reg.name: self.writable_address,
                               best_write_gadget.src.name: 0x68732f6e69622f}
-                for reg in Arch.Registers:
-                    if reg.name not in tmp_values:
-                        tmp_values[reg.name] = None
-
-                if chain.evaluate() != tmp_values:
+                
+                if all(value != tmp_values[reg] for (reg, value) in chain.evaluate().items() if reg in tmp_values):
                     chain = RopChain([k2, k1, k])
-                if chain.evaluate() != tmp_values:
+                if all(value != tmp_values[reg] for (reg, value) in chain.evaluate().items() if reg in tmp_values):
                     print '[-] Unable to find write memory gadget'
                     return
 
@@ -186,6 +183,11 @@ class GadgetsPlayer(object):
     def compute_chain(self):
         print '[+] computing sequence'
         kernels_list = self.kernels
+
+        kernel_graph = nx.DiGraph()
+        kernel_graph.add_nodes_from([kernel.dest() for kernel in kernels_list])
+        for kernel in kernels_list:
+            kernel_graph.add_edges_from([(kernel.dest(), mod_reg) for mod_reg in kernel.modified_regs if kernel.dest() != mod_reg])
 
         while True:
             random.shuffle(kernels_list)

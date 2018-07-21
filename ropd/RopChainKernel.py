@@ -14,6 +14,15 @@ from GadgetBox import GadgetBox
 class RopChainKernel(object):
     def __init__(self, gadget_boxes = []):
         self.gadget_boxes  = gadget_boxes
+        self.modified_regs = set()
+        for box in gadget_boxes:
+            self.modified_regs.update(box.gadget.modified_regs)
+
+    def dest(self):
+        try:
+            return self.gadget_boxes[-1].gadget.dest
+        except:
+            return None
 
     def dump(self):
         ris = ''
@@ -27,6 +36,7 @@ class RopChainKernel(object):
     
     def add(self, gadget, value=None):
         self.gadget_boxes.append(GadgetBox(gadget, value=value))
+        self.modified_regs.update(gadget.modified_regs)
 
     def __eq__(self, other):
         return type(self) == type(other) and self.__dict__ == other.__dict__
