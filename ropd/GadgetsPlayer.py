@@ -71,9 +71,6 @@ class GadgetsPlayer(object):
         # assuming all gadget of the same type
         if len(self.gadgets):
             Arch.init(self.gadgets[0].arch)
-        for reg in Arch.Registers:
-            if reg.name not in self.register_values:
-                self.register_values[reg.name] = None
 
     def play(self):
         self.find_load_gadgets()
@@ -107,7 +104,7 @@ class GadgetsPlayer(object):
     def compute_load_kernels(self):
         kernels = {}
         for reg in self.indipendent_load_gadgets:
-            kernels[reg] = RopChainKernel([GadgetBox(self.indipendent_load_gadgets[reg], value=self.register_values[reg.name])])
+            kernels[reg] = RopChainKernel([GadgetBox(self.indipendent_load_gadgets[reg], value=self.register_values.get(reg.name, None))])
         
         missing_regs = [
             reg for reg in Arch.Registers if reg not in kernels.keys()]
@@ -124,7 +121,7 @@ class GadgetsPlayer(object):
                     if len(best_guess.mem[0])==1:
                         k = kernels[list(best_guess.mem[0])[0]].copy()
                         k.gadget_boxes[-1].value = self.writable_address
-                        k.add(best_guess, value=self.register_values[reg.name])
+                        k.add(best_guess, value=self.register_values.get(reg.name, None))
                         kernels[reg] = k
 
                         found_one = True
@@ -141,7 +138,7 @@ class GadgetsPlayer(object):
             print k.name
 
         self.kernels += [kernels[reg]
-                         for reg in kernels if self.register_values[reg.name] is not None]
+                         for reg in kernels if reg.name in self.register_values]
         kernels.values()
         self.load_kernels = kernels
 
@@ -182,29 +179,44 @@ class GadgetsPlayer(object):
 
     def compute_chain(self):
         print '[+] computing sequence'
-        kernels_list = self.kernels
-
+        kernels_list = [kernel for (
+            reg, kernel) in self.load_kernels.items() if reg.name in self.register_values]
+        
         kernel_graph = nx.DiGraph()
         kernel_graph.add_nodes_from([kernel.dest() for kernel in kernels_list])
         for kernel in kernels_list:
             kernel_graph.add_edges_from([(kernel.dest(), mod_reg) for mod_reg in kernel.modified_regs if kernel.dest() != mod_reg])
 
+        chain_list = list(nx.topological_sort(kernel_graph))
+        chain = RopChain([self.write_kernel]+kernels_list)
+        chain.simplify()
+
+        bad = False
+        _register_values = chain.evaluate()
+        for reg in _register_values:
+            if(reg in self.register_values and _register_values[reg] != self.register_values[reg]):
+                bad = True
+        if bad:
+            print 'AAAAAAAAAAAAAH! Dario cosa dici'
+        self.chain = chain
+        return
+        '''
         while True:
             random.shuffle(kernels_list)
             chain = RopChain(kernels_list)
-            chain.deduplicate()
+            chain.simplify()
             _register_values = chain.evaluate()
             
             bad = False
             for reg in _register_values:
-                if(_register_values[reg] != self.register_values[reg] and self.register_values[reg] is not None):
-                    bad = True
+                if(reg in self.register_values and _register_values[reg] != self.register_values[reg]):
+                bad = True
             if bad: 
                 continue
             
             #print chain.dump()
             self.chain = chain
-            break
+            break'''
             
 
     def find_load_gadgets(self):

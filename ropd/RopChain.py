@@ -24,7 +24,7 @@ class RopChain(object):
         for kernel in kernels:
             self.gadget_boxes += kernel.gadget_boxes
 
-    def deduplicate(self):
+    def simplify(self):
         set_registers = {reg.name: None for reg in Arch.Registers}
         _simple_boxes = []
         for box in self.gadget_boxes:

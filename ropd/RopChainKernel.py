@@ -22,7 +22,7 @@ class RopChainKernel(object):
         try:
             return self.gadget_boxes[-1].gadget.dest
         except:
-            return None
+            return "WriteMem"
 
     def dump(self):
         ris = ''
