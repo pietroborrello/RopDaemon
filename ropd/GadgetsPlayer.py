@@ -198,7 +198,6 @@ class GadgetsPlayer(object):
                 if(_register_values[reg] != self.register_values[reg] and self.register_values[reg] is not None):
                     bad = True
             if bad: 
-                print _register_values
                 continue
             
             #print chain.dump()
