@@ -45,9 +45,16 @@ class RopChain(object):
         #print self.dump()
         self.gadget_boxes = _simple_boxes
 
-    def dump(self):
+    def dump(self, dump_values=True):
         ris = ''
-        ris += "# setting to " + str(self.evaluate()) + '\n'
+        if dump_values:
+            values = self.evaluate()
+            ris += "# setting to\n"
+            for reg in Arch.Registers:
+                ris += '# ' + (reg.name + ':').ljust(5, ' ') + \
+                    (hex(values[reg.name]) if values[reg.name] is not None else '?') + '\n'
+            ris += '\n'
+
         ris += "IMAGE_BASE =  0x0\n"
         ris += "rebase = lambda x : p" + str(Arch.ARCH_BITS) + "(x + IMAGE_BASE)\n\n"
         ris += "rop = ''"
