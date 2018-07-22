@@ -24,7 +24,6 @@ import logging
 # TODO's:
 # 1: distinguish between int 0x80 and syscall in Others
 # 2: check memory offset accesses not to be outside writable interval
-# 3: possibly search for "syscall;ret;" instead of "syscall;"
 
 def select_best(gadget_list):
         """
@@ -114,8 +113,7 @@ class GadgetsPlayer(object):
     def setup_execve(self):
         self.bin_sh_address = self.writable_interval[1] - (Arch.ARCH_BITS / 8)
 
-        self.register_values = {
-            'rax': 0x3b, 'rdi': self.bin_sh_address, 'rsi': 0x0, 'rdx': 0x0, 'r15':0x0}
+        self.register_values = {'rax': 0x3b, 'rdi': self.bin_sh_address, 'rsi': 0x0, 'rdx': 0x0, 'r15':0x0}
         #self.register_values = {'eax': 0xb,'ebx': self.bin_sh_address, 'ecx': 0x0, 'edx': 0x0}
 
 
@@ -234,8 +232,11 @@ class GadgetsPlayer(object):
         kernel_graph.add_nodes_from([kernel.dest() for kernel in kernels_list])
         for kernel in kernels_list:
             kernel_graph.add_edges_from([(kernel.dest(), mod_reg) for mod_reg in kernel.modified_regs if kernel.dest() != mod_reg])
+        try:
+            chain_list = list(nx.topological_sort(kernel_graph))
+        except nx.exception.NetworkXUnfeasible:
+            raise Exception('Unable to combine found gadgets')
 
-        chain_list = list(nx.topological_sort(kernel_graph))
         chain = RopChain([self.write_kernel]+kernels_list)
         chain.simplify()
 
