@@ -83,6 +83,9 @@ class GadgetsPlayer(object):
 
         self.find_load_gadgets()
         self.compute_load_kernels()
+        # in unable to set some registers
+        if set(self.register_values.keys()) - set([reg.name for reg in self.load_kernels]):
+            raise Exception('Unable to set requested registers')
         self.compute_write_kernels()
 
         syscall_gadget = (sorted(filter(lambda g: isinstance(g, Other_Gadget),  self.gadgets), key=gadget_quality) + [None])[0]
@@ -112,7 +115,7 @@ class GadgetsPlayer(object):
         self.bin_sh_address = self.writable_interval[1] - (Arch.ARCH_BITS / 8)
 
         self.register_values = {
-            'rax': 0x3b, 'rdi': self.bin_sh_address, 'rsi': 0x0, 'rdx': 0x0}
+            'rax': 0x3b, 'rdi': self.bin_sh_address, 'rsi': 0x0, 'rdx': 0x0, 'r15':0x0}
         #self.register_values = {'eax': 0xb,'ebx': self.bin_sh_address, 'ecx': 0x0, 'edx': 0x0}
 
 
@@ -208,10 +211,15 @@ class GadgetsPlayer(object):
                 if all(value != tmp_values[reg] for (reg, value) in chain.evaluate().items() if reg in tmp_values):
                     chain = RopChain([k2, k1, k])
                 if all(value != tmp_values[reg] for (reg, value) in chain.evaluate().items() if reg in tmp_values):
-                    print '[-] Unable to find write memory gadget'
+                    print '[-] Unable to find write memory gadget, setting registers aniway'
                     return
 
                 self.write_kernel = RopChainKernel(chain.gadget_boxes)
+            print '[-] [TODO] Unable to find a simple write memory gadget, setting registers aniway'
+            return
+        else:
+            print '[-] Unable to find write memory gadget, setting registers aniway'
+            return
 
         self.kernels.append(self.write_kernel)
 
