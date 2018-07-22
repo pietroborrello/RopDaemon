@@ -268,6 +268,7 @@ def do_verify(gad_list):
         first_g = gad_list[0]
         init_state = generic_state.copy()
         init_state.regs.ip = first_g.address
+        init_state.options.add(angr.options.BYPASS_UNSUPPORTED_SYSCALL)
         # since ends with ret it will have unconstrained successors
         try:
             succ = project.factory.successors(init_state).unconstrained_successors
@@ -284,7 +285,14 @@ def do_verify(gad_list):
                 logging.debug('DISCARDED: not a valid gadget\n' + first_g.dump())
                 return []
             else:
-                succ = project.factory.successors(init_state).successors
+                # WHY? don't know why necessary 2 steps to bypass syscall
+                succ = project.factory.successors(init_state).flat_successors[0]
+                succ = project.factory.successors(succ).flat_successors[0]
+                succ = project.factory.successors(succ).unconstrained_successors
+                if len(succ) == 0:
+                    logging.debug(
+                        'DISCARDED: not a valid Other_Gadget\n' + first_g.dump())
+                    return []
         final_state = succ[0]
         modified_regs = None
         if not verifyModReg(first_g, init_state, final_state):

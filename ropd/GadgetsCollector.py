@@ -39,14 +39,20 @@ def filter_unsafe(gadgets):
     safe_gadgets = []
     for g in gadgets:
         unsafe = False
+        syscall = False
         for i in Arch.md.disasm(g.hex, g.address):
-            if any(x in i.groups for x in unsafe_classes) or i.id in unsafe_ids:
+            if any(x in i.groups for x in sys_unsafe_classes) or i.id in unsafe_ids:
                 unsafe = True
+            if X86_GRP_INT in i.groups:
+                syscall = True
         if not unsafe:
-            safe_gadgets.append(g)
+            if not syscall:
+                safe_gadgets.append(g)
+            else:
+                safe_gadgets.append(Other_Gadget(g))
     return safe_gadgets
 
-
+#Unused
 def sys_filter_unsafe(gadgets):
     safe_gadgets = []
     for g in gadgets:
@@ -500,6 +506,7 @@ class GadgetsCollector(object):
         else:
             return gadgets
 
+    #Unused
     def sys_collect(self, do_filter_unsafe=True):
         # add syscall gadgets
         options = {'color': False,     # if gadgets are printed, use colored output: default: False
@@ -530,7 +537,6 @@ class GadgetsCollector(object):
     
     def analyze(self):
         safe_gadgets = self.collect(do_filter_unsafe=True)
-        safe_gadgets += self.sys_collect(do_filter_unsafe=True)
 
         print 'Analyzing...'
         logging.info("Starting Analysis phase")
