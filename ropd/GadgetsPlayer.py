@@ -190,7 +190,8 @@ class GadgetsPlayer(object):
         if best_write_gadget:
             if len(best_write_gadget.mem[0]) == 1:
                 k1 = self.load_kernels[best_write_gadget.addr_reg].copy()
-                k1.gadget_boxes[-1].value = self.bin_sh_address
+                k1.gadget_boxes[-1].value = (self.bin_sh_address -
+                                             k1.gadget_boxes[-1].gadget.offset) & Arch.MAX_INT
 
                 k2 = self.load_kernels[best_write_gadget.src].copy()
                 # hex(pwn.u64('/bin/sh\x00'))
