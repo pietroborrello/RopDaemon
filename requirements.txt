@@ -5,3 +5,4 @@ unicorn
 tqdm
 ipdb
 angr
+lief
