@@ -12,7 +12,7 @@ from GadgetBox import GadgetBox
 
 
 class RopChainKernel(object):
-    def __init__(self, gadget_boxes = []):
+    def __init__(self, gadget_boxes):
         self.gadget_boxes  = gadget_boxes
         self.modified_regs = set()
         for box in gadget_boxes:

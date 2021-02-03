@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 __author__ = "Pietro Borrello"
 __copyright__ = "Copyright 2018, ROPD Project"
@@ -41,10 +41,10 @@ def collect(binary, do_print=False):
     typed_gadgets = gadgets_collector.analyze()
     if do_print:
         for g in typed_gadgets:
-            print g
+            print (g)
     with open(binary + COLLECTED_EXTENSION, 'wb') as collected_file:
         pickle.dump(typed_gadgets, collected_file)
-    print 'Collected gadgets saved in', binary + COLLECTED_EXTENSION
+    print ('Collected gadgets saved in', binary + COLLECTED_EXTENSION)
     return typed_gadgets
 
 def verify(binary, do_print=False):
@@ -52,17 +52,17 @@ def verify(binary, do_print=False):
         with open(binary + COLLECTED_EXTENSION, 'rb') as collected_file:
             typed_gadgets = pickle.load(collected_file)
     except IOError as e:
-        print 'ERROR: %s' % e
-        print 'Did you collected gadget before verification?'
+        print ('ERROR: %s' % e)
+        print ('Did you collected gadget before verification?')
         return
     gadgets_verifier = GadgetsVerifier(binary, typed_gadgets)
     verified_gadgets = gadgets_verifier.verify()
     if do_print:
         for g in verified_gadgets:
-            print g
+            print (g)
     with open(binary + VERIFIED_EXTENSION, 'wb') as collected_file:
         pickle.dump(verified_gadgets, collected_file)
-    print 'Verified gadgets saved in', binary + VERIFIED_EXTENSION
+    print ('Verified gadgets saved in', binary + VERIFIED_EXTENSION)
     return verified_gadgets
 
 def dump_file(binary):
@@ -71,12 +71,12 @@ def dump_file(binary):
             typed_gadgets = pickle.load(collected_file)
             for (_type,group) in groupby(sorted(typed_gadgets, key=lambda g: (g.__class__.__name__)), lambda g: (g.__class__.__name__)):
                 for g in sorted(group, key=lambda g: (len(g.mem[0]), len(g.modified_regs), g.stack_fix)):
-                    print g
-                    print g.dump()
+                    print (g)
+                    print (g.dump())
             
     except IOError as e:
-        print 'ERROR: %s' % e
-        print 'Did you collected and verified gadgets before?'
+        print ('ERROR: %s' % e)
+        print ('Did you collected and verified gadgets before?')
         return
 
 
@@ -86,7 +86,7 @@ def to_json(obj):
               'disasm':obj.disasm(), 'params':obj.param_str()}
         d.update(obj.__dict__)
         # convert bytearray to str
-        d['hex'] = str(d['hex']).encode('hex')
+        d['hex'] = d['hex'].hex()
         return d
     if isinstance(obj, frozenset):
         return list(obj)
@@ -98,7 +98,7 @@ def to_json(obj):
 def dump_json(binary):
     try:
         with open(binary + VERIFIED_EXTENSION, 'rb') as collected_file:
-            with open(binary + JSON_EXTENSION, 'wb') as json_file:
+            with open(binary + JSON_EXTENSION, 'w') as json_file:
                 typed_gadgets = pickle.load(collected_file)
                 json_file.write('[')
                 ordered_gadgets = list(sorted(typed_gadgets, key=lambda g: (g.__class__.__name__, 'unknown' in g.mem[0], len(g.mem[0]), len(g.modified_regs), g.stack_fix)))
@@ -109,10 +109,10 @@ def dump_json(binary):
                 json_file.write(json.dumps(g, default=to_json, ensure_ascii=False))
                 json_file.write(']')
     except IOError as e:
-        print 'ERROR: %s' % e
-        print 'Did you collected and verified gadgets before?'
+        print ('ERROR: %s' % e)
+        print ('Did you collected and verified gadgets before?')
         return
-    print 'Json gadgets saved in', binary + JSON_EXTENSION
+    print ('Json gadgets saved in', binary + JSON_EXTENSION)
 
 def stats(binary):
     try:
@@ -121,8 +121,8 @@ def stats(binary):
             gadgets_player = GadgetsPlayer(binary, gadgets)
             gadgets_player.stats()
     except IOError as e:
-        print 'ERROR: %s' % e
-        print 'Did you collected and verified gadgets before?'
+        print ('ERROR: %s' % e)
+        print ('Did you collected and verified gadgets before?')
         return
 
 def play(binary):
@@ -132,8 +132,8 @@ def play(binary):
             gadgets_player = GadgetsPlayer(binary, gadgets)
             gadgets_player.play()
     except IOError as e:
-        print 'ERROR: %s' % e
-        print 'Did you collected and verified gadgets before?'
+        print ('ERROR: %s' % e)
+        print ('Did you collected and verified gadgets before?')
         return
             
     
@@ -146,15 +146,15 @@ def diff(binary):
             l2 = verify(binary)
             for l in l1:
                 if l not in l2:
-                    print '[+]', l
-                    print l.dump()
+                    print ('[+]', l)
+                    print (l.dump())
             for l in l2:
                 if l not in l1:
-                    print '[-]', l
-                    print l.dump()
+                    print ('[-]', l)
+                    print (l.dump())
     except IOError as e:
-        print 'ERROR: %s' % e
-        print 'You need to have something to compute the delta from! Try to collect and verify gadgets first'
+        print ('ERROR: %s' % e)
+        print ('You need to have something to compute the delta from! Try to collect and verify gadgets first')
         return
                         
 
@@ -165,7 +165,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="This is RopCLI")
     
-    parser.add_argument( '-a', '--architecture', help="Specify architecture (x86 or x86-64)", default="x86")
+    # parser.add_argument( '-a', '--architecture', help="Specify architecture (x86 or x86-64)", default="x86")
     
     parser.add_argument('binary', help="Input binary", default=None)
 
@@ -181,7 +181,7 @@ def main():
 
     parser.add_argument('--stats', help="statistics about verified gadgets", action="store_true")
 
-    parser.add_argument('--diff', help="compute another gadget verification and diff with the actual version [AND OVVERRIDE CURRENT VERSION]", action="store_true")
+    # parser.add_argument('--diff', help="compute another gadget verification and diff with the actual version [AND OVVERRIDE CURRENT VERSION]", action="store_true")
 
     args = parser.parse_args()
     logging.info('Starting analysis of %s', args.binary)
@@ -200,8 +200,8 @@ def main():
     if args.stats:
         stats(args.binary)
 
-    if args.diff:
-        diff(args.binary)
+    # if args.diff:
+    #     diff(args.binary)
 
     if args.play:
         play(args.binary)

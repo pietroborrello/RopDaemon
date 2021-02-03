@@ -42,14 +42,14 @@ class RopChain(object):
                 set_registers[box.gadget.dest.name] = box.value
             except AttributeError:
                 pass
-        #print self.dump()
+        #print (self.dump())
         self.gadget_boxes = _simple_boxes
 
     def dump(self, dump_values=True):
         ris = ''
         if dump_values:
             values = self.evaluate()
-            ris += "# setting to\n"
+            ris += "# values after the chain:\n"
             for reg in Arch.Registers:
                 ris += '# ' + (reg.name + ':').ljust(5, ' ') + \
                     (hex(values[reg.name]) if values[reg.name] is not None else '?') + '\n'
@@ -59,8 +59,8 @@ class RopChain(object):
         ris += "rebase = lambda x : p" + str(Arch.ARCH_BITS) + "(x + IMAGE_BASE)\n\n"
         ris += "rop = ''"
         for box in self.gadget_boxes:
-            ris += "\nrop += rebase(" + hex(box.gadget.address)+ ") #" + box.gadget.disasm()
-            for i in range(Arch.ARCH_BITS / 8, box.gadget.stack_fix, Arch.ARCH_BITS / 8):
+            ris += "\nrop += rebase(" + hex(box.gadget.address)+ ") # " + box.gadget.disasm()
+            for i in range(Arch.ARCH_BITS // 8, box.gadget.stack_fix, Arch.ARCH_BITS // 8):
                 ris += "\nrop += p" + str(Arch.ARCH_BITS) + "(" + hex(box.value) + ")"
         return ris
 

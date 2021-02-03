@@ -128,7 +128,7 @@ def verifyBinOpGadget(project, g, init_state, final_state):
         [final_state.registers.load(g.dest.name) != compute_operation(init_state.registers.load(g.src1.name), g.op, init_state.registers.load(g.src2.name))])
 
 def verifyLoadConstGadget(project, g, init_state, final_state):
-    load_content = init_state.memory.load(init_state.regs.sp + g.offset, project.arch.bits / 8, endness=init_state.arch.memory_endness)
+    load_content = init_state.memory.load(init_state.regs.sp + g.offset, project.arch.bits // 8, endness=init_state.arch.memory_endness)
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != load_content]) 
 
 def verifyClearRegGadget(project, g, init_state, final_state):
@@ -144,7 +144,7 @@ def verifyLahfGadget(project, g, init_state, final_state):
 
 def verifyReadMemGadget(project, g, init_state, final_state):
     # if fully symboloc memory
-    '''mem_content = init_state.memory.load(init_state.registers.load(g.addr_reg.name) + g.offset, project.arch.bits / 8, endness=init_state.arch.memory_endness)
+    '''mem_content = init_state.memory.load(init_state.registers.load(g.addr_reg.name) + g.offset, project.arch.bits // 8, endness=init_state.arch.memory_endness)
     return not final_state.satisfiable(extra_constraints=[final_state.registers.load(g.dest.name) != mem_content])'''
     for a in final_state.history.filter_actions(read_from=ANGR_MEM):
         # check if it is the read action responsible of the read
@@ -238,9 +238,9 @@ def compute_mem_accesses(project, g, init_state, final_state):
             if a.action == ANGR_READ:
                 # allow silently reads on the stack in a range [init.sp-Arch.STACK_CELLS, init.sp+Arch.STACK_CELLS], that anyway probably won't be useful
                 constraints = False
-                constraints = claripy.Or(constraints, (a.addr.ast - init_state.regs.sp) > (Arch.STACK_CELLS * (Arch.ARCH_BITS/8)))
+                constraints = claripy.Or(constraints, (a.addr.ast - init_state.regs.sp) > (Arch.STACK_CELLS * (Arch.ARCH_BITS//8)))
                 # Note: < and > are unsigned by default in claripy
-                constraints = claripy.Or(constraints, claripy.SLT(a.addr.ast - init_state.regs.sp, -(Arch.STACK_CELLS * (Arch.ARCH_BITS/8))))
+                constraints = claripy.Or(constraints, claripy.SLT(a.addr.ast - init_state.regs.sp, -(Arch.STACK_CELLS * (Arch.ARCH_BITS//8))))
                 if final_state.satisfiable(extra_constraints=[constraints]):
                     mem.add(Arch.UnknownType.unknown)
                     simple_accesses = False
@@ -248,7 +248,7 @@ def compute_mem_accesses(project, g, init_state, final_state):
                 # check if may write fixed memory outside the reserved area for the gadget on the stack
                 constraints = False
                 # outside or on the ret address
-                constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp >= g.stack_fix - (Arch.ARCH_BITS/8))
+                constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp >= g.stack_fix - (Arch.ARCH_BITS//8))
                 # before init of the gadget
                 constraints = claripy.Or(constraints, a.addr.ast - init_state.regs.sp < 0)
                 if final_state.satisfiable(extra_constraints=[constraints]):
@@ -354,7 +354,7 @@ class GadgetsVerifier(object):
     def verify(self):
         project = angr.Project(self.filename, load_options={'main_opts': {'custom_base_addr': 0}})
         
-        print 'Verifying...'
+        print ('Verifying...')
         logging.info("Starting Verification phase")
         gadgets = {}
         verified_num = 0
@@ -372,6 +372,6 @@ class GadgetsVerifier(object):
         pool.close()
         pool.join()
 
-        print 'Found %d different verified gadgets' % len(verified_gadgets)
+        print ('Found %d different verified gadgets' % len(verified_gadgets))
         logging.info('Found %d different verified gadgets', len(verified_gadgets))
         return verified_gadgets
