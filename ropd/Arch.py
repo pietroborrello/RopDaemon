@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 __author__ = "Pietro Borrello"
-__copyright__ = "Copyright 2018, ROPD Project"
+__copyright__ = "Copyright 2021, ROPD Project"
 __license__ = "BSD 2-clause"
 __email__ = "pietro.borrello95@gmail.com"
 

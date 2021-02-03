@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 __author__ = "Pietro Borrello"
-__copyright__ = "Copyright 2018, ROPD Project"
+__copyright__ = "Copyright 2021, ROPD Project"
 __license__ = "BSD 2-clause"
 __email__ = "pietro.borrello95@gmail.com"
 
@@ -23,12 +23,12 @@ logging.getLogger('pyvex').setLevel(logging.CRITICAL)
 logging.getLogger('ana').setLevel(logging.CRITICAL)
 
 
-from GadgetsCollector import GadgetsCollector
-from GadgetsVerifier import GadgetsVerifier
-from GadgetsPlayer import GadgetsPlayer
-from GadgetBox import GadgetBox
-from RopChainKernel import RopChainKernel
-from Gadget import Gadget
+from .GadgetsCollector import GadgetsCollector
+from .GadgetsVerifier import GadgetsVerifier
+from .GadgetsCombiner import GadgetsCombiner
+from .GadgetBox import GadgetBox
+from .RopChainKernel import RopChainKernel
+from .Gadget import Gadget
 
 COLLECTED_EXTENSION = '.collected'
 VERIFIED_EXTENSION = '.verified'
@@ -118,19 +118,19 @@ def stats(binary):
     try:
         with open(binary + VERIFIED_EXTENSION, 'rb') as collected_file:
             gadgets = pickle.load(collected_file)
-            gadgets_player = GadgetsPlayer(binary, gadgets)
-            gadgets_player.stats()
+            gadgets_combiner = GadgetsCombiner(binary, gadgets)
+            gadgets_combiner.stats()
     except IOError as e:
         print ('ERROR: %s' % e)
         print ('Did you collected and verified gadgets before?')
         return
 
-def play(binary):
+def execve(binary):
     try:
         with open(binary + VERIFIED_EXTENSION, 'rb') as collected_file:
             gadgets = pickle.load(collected_file)
-            gadgets_player = GadgetsPlayer(binary, gadgets)
-            gadgets_player.play()
+            gadgets_combiner = GadgetsCombiner(binary, gadgets)
+            gadgets_combiner.execve()
     except IOError as e:
         print ('ERROR: %s' % e)
         print ('Did you collected and verified gadgets before?')
@@ -156,24 +156,21 @@ def diff(binary):
         print ('ERROR: %s' % e)
         print ('You need to have something to compute the delta from! Try to collect and verify gadgets first')
         return
-                        
 
-
-            
 
 def main():
     parser = argparse.ArgumentParser(
-        description="This is RopCLI")
+        description="This is RopDaemon, a fast rop-gadget compiler")
     
     # parser.add_argument( '-a', '--architecture', help="Specify architecture (x86 or x86-64)", default="x86")
     
-    parser.add_argument('binary', help="Input binary", default=None)
+    parser.add_argument('binary', help="input binary", default=None)
 
     parser.add_argument('-c', "--collect", help="collect and categorize gadgets", action="store_true")
 
     parser.add_argument('-v', "--verify", help="formally verify collected gadgets", action="store_true")
 
-    parser.add_argument('-p', "--play", help="perform some analysis on verified gadgets", action="store_true")
+    parser.add_argument('-e', "--execve", help="generate a ropchain to perform an execve(\"/bin/sh\") syscall", action="store_true")
 
     parser.add_argument( '-d', '--dump', help="dump gadgets file to a readable format", action="store_true")
 
@@ -203,8 +200,8 @@ def main():
     # if args.diff:
     #     diff(args.binary)
 
-    if args.play:
-        play(args.binary)
+    if args.execve:
+        execve(args.binary)
     
     
 

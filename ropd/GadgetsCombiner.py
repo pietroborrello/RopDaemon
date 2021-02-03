@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 __author__ = "Pietro Borrello"
-__copyright__ = "Copyright 2018, ROPD Project"
+__copyright__ = "Copyright 2021, ROPD Project"
 __license__ = "BSD 2-clause"
 __email__ = "pietro.borrello95@gmail.com"
 
@@ -10,12 +10,12 @@ import random
 from struct import pack, unpack
 from itertools import permutations, combinations, groupby
 from tqdm import *
-from Gadget import Gadget, Operations, Types
-from Gadget import *
-from RopChainKernel import RopChainKernel
-from RopChain import RopChain
-from GadgetBox import GadgetBox
-import Arch
+from .Gadget import Gadget, Operations, Types
+from .Gadget import *
+from .RopChainKernel import RopChainKernel
+from .RopChain import RopChain
+from .GadgetBox import GadgetBox
+from . import Arch
 import networkx as nx
 import lief
 import sys
@@ -57,7 +57,7 @@ def gadget_quality(g):
 
 
 
-class GadgetsPlayer(object):
+class GadgetsCombiner(object):
     def __init__(self, filename, gadgets):
         self.filename =  filename
         self.gadgets = gadgets
@@ -76,7 +76,7 @@ class GadgetsPlayer(object):
         if len(self.gadgets):
             Arch.init(self.gadgets[0].arch)
 
-    def play(self):
+    def execve(self):
         self.find_writable_interval()
         self.setup_execve()
 

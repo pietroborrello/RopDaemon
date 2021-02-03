@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 __author__ = "Pietro Borrello"
-__copyright__ = "Copyright 2018, ROPD Project"
+__copyright__ = "Copyright 2021, ROPD Project"
 __license__ = "BSD 2-clause"
 __email__ = "pietro.borrello95@gmail.com"
 
@@ -12,13 +12,13 @@ from itertools import permutations, combinations, chain
 from functools import partial
 from multiprocessing import Pool
 from tqdm import *
-from Gadget import Gadget, Operations, Types
-from Gadget import *
-import Arch 
+from .Gadget import Gadget, Operations, Types
+from .Gadget import *
+from . import Arch
 import angr
 import sys
 import claripy
-from GadgetsCollector import FLAGS_MASK
+from .GadgetsCollector import FLAGS_MASK
 import logging
 
 ANGR_MEM = 'mem'

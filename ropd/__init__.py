@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 __author__ = "Pietro Borrello"
-__copyright__ = "Copyright 2018, ROPD Project"
+__copyright__ = "Copyright 2021, ROPD Project"
 __license__ = "BSD 2-clause"
 __email__ = "pietro.borrello95@gmail.com"
 
@@ -14,8 +14,8 @@ logging.getLogger('claripy').setLevel(logging.CRITICAL)
 logging.getLogger('pyvex').setLevel(logging.CRITICAL)
 logging.getLogger('ana').setLevel(logging.CRITICAL)
 
-from GadgetsCollector import GadgetsCollector
-from GadgetsVerifier import GadgetsVerifier
-from GadgetsPlayer import GadgetsPlayer
-from GadgetBox import GadgetBox
-from RopChainKernel import RopChainKernel
+from .GadgetsCollector import GadgetsCollector
+from .GadgetsVerifier import GadgetsVerifier
+from .GadgetsCombiner import GadgetsCombiner
+from .GadgetBox import GadgetBox
+from .RopChainKernel import RopChainKernel

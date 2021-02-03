@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 __author__ = "Pietro Borrello"
-__copyright__ = "Copyright 2018, ROPD Project"
+__copyright__ = "Copyright 2021, ROPD Project"
 __license__ = "BSD 2-clause"
 __email__ = "pietro.borrello95@gmail.com"
 
@@ -14,11 +14,11 @@ setup(
     name='ropd',
     version=VER,
     license=__license__,
-    description='ropd gadget compiling library',
+    description='RopDaemon: gadget compiling tool',
     author=__author__,
     author_email=__email__,
-    url='https://github.com/pietroborrello/Ropd',
-    download_url = 'https://github.com/pietroborrello/Ropd/archive/' + VER + '.tar.gz',
+    url='https://github.com/pietroborrello/RopDaemon',
+    download_url = 'https://github.com/pietroborrello/RopDaemon/archive/' + VER + '.tar.gz',
     package_dir={'ropd': 'ropd'},
     packages=['ropd'],
     install_requires=[
@@ -28,11 +28,13 @@ setup(
             'unicorn',
             'tqdm',
             'ipdb',
-            'angr'
+            'angr',
+            'lief',
+            'networkx'
     ],
     entry_points={
         'console_scripts': [
-            'ropcli = ropd.ropcli:main'
+            'ropd = ropd.ropcli:main'
         ]
     },
 )

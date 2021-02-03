@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 __author__ = "Pietro Borrello"
-__copyright__ = "Copyright 2018, ROPD Project"
+__copyright__ = "Copyright 2021, ROPD Project"
 __license__ = "BSD 2-clause"
 __email__ = "pietro.borrello95@gmail.com"
 
@@ -12,13 +12,13 @@ from itertools import permutations, combinations, chain
 from multiprocessing import Pool
 from tqdm import *
 from ropper import RopperService
-from Gadget import Gadget, Operations, Types
-from Gadget import *
+from .Gadget import Gadget, Operations, Types
+from .Gadget import *
 import capstone
 from capstone.x86 import *
 from unicorn import *
 from unicorn.x86_const import *
-import Arch
+from . import Arch
 import logging
 
 
