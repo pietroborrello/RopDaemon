@@ -11,6 +11,7 @@ A fast, multithreaded, ROP-gadget semantics analyzer.
 * If the gadget accesses memory and how
 
 Moreover, `RopDaemon` can reason on the gadgets by automatically crafting non-trivial ropchains.
+It supports `x86` and `x86-64` binaries.
 
 ## Gadget Categorization
 

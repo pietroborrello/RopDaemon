@@ -172,7 +172,7 @@ class GadgetsCombiner(object):
                         found_one = True
                     elif len(best_guess.mem[0])==0:
                         kernels[reg] = RopChainKernel([GadgetBox(
-                            best_guess, value=self.register_values[reg.name])])
+                            best_guess, value=self.register_values.get(reg.name, None))])
 
 
             missing_regs = [
