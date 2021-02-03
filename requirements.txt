@@ -6,3 +6,4 @@ tqdm
 ipdb
 angr
 lief
+networkx

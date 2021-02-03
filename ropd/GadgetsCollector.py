@@ -70,8 +70,8 @@ def checkLoadConstGadget(init_regs, init_stack, final_state, gadget):
         for off in [i for i, x in enumerate(
             init_stack) if x == final_state[r]]:
                 #don't overlap with ret address: load register inside gadget stack occupation
-                if off < gadget.stack_fix - (Arch.ARCH_BITS/8) and off >= 0:
-                    result.append(LoadConst_Gadget(r, off*(Arch.ARCH_BITS/8), gadget))
+                if off < gadget.stack_fix - (Arch.ARCH_BITS//8) and off >= 0:
+                    result.append(LoadConst_Gadget(r, off*(Arch.ARCH_BITS//8), gadget))
     return result
 
 def checkClearRegGadget(init_regs, init_stack, final_state, gadget):
@@ -150,9 +150,9 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
                         dest = Arch.Registers_a
                         src1 = Arch.Registers_a
                         # check real div of 64bits
-                        div_op_res = ((init_regs[Arch.Registers_d] << Arch.ARCH_BITS) + init_regs[src1]) / init_regs[src2]
+                        div_op_res = ((init_regs[Arch.Registers_d] << Arch.ARCH_BITS) + init_regs[src1]) // init_regs[src2]
                         # check if result handled by hook_err
-                        hook_op_res = ((HOOK_ERR_VAL << Arch.ARCH_BITS) + init_regs[src1]) / init_regs[src2]
+                        hook_op_res = ((HOOK_ERR_VAL << Arch.ARCH_BITS) + init_regs[src1]) // init_regs[src2]
                         # check if the gadget itself correctly zeroed EDX
                         op_res = compute_operation(init_regs[src1], op, init_regs[src2])
                         if final_state[dest] == div_op_res and src2 != Arch.Registers_a:
@@ -172,9 +172,9 @@ def checkBinOpGadget(init_regs, init_stack, final_state, gadget):
 
 def hook_err(uc, int_num, user_data):
     #ip = uc.reg_read(Arch.IP_REG)
-    #instr_bytes = str(uc.mem_read(ip, MAX_BYTES_PER_INSTR))
-    #instr = Arch.md.disasm(instr_bytes, 0x0, count = 1).next()
-    #print 'ERROR: interrupt %x, due to: %s %s' % (int_num, instr.mnemonic, instr.op_str)
+    #instr_bytes = uc.mem_read(ip, MAX_BYTES_PER_INSTR)
+    #instr = next(Arch.md.disasm(instr_bytes, 0x0, count = 1))
+    #print ('ERROR: interrupt %x, due to: %s %s' % (int_num, instr.mnemonic, instr.op_str))
     if int_num==0: #div by zero fault
         # probaly since EDX:EAX doesn't fit in 32 bits
         # if was real div_by_zero, after resume it will double fault, and re-handled as int 0x8
@@ -209,7 +209,7 @@ def hook_mem_access(uc, access, address, size, value, user_data):
         #print("MEM WRITE at 0x%x, data size = %u, data value = 0x%x" % (address, size, value))
         address_written[address] = value
     else:   # READ
-        #value = unpack(Arch.PACK_VALUE, uc.mem_read(address, Arch.ARCH_BITS/8))[0]
+        #value = unpack(Arch.PACK_VALUE, uc.mem_read(address, Arch.ARCH_BITS//8))[0]
         #check if previously written or stack
         if address not in address_written: #initialize if never written
             value = Arch.rand()
@@ -220,7 +220,7 @@ def hook_mem_access(uc, access, address, size, value, user_data):
                 return False
         else:
             #TODO: ignored real read size, only full registers
-            value = unpack(Arch.PACK_VALUE, uc.mem_read(address, Arch.ARCH_BITS/8))[0]
+            value = unpack(Arch.PACK_VALUE, uc.mem_read(address, Arch.ARCH_BITS//8))[0]
         address_read[address] = value
         #print("MEM READ at 0x%x, data size = %u, value = 0x%x" % (address, size, value))
 
@@ -332,8 +332,8 @@ def checkStackPtrOpGadget(init_regs1, final_state1, init_regs2, final_state2, ga
     for r in Arch.regs_no_sp:
         stack_fix1 = compute_operation(diff1, Operations.SUB, init_regs1[r])
         stack_fix2 = compute_operation(diff2, Operations.SUB, init_regs2[r])
-        if stack_fix1 == stack_fix2 and stack_fix1 + (Arch.ARCH_BITS / 8) > 0 and stack_fix1 + (Arch.ARCH_BITS / 8)< 0x1000:
-            gadget.stack_fix = stack_fix1 + (Arch.ARCH_BITS / 8) + gadget.retn
+        if stack_fix1 == stack_fix2 and stack_fix1 + (Arch.ARCH_BITS // 8) > 0 and stack_fix1 + (Arch.ARCH_BITS // 8)< 0x1000:
+            gadget.stack_fix = stack_fix1 + (Arch.ARCH_BITS // 8) + gadget.retn
 
             # avoid interleave of other (syscall) gadgets with stack ptr gadgets
             if type(gadget) is not Other_Gadget:
@@ -355,7 +355,7 @@ def emulate(g): #gadget g
         for i in range(Arch.STACK_CELLS):
             value = Arch.rand()
             rand_stack.append(value)
-            address_written[sp_init + (Arch.ARCH_BITS/8)*i] = value
+            address_written[sp_init + (Arch.ARCH_BITS//8)*i] = value
         flags_init = Arch.rand() & FLAGS_MASK
 
         # map 2MB memory for this emulation
@@ -367,13 +367,13 @@ def emulate(g): #gadget g
         #init registers with random values
         for r in Arch.regs_no_sp:
             mu.reg_write(Arch.regs[r], rv_pairs[r])
-            #print r, hex(rv_pairs[r])
+            #print (r, hex(rv_pairs[r]))
         mu.reg_write(Arch.FLAGS_REG, flags_init)
         #write stack
         for i in range(len(rand_stack)):
             mu.mem_write(mu.reg_read(Arch.regs[Arch.Registers_sp]) +
-                            (Arch.ARCH_BITS / 8) * i, pack(Arch.PACK_VALUE, rand_stack[i]))
-            #print hex(rand_stack[i])
+                            (Arch.ARCH_BITS // 8) * i, pack(Arch.PACK_VALUE, rand_stack[i]))
+            #print (hex(rand_stack[i]))
 
         # intercept invalid memory events
         mapped_pages = 0
@@ -397,14 +397,14 @@ def emulate(g): #gadget g
         return (rv_pairs, final_values, rand_stack, sp_init, address_written, address_read, flags_init, final_flags)
 
     except UcError as e:
-        logging.warning("Managed error: %s - at code %s" , e, str(g.hex).encode('hex'))
+        logging.warning("Managed error: %s - at code %s" , e, g.hex.hex())
 
         return (rv_pairs, None, rand_stack, sp_init, address_written, address_read, None, None)
     
 
 def do_analysis(g):
     ###
-    #print g
+    #print (g)
     #for i in Arch.md.disasm(g.hex, g.address):
     #    print("0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
     ###
@@ -430,11 +430,11 @@ def do_analysis(g):
             modified_regs.add(r)
     # must be hashable
     g.modified_regs = frozenset(modified_regs)
-    #print g.modified_regs
+    #print (g.modified_regs)
     #TODO: xchg    eax, esp
     # ret not executed in unicorn
     g.stack_fix = final_values[Arch.Registers_sp] - \
-        sp_init + (Arch.ARCH_BITS / 8) + g.retn
+        sp_init + (Arch.ARCH_BITS // 8) + g.retn
     #also adjust stack fix as side effect
     typed_gadgets += checkStackPtrOpGadget(
         rv_pairs, final_values, rv_pairs2, final_values2, g)
@@ -472,7 +472,7 @@ class GadgetsCollector(object):
         self._filename =  filename
 
     def collect(self, do_filter_unsafe=True):
-        print 'Collecting...'
+        print ('Collecting...')
         logging.info("Starting Collection phase")
         options = {'color': False,     # if gadgets are printed, use colored output: default: False
                    'badbytes': '',   # bad bytes which should not be in addresses or ropchains; default: ''
@@ -492,7 +492,7 @@ class GadgetsCollector(object):
             address_end = g._lines[-1][0] + g.imageBase
             hex_bytes = g._bytes
             #check ret type
-            ret = Arch.md.disasm(str(hex_bytes[address_end - address:]), 0x0, count = 1).next()
+            ret = next(Arch.md.disasm(hex_bytes[address_end - address:], 0x0, count = 1))
             if ret.id != X86_INS_RET:
                 continue
             if ret.operands:
@@ -500,7 +500,7 @@ class GadgetsCollector(object):
             else:
                 retn = 0
             if retn < MAX_RETN:
-                gadgets.append(Gadget(str(hex_bytes), address = address, address_end = address_end, retn=retn, arch=Arch.ARCH_BITS))
+                gadgets.append(Gadget(hex_bytes, address = address, address_end = address_end, retn=retn, arch=Arch.ARCH_BITS))
         if do_filter_unsafe:
             return filter_unsafe(gadgets)
         else:
@@ -527,7 +527,7 @@ class GadgetsCollector(object):
             address_end = g._lines[-1][0] + g.imageBase
             hex_bytes = g._bytes
 
-            _g = Gadget(str(hex_bytes), address=address,
+            _g = Gadget(hex_bytes, address=address,
                         address_end=address_end, retn=0, modified_regs=[], arch=Arch.ARCH_BITS)
             gadgets.append(Other_Gadget(_g))
         if do_filter_unsafe:
@@ -538,23 +538,23 @@ class GadgetsCollector(object):
     def analyze(self):
         safe_gadgets = self.collect(do_filter_unsafe=True)
 
-        print 'Analyzing...'
+        print ('Analyzing...')
         logging.info("Starting Analysis phase")
         typed_gadgets = []
 
         # tqdm: progressbar wrapper
         
         pool = Pool()
-        '''
-        for g in tqdm(safe_gadgets):
-            typed_gadgets.append(do_analysis(g))
-        '''
+        
+        # for g in tqdm(safe_gadgets):
+        #     typed_gadgets.append(do_analysis(g))
+        
         for res in tqdm(pool.imap_unordered(do_analysis, safe_gadgets), total=len(safe_gadgets)):
             typed_gadgets += res
         pool.close()
         pool.join()
         
-        print 'Found %d different typed gadgets' % len(typed_gadgets)
+        print ('Found %d different typed gadgets' % len(typed_gadgets))
         logging.info('Found %d different typed gadgets', len(typed_gadgets))
         return typed_gadgets
         

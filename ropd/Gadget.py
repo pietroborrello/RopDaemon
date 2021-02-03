@@ -36,7 +36,7 @@ def dump_op(op):
 
 class Gadget(object):
     def __init__(self, hex, address=None, address_end=None, modified_regs=None, stack_fix=None, retn=None, arch=None, mem=None):
-        self.hex = hex
+        self.hex = bytes(hex)
         self.address = address
         self.address_end = address_end
         self.modified_regs = modified_regs
@@ -54,7 +54,7 @@ class Gadget(object):
         for r in self.mem[0]:
             mem.append(r.name)
         simple_accesses = self.mem[1]
-        return '(%s, %s, %s, mod_regs = %s, mem = %s %s, %d)' % (str(self.hex).encode('hex'), hex(self.address), hex(self.address_end), mod, mem, simple_accesses, self.stack_fix)
+        return '(%s, %s, %s, mod_regs = %s, mem = %s %s, %d)' % (self.hex.hex(), hex(self.address), hex(self.address_end), mod, mem, simple_accesses, self.stack_fix)
     
     def __eq__(self, other):
         return type(self) == type(other) and self.__dict__ == other.__dict__

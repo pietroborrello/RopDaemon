@@ -65,7 +65,7 @@ class GadgetsPlayer(object):
         self.best_load_gadgets = []
         self.indipendent_load_gadgets = []
         self.load_kernels = {}
-        self.write_kernel = None
+        self.write_kernel = RopChainKernel([])
         self.writable_interval =(None, None)
         self.kernels = []
         self.chain = None
@@ -84,7 +84,7 @@ class GadgetsPlayer(object):
         self.compute_load_kernels()
         # in unable to set some registers
         if set(self.register_values.keys()) - set([reg.name for reg in self.load_kernels]):
-            print 'requested:', self.register_values.keys()
+            print ('requested:', self.register_values.keys())
             raise Exception('Unable to set requested registers')
 
         self.compute_write_kernels(0x68732f6e69622f, self.bin_sh_address)
@@ -95,7 +95,7 @@ class GadgetsPlayer(object):
 
         if self.chain:
             self.chain.add(syscall_gadget)
-            print self.chain.dump()
+            print (self.chain.dump())
 
 
     def stats(self):
@@ -108,15 +108,18 @@ class GadgetsPlayer(object):
             total += 1
             subtotals[t] += 1
 
-        print "Found %d different gadgets" % total
+        print ("Found %d different gadgets" % total)
         for t in subtotals:
-            print '*', t.__name__, "%.2f" % (subtotals[t]/float(total) * 100) + '%'
+            print ('*', t.__name__, "%.2f" % (subtotals[t]/float(total) * 100) + '%')
 
     def setup_execve(self):
-        self.bin_sh_address = self.writable_interval[1] - (Arch.ARCH_BITS / 8)
+        self.bin_sh_address = self.writable_interval[1] - 8
 
-        self.register_values = {'rax': 0x3b, 'rdi': self.bin_sh_address, 'rsi': 0x0, 'rdx': 0x0}
-        #self.register_values = {'eax': 0xb,'ebx': self.bin_sh_address, 'ecx': 0x0, 'edx': 0x0}
+        if Arch.ARCH_BITS == Arch.ARCH_64:
+            self.register_values = {'rax': 0x3b, 'rdi': self.bin_sh_address, 'rsi': 0x0, 'rdx': 0x0}
+        else:
+            assert(Arch.ARCH_BITS == Arch.ARCH_32)
+            self.register_values = {'eax': 0xb, 'ebx': self.bin_sh_address, 'ecx': 0x0, 'edx': 0x0}
 
 
     def find_writable_interval(self):
@@ -132,7 +135,7 @@ class GadgetsPlayer(object):
             raise Exception('Writable Address not found')
 
         self.writable_address = (
-            self.writable_interval[1] + self.writable_interval[0]) / 2
+            self.writable_interval[1] + self.writable_interval[0]) // 2
 
     @staticmethod
     def is_safely_inside(interval, address):
@@ -180,50 +183,60 @@ class GadgetsPlayer(object):
         kernels.values()
         self.load_kernels = kernels
 
-        print '[+] found best guesses for:', [reg.name for reg in self.load_kernels]
+        print ('[+] found best guesses for:', [reg.name for reg in self.load_kernels])
 
     def compute_write_kernels(self, what, where):
         best_write_gadget = (sorted(filter(lambda g: isinstance(g, WriteMem_Gadget) and set([g.addr_reg, g.src]).issubset(
             set(self.load_kernels.keys())),
             self.gadgets), key=gadget_quality) + [None])[0]
 
-        if best_write_gadget:
-            if len(best_write_gadget.mem[0]) == 1:
-                k1 = self.load_kernels[best_write_gadget.addr_reg].copy()
-                k1.gadget_boxes[-1].value = (where -
-                                             k1.gadget_boxes[-1].gadget.offset) & Arch.MAX_INT
-
-                k2 = self.load_kernels[best_write_gadget.src].copy()
-                # hex(pwn.u64('/bin/sh\x00'))
-                k2.gadget_boxes[-1].value = what
-
-                k = RopChainKernel([GadgetBox(
-                    best_write_gadget, value=None)])
-
-                chain = RopChain([k1,k2,k])
-                
-                tmp_values = {best_write_gadget.addr_reg.name: where,
-                              best_write_gadget.src.name: what}
-                
-                if all(value != tmp_values[reg] for (reg, value) in chain.evaluate().items() if reg in tmp_values):
-                    chain = RopChain([k2, k1, k])
-                if all(value != tmp_values[reg] for (reg, value) in chain.evaluate().items() if reg in tmp_values):
-                    print '[-] Unable to find write memory gadget, setting registers aniway'
-                    return
-
-                self.write_kernel = RopChainKernel(chain.gadget_boxes)
-            print '[-] [TODO] Unable to find a simple write memory gadget, setting registers aniway'
-            return
+        assert(isinstance(what, int))
+        assert(where < Arch.MAX_INT)
+        if (what > Arch.MAX_INT):
+            to_write = [(what & Arch.MAX_INT, where), (what >> Arch.ARCH_BITS, where + (Arch.ARCH_BITS // 8))]
         else:
-            print '[-] Unable to find write memory gadget, setting registers aniway'
-            return
+            to_write = [(what, where)]
+
+        for what, where in to_write:
+            if best_write_gadget:
+                if len(best_write_gadget.mem[0]) == 1:
+                    k1 = self.load_kernels[best_write_gadget.addr_reg].copy()
+                    k1.gadget_boxes[-1].value = (where -
+                                                k1.gadget_boxes[-1].gadget.offset) & Arch.MAX_INT
+
+                    k2 = self.load_kernels[best_write_gadget.src].copy()
+                    # hex(pwn.u64('/bin/sh\x00'))
+                    k2.gadget_boxes[-1].value = what
+
+                    k = RopChainKernel([GadgetBox(
+                        best_write_gadget, value=None)])
+
+                    chain = RopChain([k1,k2,k])
+                    
+                    tmp_values = {best_write_gadget.addr_reg.name: where,
+                                best_write_gadget.src.name: what}
+                    
+                    if all(value != tmp_values[reg] for (reg, value) in chain.evaluate().items() if reg in tmp_values):
+                        chain = RopChain([k2, k1, k])
+                    
+                    # re-evaluate with new chain
+                    if all(value != tmp_values[reg] for (reg, value) in chain.evaluate().items() if reg in tmp_values):
+                        print ('[-] Unable to find write memory gadget, setting registers anyway')
+                        return
+
+                    # update write_kernel
+                    self.write_kernel = RopChainKernel(self.write_kernel.gadget_boxes + chain.gadget_boxes)
+                else:
+                    print ('[-] [TODO] Unable to find a simple write memory gadget, setting registers anyway')
+                    return
+            else:
+                print ('[-] Unable to find write memory gadget, setting registers anyway')
+                return
 
         self.kernels.append(self.write_kernel)
 
-
-
     def compute_chain(self):
-        print '[+] computing sequence'
+        print ('[+] computing sequence')
         kernels_list = [kernel for (
             reg, kernel) in self.load_kernels.items() if reg.name in self.register_values]
         
@@ -232,7 +245,8 @@ class GadgetsPlayer(object):
         for kernel in kernels_list:
             kernel_graph.add_edges_from([(kernel.dest(), mod_reg) for mod_reg in kernel.modified_regs if kernel.dest() != mod_reg])
         try:
-            chain_list = list(nx.topological_sort(kernel_graph))
+            registers_order = list(nx.topological_sort(kernel_graph))
+            kernels_list = [self.load_kernels[reg] for reg in registers_order]
         except nx.exception.NetworkXUnfeasible:
             raise Exception('Unable to combine found gadgets')
 
@@ -245,62 +259,24 @@ class GadgetsPlayer(object):
             if(reg in self.register_values and _register_values[reg] != self.register_values[reg]):
                 bad = True
         if bad:
-            raise Exception('AAAAAAAAAAAAAH!')
+            raise Exception('AAAAAAAAAAAAAH! The generated chain does not correctly set registers')
         self.chain = chain
         return
-        '''
-        while True:
-            random.shuffle(kernels_list)
-            chain = RopChain(kernels_list)
-            chain.simplify()
-            _register_values = chain.evaluate()
-            
-            bad = False
-            for reg in _register_values:
-                if(reg in self.register_values and _register_values[reg] != self.register_values[reg]):
-                bad = True
-            if bad: 
-                continue
-            
-            #print chain.dump()
-            self.chain = chain
-            break'''
-            
 
     def find_load_gadgets(self):
 
         all_load_gadgets = {reg: sorted(filter(lambda x: isinstance(x, LoadConst_Gadget) and x.dest is reg, self.gadgets), key=gadget_quality ) for reg in Arch.Registers}
         best_load_gadgets = {reg : (all_load_gadgets[reg]+[None])[0] for reg in all_load_gadgets}
-
-        # print '---- BEST GUESS ----'
-        # for (r, g) in load_gadgets.items():
-        #     if g is not None:
-        #         print r.name
-        #         print g
-        #         print g.dump()
     
         indipendent_regs = {}
         for (r, g) in best_load_gadgets.items():
             if g is not None and len(g.modified_regs) == 1 and len(g.mem[0]) == 0:
                 indipendent_regs[r] = g
-        
-        '''print '---- INDEPENDENT REGS ----'
-        for (r, g) in indipendent_regs.items():
-            print r.name
-            print g
-            print g.dump()'''
 
         self.all_load_gadgets = all_load_gadgets
         self.best_load_gadgets = best_load_gadgets
         self.indipendent_load_gadgets = indipendent_regs
 
-        '''
-        copy_gadgets = {(dest,src) : list(group) for ((dest,src),group) in groupby(sorted(filter(lambda x: isinstance(x, MovReg_Gadget),self.gadgets), key = lambda g: (g.dest.name, g.src.name)), lambda g: (g.dest, g.src))}
-
-        copy_gadgets = {(dest,src) : (sorted (copy_gadgets[(dest,src)], key=gadget_quality)+[None])[0] for (dest,src) in copy_gadgets}
-        
-        kernels = {reg: RopChainKernel()
-                   for reg in indipendent_regs}'''
 
 
 
